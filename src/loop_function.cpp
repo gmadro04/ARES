@@ -72,7 +72,7 @@ void CForaging::Init(TConfigurationNode& t_tree) {
       // Lee el atributo 'num_circles' y almacénalo en m_unNumCircles
       cParametersNode = GetNode(t_tree,"params");
       GetNodeAttributeOrDefault(cParametersNode, "num_circles", m_unNumCircles, m_unNumCircles);
-      GetNodeAttributeOrDefault(cParametersNode,"experimento",m_unExperiment,m_unExperiment);
+      GetNodeAttributeOrDefault(cParametersNode,"num_experiment",m_unExperiment,m_unExperiment);
     }
     catch(const std::exception& e)
     {
@@ -490,49 +490,49 @@ Real CForaging::AreaTriangle(CVector2& c_point_a, CVector2& c_point_b, CVector2&
 
 void CForaging::PositionArena() {
   
-  CBoxEntity* pcWall;
-  CQuaternion cAngleWall;
+  //CBoxEntity* pcWall;
+  //CQuaternion cAngleWall;
+//
+  //cAngleWall.FromEulerAngles(CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
+  //pcWall = new CBoxEntity("wall_south_west",
+  //    CVector3(-m_fPosMiddle, -m_fPosMiddle, 0.0), // Position
+  //    cAngleWall,
+  //    false,
+  //    CVector3(WIDTH_WALLS, m_fLengthSide, HEIGHT_WALLS));   // Size
+  //AddEntity(*pcWall);
+//
+  //cAngleWall.FromEulerAngles(-CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
+  //pcWall = new CBoxEntity("wall_south_east",
+  //    CVector3(m_fPosMiddle, -m_fPosMiddle, 0.0), // Position
+  //    cAngleWall,
+  //    false,
+  //    CVector3(WIDTH_WALLS, m_fLengthSide, HEIGHT_WALLS));   // Size
+  //AddEntity(*pcWall);
+//
+  //cAngleWall.FromEulerAngles(CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
+  //pcWall = new CBoxEntity("wall_east_north_east",
+  //    CVector3(m_fPosMiddle*1.5, m_fPosMiddle*0.5, 0.0), // Position
+  //    cAngleWall,
+  //    false,
+  //    CVector3(WIDTH_WALLS, m_fLengthSide/2, HEIGHT_WALLS));   // Size
+  //AddEntity(*pcWall);
+//
+  //cAngleWall.FromEulerAngles(CRadians::PI_OVER_TWO, CRadians::ZERO, CRadians::ZERO);
+  //pcWall = new CBoxEntity("wall_north",
+  //    CVector3(0, m_fPosMiddle, 0.0), // Position
+  //    cAngleWall,
+  //    false,
+  //    CVector3(WIDTH_WALLS, m_fPosMiddle*2, HEIGHT_WALLS));   // Size
+  //AddEntity(*pcWall);
+//
+  //cAngleWall.FromEulerAngles(-CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
+  //pcWall = new CBoxEntity("wall_west_north_west",
+  //    CVector3(-m_fPosMiddle*1.5, m_fPosMiddle*0.5, 0.0), // Position
+  //    cAngleWall,
+  //    false,
+  //    CVector3(WIDTH_WALLS, m_fLengthSide/2, HEIGHT_WALLS));   // Size
+  //AddEntity(*pcWall);
 
-  cAngleWall.FromEulerAngles(CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
-  pcWall = new CBoxEntity("wall_south_west",
-      CVector3(-m_fPosMiddle, -m_fPosMiddle, 0.0), // Position
-      cAngleWall,
-      false,
-      CVector3(WIDTH_WALLS, m_fLengthSide, HEIGHT_WALLS));   // Size
-  AddEntity(*pcWall);
-
-  cAngleWall.FromEulerAngles(-CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
-  pcWall = new CBoxEntity("wall_south_east",
-      CVector3(m_fPosMiddle, -m_fPosMiddle, 0.0), // Position
-      cAngleWall,
-      false,
-      CVector3(WIDTH_WALLS, m_fLengthSide, HEIGHT_WALLS));   // Size
-  AddEntity(*pcWall);
-
-  cAngleWall.FromEulerAngles(CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
-  pcWall = new CBoxEntity("wall_east_north_east",
-      CVector3(m_fPosMiddle*1.5, m_fPosMiddle*0.5, 0.0), // Position
-      cAngleWall,
-      false,
-      CVector3(WIDTH_WALLS, m_fLengthSide/2, HEIGHT_WALLS));   // Size
-  AddEntity(*pcWall);
-
-  cAngleWall.FromEulerAngles(CRadians::PI_OVER_TWO, CRadians::ZERO, CRadians::ZERO);
-  pcWall = new CBoxEntity("wall_north",
-      CVector3(0, m_fPosMiddle, 0.0), // Position
-      cAngleWall,
-      false,
-      CVector3(WIDTH_WALLS, m_fPosMiddle*2, HEIGHT_WALLS));   // Size
-  AddEntity(*pcWall);
-
-  cAngleWall.FromEulerAngles(-CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
-  pcWall = new CBoxEntity("wall_west_north_west",
-      CVector3(-m_fPosMiddle*1.5, m_fPosMiddle*0.5, 0.0), // Position
-      cAngleWall,
-      false,
-      CVector3(WIDTH_WALLS, m_fLengthSide/2, HEIGHT_WALLS));   // Size
-  AddEntity(*pcWall);
-  
 }
 
 /****************************************/

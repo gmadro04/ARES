@@ -9,7 +9,7 @@
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function" output="output.txt">
-    <params experimento="3" num_circles="4" />
+    <params num_experiment="3" num_circles="4" />
   </loop_functions>
 
   <controllers>
@@ -38,20 +38,20 @@
   
   <arena size="15,15,1" center="0,0,0.5">
 
-    <box id="1" size="0.1,4.0,0.2" movable="false"><body position="4.0,0,0" orientation="0,0,0" /></box><box id="2" size="0.1,4.0,0.2" movable="false"><body position="-4.0,0,0" orientation="0,0,0" /></box><box id="3" size="0.1,4.0,0.2" movable="false"><body position="0,4.0,0" orientation="90,0,0" /></box><box id="4" size="0.1,4.0,0.2" movable="false"><body position="0,-4.0,0" orientation="90,0,0" /></box><box id="5" size="0.1,2.82,0.2" movable="false"><body position="-3.0,-3.0,0" orientation="45,0,0" /></box><box id="6" size="0.1,2.82,0.2" movable="false"><body position="3.0,3.0,0" orientation="45,0,0" /></box><box id="7" size="0.1,2.82,0.2" movable="false"><body position="3.0,-3.0,0" orientation="-45,0,0" /></box><box id="8" size="0.1,2.82,0.2" movable="false"><body position="-3.0,3.0,0" orientation="-45,0,0" /></box><light id="light" position="0,0,0.5" orientation="0,0,0" color="yellow" intensity="10.0" medium="leds" />
+    <box id="1" size="0.1,4,0.2" movable="false"><body position="2.0,0,0" orientation="0,0,0" /></box><box id="2" size="0.1,4,0.2" movable="false"><body position="-2.0,0,0" orientation="0,0,0" /></box><box id="3" size="4,0.1,0.2" movable="false"><body position="0,-2.0,0" orientation="0,0,0" /></box><box id="4" size="4,0.1,0.2" movable="false"><body position="0,2.0,0" orientation="0,0,0" /></box><light id="light" position="0,0,0.5" orientation="0,0,0" color="yellow" intensity="10.0" medium="leds" />
     <floor id="floor" source="loop_functions" pixels_per_meter="100" />
 
     <distribute>
-      <position method="uniform" min="-3.0,-3.0,0" max="3.0,3.0,0" />
+      <position method="uniform" min="-2.0,-2.0,0" max="2.0,2.0,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
-      <entity quantity="25" max_trials="100">
+      <entity quantity="5" max_trials="100">
         <foot-bot id="fb" rab="1">
           <controller config="lua" />
         </foot-bot>
       </entity>
     </distribute>
 
-  <distribute><position method="uniform" min="-3.0,-3.0,0" max="3.0,3.0,0" /><orientation method="uniform" min="0,0,0" max="360,0,0" /><entity quantity="15" max_trials="100"><box id="o" size="0.6,0.4,0.2" movable="false" /></entity></distribute></arena>
+  </arena>
 
 
   

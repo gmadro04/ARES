@@ -59,7 +59,7 @@ def framework_label (file,time,codigos,exp):
     if loop is not None:
         simulacion = loop.find("params")
         if simulacion is not None:
-            simulacion.set("experimento",str(exp))
+            simulacion.set("num_experiment",str(exp))
     tree.write(file)
 
 """FUNCIONES CONFIGURACION PARAMETROS SEGUN LA ARENA"""
