@@ -1,0 +1,83 @@
+<argos-configuration>
+
+  
+  
+  
+  <framework>
+    <experiment length="200" ticks_per_second="10" />
+    <system threads="0" />
+  </framework>
+
+  <loop_functions library="./build/libloop_function.so" label="loop_function" output="output.txt">
+    <params experimento="3" num_circles="4" />
+  </loop_functions>
+
+  <controllers>
+
+    <lua_controller id="lua">
+      <actuators>
+        <differential_steering implementation="default" />
+        <range_and_bearing implementation="default" />
+        <leds implementation="default" medium="leds" />
+      </actuators>
+      <sensors>
+        <differential_steering implementation="default" />
+        <range_and_bearing implementation="medium" medium="rab" />
+        <footbot_proximity implementation="default" show_rays="false" />
+        <footbot_motor_ground implementation="rot_z_only" />
+        <footbot_base_ground implementation="rot_z_only" />
+        <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
+        <footbot_light implementation="rot_z_only" show_rays="false" />
+      </sensors>
+      <params script="/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_0_rb_taxis.lua" />
+    </lua_controller>
+
+  </controllers>
+  
+  
+  
+  <arena size="15,15,1" center="0,0,0.5">
+
+    <box id="1" size="0.1,4.0,0.2" movable="false"><body position="4.0,0,0" orientation="0,0,0" /></box><box id="2" size="0.1,4.0,0.2" movable="false"><body position="-4.0,0,0" orientation="0,0,0" /></box><box id="3" size="0.1,4.0,0.2" movable="false"><body position="0,4.0,0" orientation="90,0,0" /></box><box id="4" size="0.1,4.0,0.2" movable="false"><body position="0,-4.0,0" orientation="90,0,0" /></box><box id="5" size="0.1,2.82,0.2" movable="false"><body position="-3.0,-3.0,0" orientation="45,0,0" /></box><box id="6" size="0.1,2.82,0.2" movable="false"><body position="3.0,3.0,0" orientation="45,0,0" /></box><box id="7" size="0.1,2.82,0.2" movable="false"><body position="3.0,-3.0,0" orientation="-45,0,0" /></box><box id="8" size="0.1,2.82,0.2" movable="false"><body position="-3.0,3.0,0" orientation="-45,0,0" /></box><light id="light" position="0,0,0.5" orientation="0,0,0" color="yellow" intensity="10.0" medium="leds" />
+    <floor id="floor" source="loop_functions" pixels_per_meter="100" />
+
+    <distribute>
+      <position method="uniform" min="-3.0,-3.0,0" max="3.0,3.0,0" />
+      <orientation method="uniform" min="0,0,0" max="360,0,0" />
+      <entity quantity="25" max_trials="100">
+        <foot-bot id="fb" rab="1">
+          <controller config="lua" />
+        </foot-bot>
+      </entity>
+    </distribute>
+
+  <distribute><position method="uniform" min="-3.0,-3.0,0" max="3.0,3.0,0" /><orientation method="uniform" min="0,0,0" max="360,0,0" /><entity quantity="15" max_trials="100"><box id="o" size="0.6,0.4,0.2" movable="false" /></entity></distribute></arena>
+
+
+  
+  
+  
+  <physics_engines>
+    <dynamics2d id="dyn2d" />
+  </physics_engines>
+
+  
+  
+  
+  <media>
+    <range_and_bearing id="rab" index="grid" grid_size="1,1,1" />
+    <led id="leds" index="grid" grid_size="1,1,1" />
+  </media>
+
+  
+  
+  
+  <visualization>
+    <qt-opengl lua_editor="false">
+      <camera>
+        <placement idx="0" position="0,0,8" look_at="0,0,0" up="3,0,0" lens_focal_length="20" />
+      </camera>
+    </qt-opengl>
+  </visualization>
+
+</argos-configuration>
