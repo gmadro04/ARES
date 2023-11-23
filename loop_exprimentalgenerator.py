@@ -14,7 +14,7 @@ def params_arena():
     arena = random.choice(arenas)
     #arena = arenas[4]
     # tamaño de la arena
-    dim_tam = random.choice(['pequeña','mediana','grande'])  # Tipo de tamaño de la arena.
+    dim_tam = random.choice(['pequena','mediana','grande'])  # Tipo de tamaño de la arena.
     # Parametros de configuración segun la arena
 
     if arena == "Cuadrada":
@@ -39,16 +39,12 @@ def robots_timeDruation():
     time = random.choice([170,200])
     return robots,time
 
-def framework_label (file,time,codigos,exp):
-    # Numero de ejecución de la simulación 
-    exp = exp+1
-    # Configuraciones ---------
+def framework_label (file,time,codigos):
     tree = ET.parse(file)
     root = tree.getroot()
     # Modificar la etiqueta 'framework' y sus contenidos
     framework =  root.find("framework")
     controller = root.find("controllers")
-    loop = root.find("loop_functions")
     if framework is not None:
         # Modificar atributos de 'experiment'
         experiment = framework.find("experiment")
@@ -56,10 +52,22 @@ def framework_label (file,time,codigos,exp):
             experiment.set("length", str(time))
     for params in controller.iter("params"):
         params.set("script", codigos) # pasamos el script de control
-    if loop is not None:
-        simulacion = loop.find("params")
-        if simulacion is not None:
-            simulacion.set("num_experiment",str(exp))
+    tree.write(file)
+
+def loops_params(file,tipo_arena,tam_arena,exp):
+    tree = ET.parse(file)
+    root = tree.getroot()
+            # MODIFICAR PARAMETROS LOOP_FUNCTIONS
+    loops = root.find("loop_functions") #
+    if loops is not None:
+        Eparams = loops.find("params")
+        # establecer los parametros en las sub etiquetas del loop:functions
+        if Eparams is not None:
+            Eparams.set("num_experiment",str(exp+1))
+            Eparams.set("arena",tipo_arena)
+            Eparams.set("tam",tam_arena)
+            Eparams.set("mision", "2") # ID del comportamiento que se esta evaluando para ejecutar la mision correspondiente
+            Eparams.set("circles","0") # falso 0, verdadero 1
     tree.write(file)
 
 """FUNCIONES CONFIGURACION PARAMETROS SEGUN LA ARENA"""
@@ -75,7 +83,7 @@ def framework_label (file,time,codigos,exp):
 """
 def parametros_arena_cuadrada(tamaño,tipo_arena):
     paredes = 4 # numero de paredes
-    if tamaño == "pequeña":
+    if tamaño == "pequena":
         size  = 4 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
         pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
@@ -111,7 +119,7 @@ def parametros_arena_cuadrada(tamaño,tipo_arena):
 
 def parametros_arena_triangular(tamaño,tipo_arena):
 
-    if tamaño == "pequeña":
+    if tamaño == "pequena":
         size  = 4 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
         pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
@@ -148,7 +156,7 @@ def parametros_arena_triangular(tamaño,tipo_arena):
     return arena_conf_params, parametros
 
 def parametros_arena_hexagonal(tamaño,tipo_arena):
-    if tamaño == "pequeña":
+    if tamaño == "pequena":
         size  = 4 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
         pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
@@ -188,7 +196,7 @@ def parametros_arena_hexagonal(tamaño,tipo_arena):
     return arena_conf_params, parametros
 
 def parametros_arena_octagonal(tamaño,tipo_arena):
-    if tamaño == "pequeña":
+    if tamaño == "pequena":
         size  = 4 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
         pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
@@ -230,7 +238,7 @@ def parametros_arena_octagonal(tamaño,tipo_arena):
     return arena_conf_params, parametros
 
 def parametros_arena_dodecagono(tamaño,tipo_arena):
-    if tamaño == "pequeña":
+    if tamaño == "pequena":
         size  = 4 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
         pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
@@ -388,7 +396,7 @@ def obstaculos_arena(file,obs,pos_obs,params):
 
         entity = ET.Element("entity")
         entity.set("quantity", "15")
-        entity.set("max_trials", "100")
+        entity.set("max_trials", "1000")
         x_box = random.uniform(0.2,0.7) # tam x del box
         y_box = random.uniform(0.2,0.7) # tam y del box
         boxes = [round(x_box,1),round(y_box,1),0.2] # datos de tam x,y,z de los boxes

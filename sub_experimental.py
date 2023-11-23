@@ -31,16 +31,19 @@ def modificar_archivo(file,exp):
     Obstaculos = random.choice([True, False])   # Obstaculos en el escenario si o no, según la eleccion tipo de distribución y tipo de obstaculo
 
     """ CONFIGURACION ARCHIVO """
-    loop.framework_label(file, time, codigos,exp) #Configuración software de control y tiempo ejecucion
+    loop.framework_label(file, time, codigos) #Configuración software de control y tiempo ejecucion
     # Configuración de arena
     loop.arena_configuracion(file,arena_params, params=parametros, robots=robots)
     # Configuración obstaculos en la arena
     loop.obstaculos_arena(file=file,obs=Obstaculos,pos_obs=parametros["Pos"],params=parametros)
-
+    # configuración parametros loop_functions
+    loop.loops_params(file=file,tipo_arena=parametros["Tipo de arena"],tam_arena=parametros["Tamaño arena"],exp=exp)
     # Parametros simulación.
     print("----------------------------------------------------")
     simulacion = pd.DataFrame([parametros["Tipo de arena"], parametros["Tamaño arena"],robots,time],index=["TIPO DE ARENA:","TAMAÑO:","# ROBOTS:","T_EXPERIMENTO:"])
     print(simulacion)
+
+
 
 
 # Configuración de la cantidad de ejecuciones

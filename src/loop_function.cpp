@@ -34,10 +34,7 @@ static const Real FORB_B_MINX            = -1.0f;
 
 static const Real HEIGHT_WALLS         = 0.15f;
 static const Real WIDTH_WALLS         = 0.05f;
-//static const Real WALL_X_MIN = -0.1f;
-//static const Real WALL_X_MAX = 0.1f;
-//static const Real WALL_Y_MIN = -m_fPosMiddle;
-//static const Real WALL_Y_MAX = m_fPosMiddle;
+
 
 
 #define PI 3.14159265
@@ -89,7 +86,7 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     GetNodeAttributeOrDefault(cParametersNode, "number_circles", m_unNumCircles);
     */
     /* Arena init*/
-    PositionArena();
+    //PositionArena();
 }
 
 void CForaging::ComputeCirclePositions(UInt32 NumCircles) {
@@ -388,19 +385,6 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
             }
         }
     }
-    // Verificar si la posición está dentro de algún círculo
-  /*  for (const CVector2& cCirclePos : m_vCirclePositions) {
-        Real distance = (cCirclePos - c_position_on_plane).Length();
-        if (distance <= RADIUS_SOURCE) {
-            return CColor::BLACK;
-        }
-    }
-  */
-    // Walls or other specific areas
-    // Adjust the coordinates and conditions based on your wall positions
-    /*if (IsWithinWalls(vCurrentPoint)) {
-        return CColor::BLACK;
-    }*/
 
     /* Rest of the arena is gray. */
     return CColor::GRAY60;
@@ -472,19 +456,7 @@ Real CForaging::AreaTriangle(CVector2& c_point_a, CVector2& c_point_b, CVector2&
 
 /****************************************/
 /****************************************/
-//bool CForaging::IsWithinWalls(CVector2& c_position) {
-//    // Modify this function to define the areas where you want black color
-//    // For example, check if the position is within specific walls
-//    // Return true if it is, indicating that the position is within a wall
-//    // Otherwise, return false
-//    // You can define multiple areas based on your requirements
-//    // Adjust the conditions accordingly
-//    if ((c_position.GetX() > WALL_X_MIN && c_position.GetX() < WALL_X_MAX) &&
-//        (c_position.GetY() > WALL_Y_MIN && c_position.GetY() < WALL_Y_MAX)) {
-//        return true;
-//    }
-//    return false;
-//}
+
 /****************************************/
 /****************************************/
 
