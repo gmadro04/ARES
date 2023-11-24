@@ -81,10 +81,19 @@ public:
 
    bool IsOnForbidden(CVector2& c_position_robot);
    /**
-    * Saves the final positions of robots in the "posiciones.txt" file.
+    * Funciones de posicionamiento
+    * 
+   */
+   double Asignar_tamano_segun_arena(const std::string& arena_tipo);
+   bool Dentro_del_triangulo(const std::pair<double, double>& punto, double tam);
+   /**
+    * Saves the final positions of robots in the "posiciones.txt" file and
+    * Data .
     */
    void SaveRobotPositions();
    void SaveExperimentData();
+   //std::vector<CVector2> m_vCirclePositions;
+
 
 private:
 
@@ -122,13 +131,30 @@ private:
      */
     size_t m_unNumCircles;
     /**
-     * Número de círculos
+     * Número de ejecución
      */
     size_t m_unExperiment;
+    /**
+    // * Tipo de arena
+    // */
+    std::string m_unArenatype;
+    ///**
+    // * Tamaño de arena
+    // */
+    std::string m_unArenatam;
+    // /**
+    // * Id mision y comportamiento
+    // */
+    //size_t m_unIDmision;
+    // /**
+    // * Tamaño de arena
+    // */
+    //size_t m_unCirclebool;
     /**
      * Posiciones de los círculos negros
      */
     std::vector<CVector2> m_vCirclePositions;
+    //CVector2 m_vCirclePositions;
 
 
    /**
@@ -144,6 +170,7 @@ private:
     bool IsWithinTriangle(CVector2& c_point, CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c);
     Real AreaTriangle(CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c);
     bool IsWithinWalls(CVector2& c_position);
+
     CVector2 m_cCoordSource;
     CVector2 m_cCoordNest;
 };

@@ -1,5 +1,5 @@
 ----------Experimento:---------- 
-Numero de simulacion: Num_experimwnto 
+Numero de simulacion: 2
 ----------Parametros:----------
 Tipo comportamiento: agregación
 Arena: Octagonal
@@ -13,7 +13,7 @@ Escalabilidad: 30
 Flexibilidad: 15
 Tolerancia a fallos: 8
 ----------Experimento:---------- 
-Numero de simulacion: Num_experimwnto 
+Numero de simulacion: 1
 ----------Parametros:----------
 Tipo comportamiento: agregación
 Arena: Octagonal
@@ -27,7 +27,7 @@ Escalabilidad: 30
 Flexibilidad: 15
 Tolerancia a fallos: 8
 ----------Experimento:---------- 
-Numero de simulacion: Num_experimwnto 
+Numero de simulacion: 2
 ----------Parametros:----------
 Tipo comportamiento: agregación
 Arena: Octagonal
@@ -41,7 +41,7 @@ Escalabilidad: 30
 Flexibilidad: 15
 Tolerancia a fallos: 8
 ----------Experimento:---------- 
-Numero de simulacion: Num_experimwnto 
+Numero de simulacion: 3
 ----------Parametros:----------
 Tipo comportamiento: agregación
 Arena: Octagonal
@@ -55,7 +55,7 @@ Escalabilidad: 30
 Flexibilidad: 15
 Tolerancia a fallos: 8
 ----------Experimento:---------- 
-Numero de simulacion: Num_experimwnto 
+Numero de simulacion: 1
 ----------Parametros:----------
 Tipo comportamiento: agregación
 Arena: Octagonal
@@ -69,7 +69,7 @@ Escalabilidad: 30
 Flexibilidad: 15
 Tolerancia a fallos: 8
 ----------Experimento:---------- 
-Numero de simulacion: Num_experimwnto 
+Numero de simulacion: 2
 ----------Parametros:----------
 Tipo comportamiento: agregación
 Arena: Octagonal
@@ -83,7 +83,7 @@ Escalabilidad: 30
 Flexibilidad: 15
 Tolerancia a fallos: 8
 ----------Experimento:---------- 
-Numero de simulacion: Num_experimwnto 
+Numero de simulacion: 3
 ----------Parametros:----------
 Tipo comportamiento: agregación
 Arena: Octagonal
@@ -97,7 +97,7 @@ Escalabilidad: 30
 Flexibilidad: 15
 Tolerancia a fallos: 8
 ----------Experimento:---------- 
-Numero de simulacion: Num_experimwnto 
+Numero de simulacion: 1
 ----------Parametros:----------
 Tipo comportamiento: agregación
 Arena: Octagonal
@@ -111,7 +111,287 @@ Escalabilidad: 30
 Flexibilidad: 15
 Tolerancia a fallos: 8
 ----------Experimento:---------- 
-Numero de simulacion: Num_experimwnto 
+Numero de simulacion: 2
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 2
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 2
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: agregación
+Arena: Octagonal
+Tamano arena: Mediana
+Num Robots: 20
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: Score agragación
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 2
 ----------Parametros:----------
 Tipo comportamiento: agregación
 Arena: Octagonal

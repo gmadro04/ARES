@@ -66,10 +66,16 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     TConfigurationNode cParametersNode;
     try
     {
-      // Lee el atributo 'num_circles' y almacénalo en m_unNumCircles
+      // Lee el atributo 'atributo' y almacénalo en una variable
       cParametersNode = GetNode(t_tree,"params");
-      GetNodeAttributeOrDefault(cParametersNode, "num_circles", m_unNumCircles, m_unNumCircles);
+
       GetNodeAttributeOrDefault(cParametersNode,"num_experiment",m_unExperiment,m_unExperiment);
+      GetNodeAttributeOrDefault(cParametersNode, "arena", m_unArenatype, m_unArenatype);
+      GetNodeAttributeOrDefault(cParametersNode, "tam", m_unArenatam, m_unArenatam);
+      //GetNodeAttributeOrDefault(cParametersNode, "mision", m_unIDmision, m_unIDmision);
+      //GetNodeAttributeOrDefault(cParametersNode, "circles", m_unCirclebool, m_unCirclebool);
+      GetNodeAttributeOrDefault(cParametersNode, "num_circles", m_unNumCircles, m_unNumCircles);
+
     }
     catch(const std::exception& e)
     {
@@ -78,27 +84,58 @@ void CForaging::Init(TConfigurationNode& t_tree) {
 
     Init();
 
-    /*m_vCirclePositions.push_back(CVector2(1.0, 1.0));
-    m_vCirclePositions.push_back(CVector2(-2.0, -2.0));
-    m_vCirclePositions.push_back(CVector2(3.0,0.0));*/
-    // Inicializar el número de círculos desde el archivo de configuración
-    /*CConfigurationNode cParametersNode = GetNode(t_tree, "loop_functions");
-    GetNodeAttributeOrDefault(cParametersNode, "number_circles", m_unNumCircles);
-    */
     /* Arena init*/
     //PositionArena();
 }
 
 void CForaging::ComputeCirclePositions(UInt32 NumCircles) {
-    m_vCirclePositions.clear();  // Limpia el vector antes de añadir nuevas posiciones
+    double tam = Asignar_tamano_segun_arena(m_unArenatam);
 
-    for(size_t i = 0; i < NumCircles; ++i) {
-      //m_vCirclePositions.push_back(CVector2(i, 0.0));
-      CRange<Real> cRangeX(-Sqrt(2*Square(m_fLengthSide))/2, Sqrt(2*Square(m_fLengthSide))/2);
-      CRange<Real> cRangeY(0, m_fPosMiddle);
-      //mCoordSource = CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY));
-      //m_vCirclePositions.push_back(CVector2(m_pcRNG->Uniform(CRange<Real>(-4.0f, 4.0f)), m_pcRNG->Uniform(CRange<Real>(-4.0f, 4.0f))));
-      m_vCirclePositions.push_back(CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY)));
+    if (tam < 0.0) {
+        // Lanza una excepción indicando el error
+        THROW_ARGOSEXCEPTION("Error al asignar un tamaño");
+    }
+
+    m_vCirclePositions.clear();  // Limpia el vector antes de añadir nuevas posiciones
+    if (m_unArenatype == "Triangular"){
+
+
+      // Almacenar las posiciones dentro del triángulo en un vector
+      std::vector<CVector2> puntos_en_el_triangulo;
+
+      // Recorrer puntos en x desde -tam a tam con variación de 0.2
+      for (double x = -tam; x <= tam; x += 0.2) {
+        // Recorrer puntos en y desde -tam a tam con variaciones de 0.5
+        for (double y = -tam; y <= tam; y += 0.5) {
+            std::pair<double, double> punto_actual = std::make_pair(x, y);
+
+            // Verificar si el punto está dentro del triángulo
+            if (Dentro_del_triangulo(punto_actual, tam)) {
+              puntos_en_el_triangulo.push_back(CVector2(punto_actual.first, punto_actual.second));
+            }
+        }
+        // Seleccionar aleatoriamente NumCircles posiciones del vector
+        if (puntos_en_el_triangulo.size() < NumCircles) {
+            // Si hay menos puntos dentro del triángulo que el número deseado de círculos,
+            // simplemente selecciona todos los puntos disponibles
+            m_vCirclePositions = puntos_en_el_triangulo;
+        } else {
+            // Si hay más puntos dentro del triángulo que el número deseado de círculos,
+            // selecciona aleatoriamente NumCircles posiciones
+            std::random_shuffle(puntos_en_el_triangulo.begin(), puntos_en_el_triangulo.end());
+            m_vCirclePositions.assign(puntos_en_el_triangulo.begin(), puntos_en_el_triangulo.begin() + NumCircles);
+        }
+      }
+    }
+    else{
+      for(size_t i = 0; i < NumCircles; ++i) {
+        //m_vCirclePositions.push_back(CVector2(i, 0.0));
+        CRange<Real> cRangeX(-Sqrt(2*Square(m_fLengthSide))/2, Sqrt(2*Square(m_fLengthSide))/2);
+        CRange<Real> cRangeY(0, m_fPosMiddle);
+        //mCoordSource = CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY));
+        //m_vCirclePositions.push_back(CVector2(m_pcRNG->Uniform(CRange<Real>(-4.0f, 4.0f)), m_pcRNG->Uniform(CRange<Real>(-4.0f, 4.0f))));
+        m_vCirclePositions.push_back(CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY)));
+      }
     }
 }
 
@@ -296,7 +333,7 @@ void CForaging::SaveExperimentData() {
     // ... lógica para obtener las métrica
     // Escribir los datos en el archivo
     MyFile << "----------Experimento:---------- " << std::endl;
-    MyFile << "Numero de simulacion: " << "Num_experimwnto " << std::endl;
+    MyFile << "Numero de simulacion: " << m_unExperiment << std::endl;
     MyFile << "----------Parametros:----------" << std::endl;
     MyFile << "Tipo comportamiento: " << "agregación" << std::endl;
     MyFile << "Arena: " << "Octagonal" << std::endl;
@@ -345,7 +382,7 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
             }
     }
 
-
+    double tam = Asignar_tamano_segun_arena(m_unArenatam);
     /* Long dropping area. FORB A */
     /*
     CVector2 cBottomCornerA(-(1.7*m_fPosMiddle), FORB_A_MINY);
@@ -370,26 +407,98 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
             return CColor::GRAY20;
     }*/
   /*Circulos en la arena según una posición*/
-  for (const CVector2& cCirclePos : m_vCirclePositions) {
-        Real fCircleRadius = 0.5;  // Ajusta el radio del círculo según tus necesidades
-        //Se puede remplazar esta vaiable por RADIUS SOURCE
+  //for (const CVector2& cCirclePos : m_vCirclePositions) {
+  //      Real fCircleRadius = 0.5;  // Ajusta el radio del círculo según tus necesidades
+  //      //Se puede remplazar esta vaiable por RADIUS SOURCE
+  //      //CVector2 circle_pos = m_vCirclePositions
+  //      CVector2 circle_pos =  circle_pos;
+  //      if ((cCirclePos - c_position_on_plane).Length() <= fCircleRadius) {
+  //          // La posición está dentro del círculo, píntalo de un color específico (por ejemplo, rojo)
+  //          //return CColor::BLACK;
+  //          if (IsWithinTriangle(circle_pos, cCenter, cLeftCorner, cTopLeftCorner) ||
+  //            IsWithinTriangle(circle_pos, cCenter, cTopLeftCorner, cTopRightCorner) ||
+  //            IsWithinTriangle(circle_pos, cCenter, cTopRightCorner, cRightCorner) ||
+  //            (vCurrentPoint.GetY() < 0.0f)) {
+  //            return CColor::BLACK;
+  //          }
+  //      }
+  //}
 
-        if ((cCirclePos - c_position_on_plane).Length() <= fCircleRadius) {
-            // La posición está dentro del círculo, píntalo de un color específico (por ejemplo, rojo)
-            //return CColor::BLACK;
-            if (IsWithinTriangle(vCurrentPoint, cCenter, cLeftCorner, cTopLeftCorner) ||
-              IsWithinTriangle(vCurrentPoint, cCenter, cTopLeftCorner, cTopRightCorner) ||
-              IsWithinTriangle(vCurrentPoint, cCenter, cTopRightCorner, cRightCorner) ||
-              (vCurrentPoint.GetY() < 0.0f)) {
+  for (const CVector2& cCirclePos : m_vCirclePositions) {
+      Real fCircleRadius = 0.5;  // Ajusta el radio del círculo según tus necesidades
+
+      // Convertir CVector2 a std::pair<double, double>
+      std::pair<double, double> point_as_pair(cCirclePos.GetX(), cCirclePos.GetY());
+
+      if ((cCirclePos - c_position_on_plane).Length() <= fCircleRadius) {
+          // La posición está dentro del círculo
+
+          // Verificar si está dentro del triángulo
+          bool dentro_del_triangulo = Dentro_del_triangulo(point_as_pair, tam);
+
+          // Verificar si está dentro del área permitida
+          bool dentro_del_area_permitida = (vCurrentPoint.GetY() < 0.0f);
+
+          // Pintar de negro solo si está dentro del triángulo
+          if (dentro_del_triangulo || dentro_del_area_permitida) {
               return CColor::BLACK;
-            }
-        }
-    }
+          } else {
+              // Pintar de gris si no está dentro del triángulo
+              return CColor::GRAY50;
+          }
+      }
+  }
+
 
     /* Rest of the arena is gray. */
     return CColor::GRAY60;
 }
 
+/****************************************/
+/****************************************/
+// COnfiguraciones arena para posiciones 
+// Definir la función para verificar si un punto está dentro del triángulo
+bool CForaging::Dentro_del_triangulo(const std::pair<double, double>& punto, double tam) {
+    // Definir los vértices del triángulo
+    CVector2 A(tam / 2, 0);
+    CVector2 B(-tam / 2, tam / 2);
+    CVector2 C(-tam / 2, -tam / 2);
+    // Implementación de la función que ya proporcionaste
+    // ...
+    double x = punto.first;
+    double y = punto.second;
+
+    double x1 = A.GetX();
+    double y1 = A.GetY();
+    double x2 = B.GetX();
+    double y2 = B.GetY();
+    double x3 = C.GetX();
+    double y3 = C.GetY();
+
+
+    double denominador = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3);
+    double alpha = ((y2 - y3) * (x - x3) + (x3 - x2) * (y - y3)) / denominador;
+    double beta = ((y3 - y1) * (x - x3) + (x1 - x3) * (y - y3)) / denominador;
+    double gamma = 1 - alpha - beta;
+
+    // Excluir puntos en la frontera
+    return 0 < alpha && alpha < 1 && 0 < beta && beta < 1 && 0 < gamma && gamma < 1;
+}
+
+// Función para asignar el tamaño según el tipo de arena
+double CForaging::Asignar_tamano_segun_arena(const std::string& arena_tipo) {
+    if (arena_tipo == "pequena") {
+        return 4.0;
+    } else if (arena_tipo == "mediana") {
+        return 8.0;
+    } else if (arena_tipo == "grande") {
+        return 12.0;
+    } else {
+        // Manejar el caso en el que arena_tipo no sea un valor válido
+        std::cerr << "Valor no válido para arena_tipo: " << arena_tipo << std::endl;
+        return -1.0;  // Otra forma de manejar el error, devolver un valor no válido
+    }
+}
 /****************************************/
 /****************************************/
 

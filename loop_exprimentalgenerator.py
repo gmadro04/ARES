@@ -11,8 +11,8 @@ import math
 def params_arena():
     # Se selecciona el tipo de arena que se va a trabajar y modificar
     arenas = ["Triangular","Cuadrada","Hexagonal","Octagonal","Dodecagono"]
-    arena = random.choice(arenas)
-    #arena = arenas[4]
+    #arena = random.choice(arenas)
+    arena = arenas[0]
     # tamaño de la arena
     dim_tam = random.choice(['pequena','mediana','grande'])  # Tipo de tamaño de la arena.
     # Parametros de configuración segun la arena
@@ -395,7 +395,7 @@ def obstaculos_arena(file,obs,pos_obs,params):
         distribute.append(orientation)
 
         entity = ET.Element("entity")
-        entity.set("quantity", "15")
+        entity.set("quantity", "10")
         entity.set("max_trials", "1000")
         x_box = random.uniform(0.2,0.7) # tam x del box
         y_box = random.uniform(0.2,0.7) # tam y del box
