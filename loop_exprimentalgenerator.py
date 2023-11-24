@@ -11,8 +11,8 @@ import math
 def params_arena():
     # Se selecciona el tipo de arena que se va a trabajar y modificar
     arenas = ["Triangular","Cuadrada","Hexagonal","Octagonal","Dodecagono"]
-    #arena = random.choice(arenas)
-    arena = arenas[0]
+    arena = random.choice(arenas)
+    #arena = arenas[3]
     # tamaño de la arena
     dim_tam = random.choice(['pequena','mediana','grande'])  # Tipo de tamaño de la arena.
     # Parametros de configuración segun la arena
@@ -29,7 +29,7 @@ def params_arena():
         conf_params, parametros = parametros_arena_dodecagono(dim_tam,arena)
     else:
         print("NO se ha seleccionado arena")
-    
+
     return conf_params, parametros
 
 def robots_timeDruation():

@@ -86,6 +86,7 @@ public:
    */
    double Asignar_tamano_segun_arena(const std::string& arena_tipo);
    bool Dentro_del_triangulo(const std::pair<double, double>& punto, double tam);
+   bool Dentro_del_circulo(const std::pair<double,double>& punto, double tam);
    /**
     * Saves the final positions of robots in the "posiciones.txt" file and
     * Data .

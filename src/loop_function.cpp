@@ -99,7 +99,6 @@ void CForaging::ComputeCirclePositions(UInt32 NumCircles) {
     m_vCirclePositions.clear();  // Limpia el vector antes de añadir nuevas posiciones
     if (m_unArenatype == "Triangular"){
 
-
       // Almacenar las posiciones dentro del triángulo en un vector
       std::vector<CVector2> puntos_en_el_triangulo;
 
@@ -127,13 +126,35 @@ void CForaging::ComputeCirclePositions(UInt32 NumCircles) {
         }
       }
     }
-    else{
+    else if (m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono"){
+      // Almacenar las posiciones dentro del circulo inscrito en los poligonos en un vector
+      std::vector<CVector2> puntos_en_el_circulo;
+
+      for (double x = -tam; x <= tam; x += 0.2) {
+          for (double y = -tam; y <= tam; y += 0.5) {
+              std::pair<double, double> punto_actual = std::make_pair(x, y);
+              if (Dentro_del_circulo(punto_actual, tam)) {
+                  puntos_en_el_circulo.push_back(CVector2(punto_actual.first, punto_actual.second));
+              }
+          }
+      }
+      // Seleccionar aleatoriamente NumCircles posiciones del vector
+      if (puntos_en_el_circulo.size() < NumCircles) {
+          // Si hay menos puntos dentro del círculo que el número deseado de círculos,
+          // simplemente selecciona todos los puntos disponibles
+          m_vCirclePositions = puntos_en_el_circulo;
+      } else {
+          // Si hay más puntos dentro del círculo que el número deseado de círculos,
+          // selecciona aleatoriamente NumCircles posiciones
+          std::random_shuffle(puntos_en_el_circulo.begin(), puntos_en_el_circulo.end());
+          m_vCirclePositions.assign(puntos_en_el_circulo.begin(), puntos_en_el_circulo.begin() + NumCircles);
+      }
+    }
+    else{ // arena cuadrada
       for(size_t i = 0; i < NumCircles; ++i) {
         //m_vCirclePositions.push_back(CVector2(i, 0.0));
-        CRange<Real> cRangeX(-Sqrt(2*Square(m_fLengthSide))/2, Sqrt(2*Square(m_fLengthSide))/2);
-        CRange<Real> cRangeY(0, m_fPosMiddle);
-        //mCoordSource = CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY));
-        //m_vCirclePositions.push_back(CVector2(m_pcRNG->Uniform(CRange<Real>(-4.0f, 4.0f)), m_pcRNG->Uniform(CRange<Real>(-4.0f, 4.0f))));
+        CRange<Real> cRangeX(-tam/2, tam/2);
+        CRange<Real> cRangeY(-tam/2,tam/2);
         m_vCirclePositions.push_back(CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY)));
       }
     }
@@ -433,19 +454,20 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
       if ((cCirclePos - c_position_on_plane).Length() <= fCircleRadius) {
           // La posición está dentro del círculo
 
-          // Verificar si está dentro del triángulo
-          bool dentro_del_triangulo = Dentro_del_triangulo(point_as_pair, tam);
-
-          // Verificar si está dentro del área permitida
-          bool dentro_del_area_permitida = (vCurrentPoint.GetY() < 0.0f);
-
-          // Pintar de negro solo si está dentro del triángulo
-          if (dentro_del_triangulo || dentro_del_area_permitida) {
-              return CColor::BLACK;
-          } else {
-              // Pintar de gris si no está dentro del triángulo
-              return CColor::GRAY50;
-          }
+        //  // Verificar si está dentro del triángulo
+        //  bool dentro_del_triangulo = Dentro_del_triangulo(point_as_pair, tam);
+//
+        //  // Verificar si está dentro del área permitida
+        //  bool dentro_del_area_permitida = (vCurrentPoint.GetY() < 0.0f);
+//
+        //  // Pintar de negro solo si está dentro del triángulo
+        //  if (dentro_del_triangulo || dentro_del_area_permitida) {
+        //      return CColor::BLACK;
+        //  } else {
+        //      // Pintar de gris si no está dentro del triángulo
+        //      return CColor::GRAY50;
+        //  }
+        return CColor::BLACK;
       }
   }
 
@@ -456,7 +478,7 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
 
 /****************************************/
 /****************************************/
-// COnfiguraciones arena para posiciones 
+// Configuraciones posiciones en  la arena segun la geometría
 // Definir la función para verificar si un punto está dentro del triángulo
 bool CForaging::Dentro_del_triangulo(const std::pair<double, double>& punto, double tam) {
     // Definir los vértices del triángulo
@@ -484,6 +506,18 @@ bool CForaging::Dentro_del_triangulo(const std::pair<double, double>& punto, dou
     // Excluir puntos en la frontera
     return 0 < alpha && alpha < 1 && 0 < beta && beta < 1 && 0 < gamma && gamma < 1;
 }
+
+// Definir la función para verificar si un punto está dentro de la circunferencia inscrita en los poligonos segun el tamaño
+
+bool CForaging::Dentro_del_circulo(const std::pair<double,double>& punto, double tam){
+    // Calcula la distancia desde el punto al centro del círculo
+    double radio = tam / 2; // Asegúrate de que haya un punto y coma al final de la línea
+    double distancia = (CVector2(punto.first, punto.second) - CVector2(0, 0)).Length();
+
+    // Compara la distancia con el radio
+    return distancia < radio;
+}
+
 
 // Función para asignar el tamaño según el tipo de arena
 double CForaging::Asignar_tamano_segun_arena(const std::string& arena_tipo) {
