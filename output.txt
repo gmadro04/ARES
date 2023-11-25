@@ -1,2 +1,1 @@
 #Clock	ItemsCollected
-#Clock	Items

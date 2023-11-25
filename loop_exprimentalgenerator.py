@@ -12,7 +12,7 @@ def params_arena():
     # Se selecciona el tipo de arena que se va a trabajar y modificar
     arenas = ["Triangular","Cuadrada","Hexagonal","Octagonal","Dodecagono"]
     arena = random.choice(arenas)
-    #arena = arenas[3]
+    #arena = arenas[0]
     # tamaño de la arena
     dim_tam = random.choice(['pequena','mediana','grande'])  # Tipo de tamaño de la arena.
     # Parametros de configuración segun la arena
@@ -33,8 +33,8 @@ def params_arena():
     return conf_params, parametros
 
 def robots_timeDruation():
-    # Genera un número aleatorio entre 5 y 15 utilizando una distribución uniforme
-    robots = random.randrange(5, 30, 5)
+    # Genera un número aleatorio entre 5 y 30 utilizando una distribución uniforme
+    robots = random.randrange(5, 40, 5)
     # Tiempo de suración del experimento
     time = random.choice([170,200])
     return robots,time
@@ -365,7 +365,13 @@ def arena_configuracion(file,arena_params,params,robots):
 def obstaculos_arena(file,obs,pos_obs,params):
     tree = ET.parse(file)
     root = tree.getroot()
-
+    # Selecciona un numero de obstaculos en la arena según su tamaño
+    if params["Tamaño arena"] == "pequena":
+        nObs = 5
+        print("Arena pequeña obstaculo 5")
+    else:
+        nObs = random.randrange(10, 20, 2)
+    # Etiqueta de configuración de la arena
     arena = root.find("arena")
     pos_min, pos_max = distribucion(file,pos_obs,params)
     # pos_min = [-pos[0],-pos[1],0]
@@ -395,7 +401,7 @@ def obstaculos_arena(file,obs,pos_obs,params):
         distribute.append(orientation)
 
         entity = ET.Element("entity")
-        entity.set("quantity", "10")
+        entity.set("quantity", str(nObs))
         entity.set("max_trials", "1000")
         x_box = random.uniform(0.2,0.7) # tam x del box
         y_box = random.uniform(0.2,0.7) # tam y del box
@@ -455,7 +461,7 @@ def obstaculos_arena(file,obs,pos_obs,params):
         distribute.append(orientation)
 
         entity = ET.Element("entity")
-        entity.set("quantity", "15")
+        entity.set("quantity", str(nObs))
         entity.set("max_trials", "100")
 
         box = ET.Element("box")

@@ -42,6 +42,7 @@ public:
 
    CVector3 GetRandomPosition();
    void MoveRobots();
+   void ComputePositionselements();
    void InitializeArena();
 
    /**
@@ -152,9 +153,10 @@ private:
     // */
     //size_t m_unCirclebool;
     /**
-     * Posiciones de los círculos negros
+     * Posiciones de los círculos negros y elementos
      */
     std::vector<CVector2> m_vCirclePositions;
+    std::vector<CVector2> m_vElementsPositions;
     //CVector2 m_vCirclePositions;
 
 
@@ -163,6 +165,7 @@ private:
      */
     void PositionArena();
     void ComputeCirclePositions(UInt32 NumCircles);
+    void ComputeElementsPositions(UInt32 NumIter);
 
 
     CRadians ComputeOrientation(CVector2 vec_a, CVector2 vec_b);
@@ -170,7 +173,6 @@ private:
 
     bool IsWithinTriangle(CVector2& c_point, CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c);
     Real AreaTriangle(CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c);
-    bool IsWithinWalls(CVector2& c_position);
 
     CVector2 m_cCoordSource;
     CVector2 m_cCoordNest;

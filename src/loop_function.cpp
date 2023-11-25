@@ -88,80 +88,6 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     //PositionArena();
 }
 
-void CForaging::ComputeCirclePositions(UInt32 NumCircles) {
-    double tam = Asignar_tamano_segun_arena(m_unArenatam);
-
-    if (tam < 0.0) {
-        // Lanza una excepción indicando el error
-        THROW_ARGOSEXCEPTION("Error al asignar un tamaño");
-    }
-
-    m_vCirclePositions.clear();  // Limpia el vector antes de añadir nuevas posiciones
-    if (m_unArenatype == "Triangular"){
-
-      // Almacenar las posiciones dentro del triángulo en un vector
-      std::vector<CVector2> puntos_en_el_triangulo;
-
-      // Recorrer puntos en x desde -tam a tam con variación de 0.2
-      for (double x = -tam; x <= tam; x += 0.2) {
-        // Recorrer puntos en y desde -tam a tam con variaciones de 0.5
-        for (double y = -tam; y <= tam; y += 0.5) {
-            std::pair<double, double> punto_actual = std::make_pair(x, y);
-
-            // Verificar si el punto está dentro del triángulo
-            if (Dentro_del_triangulo(punto_actual, tam)) {
-              puntos_en_el_triangulo.push_back(CVector2(punto_actual.first, punto_actual.second));
-            }
-        }
-        // Seleccionar aleatoriamente NumCircles posiciones del vector
-        if (puntos_en_el_triangulo.size() < NumCircles) {
-            // Si hay menos puntos dentro del triángulo que el número deseado de círculos,
-            // simplemente selecciona todos los puntos disponibles
-            m_vCirclePositions = puntos_en_el_triangulo;
-        } else {
-            // Si hay más puntos dentro del triángulo que el número deseado de círculos,
-            // selecciona aleatoriamente NumCircles posiciones
-            std::random_shuffle(puntos_en_el_triangulo.begin(), puntos_en_el_triangulo.end());
-            m_vCirclePositions.assign(puntos_en_el_triangulo.begin(), puntos_en_el_triangulo.begin() + NumCircles);
-        }
-      }
-    }
-    else if (m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono"){
-      // Almacenar las posiciones dentro del circulo inscrito en los poligonos en un vector
-      std::vector<CVector2> puntos_en_el_circulo;
-
-      for (double x = -tam; x <= tam; x += 0.2) {
-          for (double y = -tam; y <= tam; y += 0.5) {
-              std::pair<double, double> punto_actual = std::make_pair(x, y);
-              if (Dentro_del_circulo(punto_actual, tam)) {
-                  puntos_en_el_circulo.push_back(CVector2(punto_actual.first, punto_actual.second));
-              }
-          }
-      }
-      // Seleccionar aleatoriamente NumCircles posiciones del vector
-      if (puntos_en_el_circulo.size() < NumCircles) {
-          // Si hay menos puntos dentro del círculo que el número deseado de círculos,
-          // simplemente selecciona todos los puntos disponibles
-          m_vCirclePositions = puntos_en_el_circulo;
-      } else {
-          // Si hay más puntos dentro del círculo que el número deseado de círculos,
-          // selecciona aleatoriamente NumCircles posiciones
-          std::random_shuffle(puntos_en_el_circulo.begin(), puntos_en_el_circulo.end());
-          m_vCirclePositions.assign(puntos_en_el_circulo.begin(), puntos_en_el_circulo.begin() + NumCircles);
-      }
-    }
-    else{ // arena cuadrada
-      for(size_t i = 0; i < NumCircles; ++i) {
-        //m_vCirclePositions.push_back(CVector2(i, 0.0));
-        CRange<Real> cRangeX(-tam/2, tam/2);
-        CRange<Real> cRangeY(-tam/2,tam/2);
-        m_vCirclePositions.push_back(CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY)));
-      }
-    }
-}
-
-
-
 void CForaging::Init() {
   /* Open the file for text writing */
   m_cOutFile.open(m_strOutFile.c_str(), std::ofstream::out | std::ofstream::trunc);
@@ -209,8 +135,14 @@ void CForaging::Init() {
   /* Write the header of the output file */
   m_cOutFile << "#Clock\tItemsCollected" << std::endl;
 
-    // Inicializar las posiciones de los círculos
+  // Inicializar las posiciones de los círculos
   ComputeCirclePositions(m_unNumCircles);
+  // Posicionar elementos y robots en la arena 
+  if (m_unArenatype == "Triangular" || m_unArenatype == "Dodecagono")
+  {
+    ComputePositionselements();
+  }
+  
 }
 
 /****************************************/
@@ -404,29 +336,7 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
     }
 
     double tam = Asignar_tamano_segun_arena(m_unArenatam);
-    /* Long dropping area. FORB A */
-    /*
-    CVector2 cBottomCornerA(-(1.7*m_fPosMiddle), FORB_A_MINY);
-    CVector2 cTLCornerA(-(1.7*m_fPosMiddle), FORB_A_MAXY);
-    CVector2 cTRCornerA(-(1.7*m_fPosMiddle)-0.5,FORB_A_MAXY);
-    if(vCurrentPoint.GetY()<=FORB_A_MAXY && vCurrentPoint.GetY()>=FORB_A_MINY){
-        if(vCurrentPoint.GetX()<FORB_A_MAXX && vCurrentPoint.GetX()>-(1.7*m_fPosMiddle))
-            return CColor::GRAY40;
-        if (IsWithinTriangle(vCurrentPoint,cBottomCornerA,cTLCornerA,cTRCornerA))
-            return CColor::GRAY40;
-     }
-     */
 
-    /* Short dropping area. FORB B */
-    /*CVector2 cBottomCornerB(m_fPosMiddle-0.1, FORB_B_MINY);
-    CVector2 cTLCornerB(m_fPosMiddle-0.1, FORB_B_MAXY);
-    CVector2 cTRCornerB(m_fPosMiddle+0.4,FORB_B_MAXY);
-    if(vCurrentPoint.GetY()<=FORB_B_MAXY && vCurrentPoint.GetY()>=FORB_B_MINY){
-        if(vCurrentPoint.GetX()>FORB_B_MINX  && vCurrentPoint.GetX()<m_fPosMiddle-0.1)
-            return CColor::GRAY20;
-        if (IsWithinTriangle(vCurrentPoint,cBottomCornerB,cTLCornerB,cTRCornerB))
-            return CColor::GRAY20;
-    }*/
   /*Circulos en la arena según una posición*/
   //for (const CVector2& cCirclePos : m_vCirclePositions) {
   //      Real fCircleRadius = 0.5;  // Ajusta el radio del círculo según tus necesidades
@@ -474,6 +384,153 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
 
     /* Rest of the arena is gray. */
     return CColor::GRAY60;
+}
+/****************************************/
+/****************************************/
+/*CONFIGURACION POSICIONES ZONAS Y OBJETOS*/
+
+void CForaging::ComputeCirclePositions(UInt32 NumCircles) {
+    double tam = Asignar_tamano_segun_arena(m_unArenatam);
+
+    if (tam < 0.0) {
+        // Lanza una excepción indicando el error
+        THROW_ARGOSEXCEPTION("Error al asignar un tamaño");
+    }
+
+    m_vCirclePositions.clear();  // Limpia el vector antes de añadir nuevas posiciones
+    if (m_unArenatype == "Triangular"){
+
+      // Almacenar las posiciones dentro del triángulo en un vector
+      std::vector<CVector2> puntos_en_el_triangulo;
+
+      // Recorrer puntos en x desde -tam a tam con variación de 0.2
+      for (double x = -tam; x <= tam; x += 0.2) {
+        // Recorrer puntos en y desde -tam a tam con variaciones de 0.5
+        for (double y = -tam; y <= tam; y += 0.5) {
+            std::pair<double, double> punto_actual = std::make_pair(x, y);
+
+            // Verificar si el punto está dentro del triángulo
+            if (Dentro_del_triangulo(punto_actual, tam)) {
+              puntos_en_el_triangulo.push_back(CVector2(punto_actual.first, punto_actual.second));
+            }
+        }
+        // Seleccionar aleatoriamente NumCircles posiciones del vector
+        if (puntos_en_el_triangulo.size() < NumCircles) {
+            // Si hay menos puntos dentro del triángulo que el número deseado de círculos,
+            // simplemente selecciona todos los puntos disponibles
+            m_vCirclePositions = puntos_en_el_triangulo;
+        } else {
+            // Si hay más puntos dentro del triángulo que el número deseado de círculos,
+            // selecciona aleatoriamente NumCircles posiciones
+            std::random_shuffle(puntos_en_el_triangulo.begin(), puntos_en_el_triangulo.end());
+            m_vCirclePositions.assign(puntos_en_el_triangulo.begin(), puntos_en_el_triangulo.begin() + NumCircles);
+        }
+      }
+    }
+    else if (m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono"){
+      // Almacenar las posiciones dentro del circulo inscrito en los poligonos en un vector
+      std::vector<CVector2> puntos_en_el_circulo;
+
+      for (double x = -tam; x <= tam; x += 0.2) {
+          for (double y = -tam; y <= tam; y += 0.5) {
+              std::pair<double, double> punto_actual = std::make_pair(x, y);
+              if (Dentro_del_circulo(punto_actual, tam)) {
+                  puntos_en_el_circulo.push_back(CVector2(punto_actual.first, punto_actual.second));
+              }
+          }
+      }
+      // Seleccionar aleatoriamente NumCircles posiciones del vector
+      if (puntos_en_el_circulo.size() < NumCircles) {
+          // Si hay menos puntos dentro del círculo que el número deseado de círculos,
+          // simplemente selecciona todos los puntos disponibles
+          m_vCirclePositions = puntos_en_el_circulo;
+      } else {
+          // Si hay más puntos dentro del círculo que el número deseado de círculos,
+          // selecciona aleatoriamente NumCircles posiciones
+          std::random_shuffle(puntos_en_el_circulo.begin(), puntos_en_el_circulo.end());
+          m_vCirclePositions.assign(puntos_en_el_circulo.begin(), puntos_en_el_circulo.begin() + NumCircles);
+      }
+    }
+    else{ // arena cuadrada
+      for(size_t i = 0; i < NumCircles; ++i) {
+        //m_vCirclePositions.push_back(CVector2(i, 0.0));
+        CRange<Real> cRangeX(-tam/2, tam/2);
+        CRange<Real> cRangeY(-tam/2,tam/2);
+        m_vCirclePositions.push_back(CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY)));
+      }
+    }
+}
+
+void CForaging::ComputeElementsPositions(UInt32 NumIter) {
+    double tam = Asignar_tamano_segun_arena(m_unArenatam);
+
+    if (tam < 0.0) {
+        // Lanza una excepción indicando el error
+        THROW_ARGOSEXCEPTION("Error al asignar un tamaño");
+    }
+
+    m_vElementsPositions.clear();  // Limpia el vector antes de añadir nuevas posiciones
+    if (m_unArenatype == "Triangular"){
+
+      // Almacenar las posiciones dentro del triángulo en un vector
+      std::vector<CVector2> puntos_en_el_triangulo;
+
+      // Recorrer puntos en x desde -tam a tam con variación de 0.2
+      for (double x = -tam; x <= tam; x += 0.2) {
+        // Recorrer puntos en y desde -tam a tam con variaciones de 0.5
+        for (double y = -tam; y <= tam; y += 0.5) {
+            std::pair<double, double> punto_actual = std::make_pair(x, y);
+
+            // Verificar si el punto está dentro del triángulo
+            if (Dentro_del_triangulo(punto_actual, tam)) {
+              puntos_en_el_triangulo.push_back(CVector2(punto_actual.first, punto_actual.second));
+            }
+        }
+        // Seleccionar aleatoriamente NumCircles posiciones del vector
+        if (puntos_en_el_triangulo.size() < NumIter) {
+            // Si hay menos puntos dentro del triángulo que el número deseado de círculos,
+            // simplemente selecciona todos los puntos disponibles
+            m_vElementsPositions = puntos_en_el_triangulo;
+        } else {
+            // Si hay más puntos dentro del triángulo que el número deseado de círculos,
+            // selecciona aleatoriamente NumCircles posiciones
+            std::random_shuffle(puntos_en_el_triangulo.begin(), puntos_en_el_triangulo.end());
+            m_vElementsPositions.assign(puntos_en_el_triangulo.begin(), puntos_en_el_triangulo.begin() + NumIter);
+        }
+      }
+    }
+    else if (m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono"){
+      // Almacenar las posiciones dentro del circulo inscrito en los poligonos en un vector
+      std::vector<CVector2> puntos_en_el_circulo;
+
+      for (double x = -tam; x <= tam; x += 0.2) {
+          for (double y = -tam; y <= tam; y += 0.5) {
+              std::pair<double, double> punto_actual = std::make_pair(x, y);
+              if (Dentro_del_circulo(punto_actual, tam)) {
+                  puntos_en_el_circulo.push_back(CVector2(punto_actual.first, punto_actual.second));
+              }
+          }
+      }
+      // Seleccionar aleatoriamente NumCircles posiciones del vector
+      if (puntos_en_el_circulo.size() < NumIter) {
+          // Si hay menos puntos dentro del círculo que el número deseado de círculos,
+          // simplemente selecciona todos los puntos disponibles
+          m_vElementsPositions = puntos_en_el_circulo;
+      } else {
+          // Si hay más puntos dentro del círculo que el número deseado de círculos,
+          // selecciona aleatoriamente NumCircles posiciones
+          std::random_shuffle(puntos_en_el_circulo.begin(), puntos_en_el_circulo.end());
+          m_vElementsPositions.assign(puntos_en_el_circulo.begin(), puntos_en_el_circulo.begin() + NumIter);
+      }
+    }
+    else{ // arena cuadrada
+      for(size_t i = 0; i < NumIter; ++i) {
+        //m_vCirclePositions.push_back(CVector2(i, 0.0));
+        CRange<Real> cRangeX(-tam/2, tam/2);
+        CRange<Real> cRangeY(-tam/2,tam/2);
+        m_vElementsPositions.push_back(CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY)));
+      }
+    }
 }
 
 /****************************************/
@@ -533,6 +590,91 @@ double CForaging::Asignar_tamano_segun_arena(const std::string& arena_tipo) {
         return -1.0;  // Otra forma de manejar el error, devolver un valor no válido
     }
 }
+// Posicionar objetos y robots, si la arena es triangular
+void CForaging::ComputePositionselements() {
+    CFootBotEntity* pcFootBot;
+    CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+    double tam = Asignar_tamano_segun_arena(m_unArenatam);
+
+    // Almacenar las posiciones dentro del triángulo en un vector
+    std::vector<CVector2> pos_triangulo;
+
+    // Recorrer puntos en x desde -tam a tam con variación de 0.1
+    for (double x = -tam; x <= tam; x += 0.1) {
+        // Recorrer puntos en y desde -tam a tam con variaciones de 0.1
+        for (double y = -tam; y <= tam; y += 0.1) {
+            std::pair<double, double> punto_actual = std::make_pair(x, y);
+            if ( m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal" || m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono")
+            {
+              // Verificar si el punto está dentro de la circunferenciainscrita en el poligono
+              if (Dentro_del_circulo(punto_actual, tam)) {
+                  pos_triangulo.push_back(CVector2(punto_actual.first, punto_actual.second));
+              }
+            }
+            else{
+              // Verificar si el punto está dentro del triángulo
+              if (Dentro_del_triangulo(punto_actual, tam)) {
+                  pos_triangulo.push_back(CVector2(punto_actual.first, punto_actual.second));
+              }
+            }
+        }
+    }
+
+    // Verificar si hay suficientes posiciones precalculadas
+    if (pos_triangulo.size() < tFootBotMap.size()) {
+        // Calcular nuevas posiciones
+        ComputeElementsPositions(tFootBotMap.size());
+
+        // Verificar si todavía no hay suficientes posiciones
+        if (m_vElementsPositions.size() < tFootBotMap.size()) {
+            THROW_ARGOSEXCEPTION("No hay suficientes posiciones precalculadas para colocar todos los robots");
+        }
+    }
+
+    size_t i = 0;
+    UInt32 unTrials;
+
+    for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+        pcFootBot = any_cast<CFootBotEntity*>(it->second);
+
+        // Obtener la posición del vector precalculado
+        const CVector2& cPosition = (pos_triangulo.size() >= tFootBotMap.size()) ? pos_triangulo[i] : m_vElementsPositions[i];
+
+        // Mover el robot a la posición
+        bool bPlaced = MoveEntity(pcFootBot->GetEmbodiedEntity(),
+            CVector3(cPosition.GetX(), cPosition.GetY(), 0.0),
+            CQuaternion().FromEulerAngles(m_pcRNG->Uniform(CRange<CRadians>(CRadians::ZERO, CRadians::TWO_PI)),
+                CRadians::ZERO, CRadians::ZERO), false);
+
+        // Intentar colocar el robot hasta un máximo de 100 veces
+        unTrials = 0;
+        while (!bPlaced && unTrials < 100) {
+            // Calcular nuevas posiciones
+            ComputeElementsPositions(1);
+
+            // Obtener la nueva posición del vector precalculado
+            const CVector2& cNewPosition = m_vElementsPositions[0];
+
+            // Mover el robot a la nueva posición
+            bPlaced = MoveEntity(pcFootBot->GetEmbodiedEntity(),
+                CVector3(cNewPosition.GetX(), cNewPosition.GetY(), 0.0),
+                CQuaternion().FromEulerAngles(m_pcRNG->Uniform(CRange<CRadians>(CRadians::ZERO, CRadians::TWO_PI)),
+                    CRadians::ZERO, CRadians::ZERO), false);
+
+            ++unTrials;
+        }
+
+        // Verificar si todavía no se pudo colocar el robot
+        if (!bPlaced) {
+            THROW_ARGOSEXCEPTION("No se pudo colocar el robot después de varios intentos");
+        }
+
+        // Incrementar el índice para obtener la siguiente posición precalculada
+        ++i;
+    }
+}
+
+
 /****************************************/
 /****************************************/
 
