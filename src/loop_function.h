@@ -95,6 +95,15 @@ public:
    void SaveRobotPositions();
    void SaveExperimentData();
    //std::vector<CVector2> m_vCirclePositions;
+   /*
+   METRICAS MISION
+   */
+   // Función para obtener la puntuación de agregación
+   Real GetAggregationScore(CVector2 cRobotPos);
+   // Función para verificar si el robot está dentro del círculo de agregación
+   bool IsRobotInAggCircle(Real x, Real y);
+   // Función para actualizar el tiempo de agregación
+   void UpdateAggregationTime(CVector2 cRobotPos);
 
 
 private:
@@ -147,9 +156,10 @@ private:
     // /**
     // * Id mision y comportamiento
     // */
-    //size_t m_unIDmision;
+    size_t m_unIDmision;
     // /**
-    // * Tamaño de arena
+    // * Numero de robots
+    size_t m_unRobots;
     // */
     //size_t m_unCirclebool;
     /**
@@ -166,6 +176,7 @@ private:
     void PositionArena();
     void ComputeCirclePositions(UInt32 NumCircles);
     void ComputeElementsPositions(UInt32 NumIter);
+    void InitRobotStates();
 
 
     CRadians ComputeOrientation(CVector2 vec_a, CVector2 vec_b);
@@ -176,4 +187,13 @@ private:
 
     CVector2 m_cCoordSource;
     CVector2 m_cCoordNest;
+   struct RobotStateStruct {
+        CVector2 cLastPosition;
+        CVector2 cPosition;
+        UInt32 unItem;
+        Real FTimeInAgg;
+   };
+
+   typedef std::map<argos::CFootBotEntity*, RobotStateStruct> TRobotStateMap;
+   TRobotStateMap m_tRobotStates;
 };

@@ -15,7 +15,7 @@ Real m_fHypotenus = m_fLengthSide/2;
 Real m_fPosMiddle = Sqrt(Square(m_fHypotenus)/2);
 
 static const Real RADIUS_NEST         = 1.5f;
-static const Real RADIUS_SOURCE         = 0.5f;
+static const Real RADIUS_SOURCE         = 0.6f;
 
 static const Real SPAWN_SIDE_LENGTH     = 3.0f;
 
@@ -64,23 +64,33 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     /* Get output file name from XML tree */
     GetNodeAttribute(t_tree, "output", m_strOutFile);
     TConfigurationNode cParametersNode;
+    TConfigurationNode cParametersNode1;
     try
     {
       // Lee el atributo 'atributo' y almacénalo en una variable
       cParametersNode = GetNode(t_tree,"params");
-
       GetNodeAttributeOrDefault(cParametersNode,"num_experiment",m_unExperiment,m_unExperiment);
       GetNodeAttributeOrDefault(cParametersNode, "arena", m_unArenatype, m_unArenatype);
       GetNodeAttributeOrDefault(cParametersNode, "tam", m_unArenatam, m_unArenatam);
-      //GetNodeAttributeOrDefault(cParametersNode, "mision", m_unIDmision, m_unIDmision);
+      GetNodeAttributeOrDefault(cParametersNode, "mision", m_unIDmision, m_unIDmision);
       //GetNodeAttributeOrDefault(cParametersNode, "circles", m_unCirclebool, m_unCirclebool);
       GetNodeAttributeOrDefault(cParametersNode, "num_circles", m_unNumCircles, m_unNumCircles);
-
     }
     catch(const std::exception& e)
     {
       LOGERR << "Problem with Attributes in node params" << std::endl;
     }
+
+    try
+    {
+        cParametersNode1 = GetNode(t_tree,"distribute");
+        GetNodeAttributeOrDefault(cParametersNode1,"quantity",m_unRobots,m_unRobots);
+    }
+    catch(const std::exception& e)
+    {
+      LOGERR << "Problem with Attributes in node arena" << std::endl;
+    }
+    
 
     Init();
 
@@ -142,7 +152,8 @@ void CForaging::Init() {
   {
     ComputePositionselements();
   }
-  
+  InitRobotStates();
+  Real aggregationScore = 0;
 }
 
 /****************************************/
@@ -157,7 +168,7 @@ void CForaging::Reset() {
     }
 
     Init();
-    MoveRobots();
+    //MoveRobots();
 
     /* Reseting the variables. */
     for (size_t i = 0; i < NUM_ROBOTS; ++i) {
@@ -214,6 +225,10 @@ void CForaging::PostStep() {
      } else if (IsOnForbidden(cPos)) {    /* If the foot-bot is on the forbbiden areas, looses corresponding item */
          m_sFoodData[unRobotId-1] = 0;
      }
+     Real aggregationScore = GetAggregationScore(cPos);
+     UpdateAggregationTime(cPos);
+    LOG << "Aggregation Score: " << aggregationScore << std::endl;
+
   }
 
   /* Increase the time step counter */
@@ -273,28 +288,16 @@ void CForaging::SaveRobotPositions() {
 void CForaging::SaveExperimentData() {
     // Abrir el archivo de texto en modo de adición
     std::ofstream MyFile("datos.txt", std::ios_base::app);
-    // Obtener parámetros y métricas desde la configuración
-    //std::string strTipoComportamiento, strArena;
-    //GetNodeAttributeOrDefault(GetNode(t_tree, "params"), "tipo_comportamiento", strTipoComportamiento, "");
-    //GetNodeAttributeOrDefault(GetNode(t_tree, "params"), "arena", strArena, "");
-    //UInt32 unTamanoArena, unNumRobots, unTiempoEjecucion;
-    //GetNodeAttributeOrDefault(GetNode(t_tree, "params"), "tamano_arena", unTamanoArena, 0);
-    //GetNodeAttributeOrDefault(GetNode(t_tree, "params"), "num_robots", unNumRobots, 0);
-    //GetNodeAttributeOrDefault(GetNode(t_tree, "params"), "tiempo_ejecucion", unTiempoEjecucion, 0)
-    // Obtener métricas de la simulación
-    //Real fEvaluacionMision, fEscalabilidad, fFlexibilidad, fToleranciaFallos;
-    // ... lógica para obtener las métrica
-    // Escribir los datos en el archivo
     MyFile << "----------Experimento:---------- " << std::endl;
     MyFile << "Numero de simulacion: " << m_unExperiment << std::endl;
     MyFile << "----------Parametros:----------" << std::endl;
-    MyFile << "Tipo comportamiento: " << "agregación" << std::endl;
-    MyFile << "Arena: " << "Octagonal" << std::endl;
-    MyFile << "Tamano arena: " << "Mediana" << std::endl;
-    MyFile << "Num Robots: " << "20" << std::endl;
+    MyFile << "Tipo comportamiento: " << m_unIDmision << std::endl;
+    MyFile << "Arena: " << m_unArenatype << std::endl;
+    MyFile << "Tamano arena: " << m_unArenatam << std::endl;
+    MyFile << "Num Robots: " << m_unRobots << std::endl;
     MyFile << "Tiempo ejecucion: " << "1:20m" << std::endl;
     MyFile << "----------Metrica M:----------" << std::endl;
-    MyFile << "Evaluacion mision: " << "Score agragación" << std::endl;
+    MyFile << "Evaluacion mision: " << "aggregationScore" << std::endl;
     MyFile << "----------Metrica P:----------" << std::endl;
     MyFile << "Escalabilidad: " << "30" << std::endl;
     MyFile << "Flexibilidad: " << "15" << std::endl;
@@ -337,50 +340,17 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
 
     double tam = Asignar_tamano_segun_arena(m_unArenatam);
 
-  /*Circulos en la arena según una posición*/
-  //for (const CVector2& cCirclePos : m_vCirclePositions) {
-  //      Real fCircleRadius = 0.5;  // Ajusta el radio del círculo según tus necesidades
-  //      //Se puede remplazar esta vaiable por RADIUS SOURCE
-  //      //CVector2 circle_pos = m_vCirclePositions
-  //      CVector2 circle_pos =  circle_pos;
-  //      if ((cCirclePos - c_position_on_plane).Length() <= fCircleRadius) {
-  //          // La posición está dentro del círculo, píntalo de un color específico (por ejemplo, rojo)
-  //          //return CColor::BLACK;
-  //          if (IsWithinTriangle(circle_pos, cCenter, cLeftCorner, cTopLeftCorner) ||
-  //            IsWithinTriangle(circle_pos, cCenter, cTopLeftCorner, cTopRightCorner) ||
-  //            IsWithinTriangle(circle_pos, cCenter, cTopRightCorner, cRightCorner) ||
-  //            (vCurrentPoint.GetY() < 0.0f)) {
-  //            return CColor::BLACK;
-  //          }
-  //      }
-  //}
 
   for (const CVector2& cCirclePos : m_vCirclePositions) {
-      Real fCircleRadius = 0.5;  // Ajusta el radio del círculo según tus necesidades
+      Real fCircleRadius = 0.6;  // Ajusta el radio del círculo según tus necesidades
 
       // Convertir CVector2 a std::pair<double, double>
       std::pair<double, double> point_as_pair(cCirclePos.GetX(), cCirclePos.GetY());
 
       if ((cCirclePos - c_position_on_plane).Length() <= fCircleRadius) {
-          // La posición está dentro del círculo
-
-        //  // Verificar si está dentro del triángulo
-        //  bool dentro_del_triangulo = Dentro_del_triangulo(point_as_pair, tam);
-//
-        //  // Verificar si está dentro del área permitida
-        //  bool dentro_del_area_permitida = (vCurrentPoint.GetY() < 0.0f);
-//
-        //  // Pintar de negro solo si está dentro del triángulo
-        //  if (dentro_del_triangulo || dentro_del_area_permitida) {
-        //      return CColor::BLACK;
-        //  } else {
-        //      // Pintar de gris si no está dentro del triángulo
-        //      return CColor::GRAY50;
-        //  }
         return CColor::BLACK;
       }
   }
-
 
     /* Rest of the arena is gray. */
     return CColor::GRAY60;
@@ -674,7 +644,80 @@ void CForaging::ComputePositionselements() {
     }
 }
 
+/****************************************/
+/* METRICAS DE LA MISION
+*/
+/****************************************/
 
+void CForaging::InitRobotStates() {
+    CSpace::TMapPerType& tFootbotMap = GetSpace().GetEntitiesByType("foot-bot");
+    CVector2 cFootbotPosition(0, 0);
+
+    for(CSpace::TMapPerType::iterator it = tFootbotMap.begin(); it != tFootbotMap.end(); ++it) {
+        /* Get handle to foot-bot entity and controller */
+        CFootBotEntity& cFootBot = *any_cast<CFootBotEntity*>(it->second);
+        CVector2 cPos;
+        cPos.Set(cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+
+        m_tRobotStates[&cFootBot].cLastPosition = cPos;
+        m_tRobotStates[&cFootBot].cPosition = cPos;
+        m_tRobotStates[&cFootBot].unItem = 0;
+        m_tRobotStates[&cFootBot].FTimeInAgg = 0.0;
+    }
+}
+
+
+Real CForaging::GetAggregationScore(CVector2 cRobotPos) {
+    // Inicializar variables para contadores
+    UInt32 unRobotsInAgg = 0;
+    Real fTotalAggTime = 0.0;
+    TRobotStateMap::iterator it;
+
+    // Iterar sobre los estados de los robots
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+        // Verificar si el robot está dentro del círculo de agregación
+        if (IsRobotInAggCircle(it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+                               it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY())) {
+            unRobotsInAgg++;
+            // Si está en la zona, acumular el tiempo que pasa allí
+            fTotalAggTime += it->second.FTimeInAgg;
+        }
+    }
+ 
+    // Puedes devolver ambos valores o algún tipo de combinación ponderada
+    // En este ejemplo, devolvemos el número de robots y el tiempo total en la zona
+    return unRobotsInAgg + fTotalAggTime;
+}
+
+void CForaging::UpdateAggregationTime(CVector2 cRobotPos) {
+    TRobotStateMap::iterator it;
+
+    // Iterar sobre los estados de los robots y actualizar el tiempo de agregación
+    for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
+        if (IsRobotInAggCircle(it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+                               it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY())) {
+            // Incrementar el tiempo que pasa en la zona
+            it->second.FTimeInAgg += GetSpace().GetSimulationClock();
+        }
+    }
+}
+
+bool CForaging::IsRobotInAggCircle(Real x, Real y) {
+    // Itera sobre las posiciones de los círculos
+    for (const CVector2& circlePos : m_vCirclePositions) {
+        // Calcula la distancia entre el robot y la posición del círculo actual
+        double distancia = CVector2(x, y).Length();  // Usar Length en lugar de Distance
+        double radio = RADIUS_SOURCE;
+
+        // Verifica si el robot está dentro del círculo
+        if (distancia < radio) {
+            return true;  // El robot está dentro de al menos un círculo
+        }
+    }
+
+    // El robot no está dentro de ninguno de los círculos
+    return false;
+}
 /****************************************/
 /****************************************/
 
@@ -741,54 +784,7 @@ Real CForaging::AreaTriangle(CVector2& c_point_a, CVector2& c_point_b, CVector2&
 
 /****************************************/
 /****************************************/
-
-/****************************************/
-/****************************************/
-
 void CForaging::PositionArena() {
-  
-  //CBoxEntity* pcWall;
-  //CQuaternion cAngleWall;
-//
-  //cAngleWall.FromEulerAngles(CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
-  //pcWall = new CBoxEntity("wall_south_west",
-  //    CVector3(-m_fPosMiddle, -m_fPosMiddle, 0.0), // Position
-  //    cAngleWall,
-  //    false,
-  //    CVector3(WIDTH_WALLS, m_fLengthSide, HEIGHT_WALLS));   // Size
-  //AddEntity(*pcWall);
-//
-  //cAngleWall.FromEulerAngles(-CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
-  //pcWall = new CBoxEntity("wall_south_east",
-  //    CVector3(m_fPosMiddle, -m_fPosMiddle, 0.0), // Position
-  //    cAngleWall,
-  //    false,
-  //    CVector3(WIDTH_WALLS, m_fLengthSide, HEIGHT_WALLS));   // Size
-  //AddEntity(*pcWall);
-//
-  //cAngleWall.FromEulerAngles(CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
-  //pcWall = new CBoxEntity("wall_east_north_east",
-  //    CVector3(m_fPosMiddle*1.5, m_fPosMiddle*0.5, 0.0), // Position
-  //    cAngleWall,
-  //    false,
-  //    CVector3(WIDTH_WALLS, m_fLengthSide/2, HEIGHT_WALLS));   // Size
-  //AddEntity(*pcWall);
-//
-  //cAngleWall.FromEulerAngles(CRadians::PI_OVER_TWO, CRadians::ZERO, CRadians::ZERO);
-  //pcWall = new CBoxEntity("wall_north",
-  //    CVector3(0, m_fPosMiddle, 0.0), // Position
-  //    cAngleWall,
-  //    false,
-  //    CVector3(WIDTH_WALLS, m_fPosMiddle*2, HEIGHT_WALLS));   // Size
-  //AddEntity(*pcWall);
-//
-  //cAngleWall.FromEulerAngles(-CRadians::PI_OVER_FOUR, CRadians::ZERO, CRadians::ZERO);
-  //pcWall = new CBoxEntity("wall_west_north_west",
-  //    CVector3(-m_fPosMiddle*1.5, m_fPosMiddle*0.5, 0.0), // Position
-  //    cAngleWall,
-  //    false,
-  //    CVector3(WIDTH_WALLS, m_fLengthSide/2, HEIGHT_WALLS));   // Size
-  //AddEntity(*pcWall);
 
 }
 
