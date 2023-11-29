@@ -90,7 +90,7 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     {
       LOGERR << "Problem with Attributes in node arena" << std::endl;
     }
-    
+    m_fObjectiveFunction = 0; // Función objetivo que mide el rendimiento de la mision
 
     Init();
 
@@ -153,7 +153,7 @@ void CForaging::Init() {
     ComputePositionselements();
   }
   InitRobotStates();
-  Real aggregationScore = 0;
+
 }
 
 /****************************************/
@@ -169,6 +169,9 @@ void CForaging::Reset() {
 
     Init();
     //MoveRobots();
+    m_fObjectiveFunction = 0;
+    m_tRobotStates.clear();
+    InitRobotStates();
 
     /* Reseting the variables. */
     for (size_t i = 0; i < NUM_ROBOTS; ++i) {
@@ -225,10 +228,6 @@ void CForaging::PostStep() {
      } else if (IsOnForbidden(cPos)) {    /* If the foot-bot is on the forbbiden areas, looses corresponding item */
          m_sFoodData[unRobotId-1] = 0;
      }
-     Real aggregationScore = GetAggregationScore(cPos);
-     UpdateAggregationTime(cPos);
-    LOG << "Aggregation Score: " << aggregationScore << std::endl;
-
   }
 
   /* Increase the time step counter */
@@ -241,15 +240,39 @@ void CForaging::PostStep() {
   if (m_unNbrItemsCollected > sCurrentScore) {
     LOGERR << "Items collected = " << m_unNbrItemsCollected << std::endl;
   }
+  // LLAMADO A LA METRICA SEGUN LA MISION
+  ScoreControl();
 }
-
+void CForaging::ScoreControl(){
+  if (m_unIDmision == 1)
+  {
+    LOGERR << "ID MISION 1" << std::endl;
+  }
+  else if (m_unIDmision == 2)
+  {
+    m_fObjectiveFunction += GetAggregationScore();
+    UpdateAggregationTime();
+  }
+  else if (m_unIDmision == 3)
+  {
+    LOGERR << "ID MISION 3" << std::endl;
+  }
+  else if (m_unIDmision == 4)
+  {
+    LOGERR << "ID MISION 4" << std::endl;
+  }
+  else if (m_unIDmision == 5)
+  {
+    LOGERR << "ID MISION 5" << std::endl;
+  }
+}
 
 /****************************************/
 /****************************************/
 
 void CForaging::PostExperiment() {
     LOG << "Items collected = " << m_unNbrItemsCollected << std::endl;
-
+    LOG << "Agregación Score = " << m_fObjectiveFunction << std::endl;
     // Llama a la función para guardar las posiciones finales de los robots
     SaveRobotPositions();
     SaveExperimentData();
@@ -297,7 +320,7 @@ void CForaging::SaveExperimentData() {
     MyFile << "Num Robots: " << m_unRobots << std::endl;
     MyFile << "Tiempo ejecucion: " << "1:20m" << std::endl;
     MyFile << "----------Metrica M:----------" << std::endl;
-    MyFile << "Evaluacion mision: " << "aggregationScore" << std::endl;
+    MyFile << "Evaluacion mision: " << m_fObjectiveFunction << std::endl;
     MyFile << "----------Metrica P:----------" << std::endl;
     MyFile << "Escalabilidad: " << "30" << std::endl;
     MyFile << "Flexibilidad: " << "15" << std::endl;
@@ -650,34 +673,36 @@ void CForaging::ComputePositionselements() {
 /****************************************/
 
 void CForaging::InitRobotStates() {
-    CSpace::TMapPerType& tFootbotMap = GetSpace().GetEntitiesByType("foot-bot");
-    CVector2 cFootbotPosition(0, 0);
-
-    for(CSpace::TMapPerType::iterator it = tFootbotMap.begin(); it != tFootbotMap.end(); ++it) {
-        /* Get handle to foot-bot entity and controller */
-        CFootBotEntity& cFootBot = *any_cast<CFootBotEntity*>(it->second);
-        CVector2 cPos;
-        cPos.Set(cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-
-        m_tRobotStates[&cFootBot].cLastPosition = cPos;
-        m_tRobotStates[&cFootBot].cPosition = cPos;
-        m_tRobotStates[&cFootBot].unItem = 0;
-        m_tRobotStates[&cFootBot].FTimeInAgg = 0.0;
-    }
+  CSpace::TMapPerType& tFootbotMap = GetSpace().GetEntitiesByType("foot-bot");
+  CVector2 cFootbotPosition(0, 0);
+  for(CSpace::TMapPerType::iterator it = tFootbotMap.begin(); it != tFootbotMap.end(); ++it) {
+      /* Get handle to foot-bot entity and controller */
+      CFootBotEntity& cFootBot = *any_cast<CFootBotEntity*>(it->second);
+      CVector2 cPos;
+      cPos.Set(cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+      m_tRobotStates[&cFootBot].cLastPosition = cPos;
+      m_tRobotStates[&cFootBot].cPosition = cPos;
+      m_tRobotStates[&cFootBot].unItem = 0;
+      m_tRobotStates[&cFootBot].FTimeInAgg = 0.0;
+  }
 }
 
 
-Real CForaging::GetAggregationScore(CVector2 cRobotPos) {
+Real CForaging::GetAggregationScore() {
+
+    UpdateRobotPositions();
+    UpdateAggregationTime();
     // Inicializar variables para contadores
+    bool bInAgg;
     UInt32 unRobotsInAgg = 0;
     Real fTotalAggTime = 0.0;
     TRobotStateMap::iterator it;
-
     // Iterar sobre los estados de los robots
     for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
         // Verificar si el robot está dentro del círculo de agregación
-        if (IsRobotInAggCircle(it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                               it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY())) {
+        bInAgg = IsRobotInAggCircle(it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+                               it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+        if (!bInAgg) {
             unRobotsInAgg++;
             // Si está en la zona, acumular el tiempo que pasa allí
             fTotalAggTime += it->second.FTimeInAgg;
@@ -686,10 +711,10 @@ Real CForaging::GetAggregationScore(CVector2 cRobotPos) {
  
     // Puedes devolver ambos valores o algún tipo de combinación ponderada
     // En este ejemplo, devolvemos el número de robots y el tiempo total en la zona
-    return unRobotsInAgg + fTotalAggTime;
+    return unRobotsInAgg;
 }
 
-void CForaging::UpdateAggregationTime(CVector2 cRobotPos) {
+void CForaging::UpdateAggregationTime() {
     TRobotStateMap::iterator it;
 
     // Iterar sobre los estados de los robots y actualizar el tiempo de agregación
@@ -700,6 +725,20 @@ void CForaging::UpdateAggregationTime(CVector2 cRobotPos) {
             it->second.FTimeInAgg += GetSpace().GetSimulationClock();
         }
     }
+}
+
+void CForaging::UpdateRobotPositions(){
+  CSpace::TMapPerType& tFootbotMap = GetSpace().GetEntitiesByType("foot-bot");
+  CVector2 cFootbotPosition(0, 0);
+
+  for(CSpace::TMapPerType::iterator it = tFootbotMap.begin(); it != tFootbotMap.end(); ++it) {
+      /* Get handle to foot-bot entity and controller */
+      CFootBotEntity& cFootBot = *any_cast<CFootBotEntity*>(it->second);
+      CVector2 cPos;
+      cPos.Set(cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+      m_tRobotStates[&cFootBot].cLastPosition = m_tRobotStates[&cFootBot].cPosition;
+      m_tRobotStates[&cFootBot].cPosition = cPos;
+  }
 }
 
 bool CForaging::IsRobotInAggCircle(Real x, Real y) {

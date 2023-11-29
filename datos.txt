@@ -96,3 +96,227 @@ Evaluacion mision: aggregationScore
 Escalabilidad: 30
 Flexibilidad: 15
 Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Octagonal
+Tamano arena: grande
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 2
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Triangular
+Tamano arena: grande
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Dodecagono
+Tamano arena: pequena
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Cuadrada
+Tamano arena: pequena
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 2
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Dodecagono
+Tamano arena: pequena
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Cuadrada
+Tamano arena: grande
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Cuadrada
+Tamano arena: grande
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Triangular
+Tamano arena: mediana
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 2
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Triangular
+Tamano arena: grande
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Dodecagono
+Tamano arena: pequena
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Triangular
+Tamano arena: pequena
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 2
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Cuadrada
+Tamano arena: pequena
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Dodecagono
+Tamano arena: pequena
+Num Robots: 7598521881174632224
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: aggregationScore
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 1
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Cuadrada
+Tamano arena: mediana
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: 50003
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 2
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Dodecagono
+Tamano arena: grande
+Num Robots: 7956003940571509603
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: 49303
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8
+----------Experimento:---------- 
+Numero de simulacion: 3
+----------Parametros:----------
+Tipo comportamiento: 2
+Arena: Cuadrada
+Tamano arena: grande
+Num Robots: 0
+Tiempo ejecucion: 1:20m
+----------Metrica M:----------
+Evaluacion mision: 20000
+----------Metrica P:----------
+Escalabilidad: 30
+Flexibilidad: 15
+Tolerancia a fallos: 8

@@ -12,7 +12,7 @@ import time
 # Nombre del archivo XML
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_spots.lua"
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_spots_GMadro.lua"
 # obstacleAvoiddance_vec.lua, obstacleAvoidance_Gmadro.lua, aggregation_spots.lua
 # color_selection_det.lua, synchronization.lua, aggregation_0_rb_taxis.lua,color_selection_prob.lua
 # color_selection_det.lua

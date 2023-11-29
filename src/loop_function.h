@@ -98,12 +98,15 @@ public:
    /*
    METRICAS MISION
    */
+   // FUNCION QUE LLAMA A LA METRICA A EVALUAR
+   void ScoreControl();
+   void UpdateRobotPositions();
    // Función para obtener la puntuación de agregación
-   Real GetAggregationScore(CVector2 cRobotPos);
+   Real GetAggregationScore();
    // Función para verificar si el robot está dentro del círculo de agregación
    bool IsRobotInAggCircle(Real x, Real y);
    // Función para actualizar el tiempo de agregación
-   void UpdateAggregationTime(CVector2 cRobotPos);
+   void UpdateAggregationTime();
 
 
 private:
@@ -187,6 +190,8 @@ private:
 
     CVector2 m_cCoordSource;
     CVector2 m_cCoordNest;
+    Real m_fObjectiveFunction;
+
    struct RobotStateStruct {
         CVector2 cLastPosition;
         CVector2 cPosition;

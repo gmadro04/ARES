@@ -368,7 +368,7 @@ def obstaculos_arena(file,obs,pos_obs,params):
     # Selecciona un numero de obstaculos en la arena según su tamaño
     if params["Tamaño arena"] == "pequena":
         nObs = 5
-        print("Arena pequeña obstaculo 5")
+        # print("Arena pequeña obstaculo 5")
     else:
         nObs = random.randrange(10, 20, 2)
     # Etiqueta de configuración de la arena
