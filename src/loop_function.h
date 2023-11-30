@@ -141,7 +141,7 @@ private:
    CRandom::CRNG* m_pcRNG;
 
     /**
-     * Número de círculos
+     * Número de círculos en la arena
      */
     size_t m_unNumCircles;
     /**
@@ -163,8 +163,8 @@ private:
     // /**
     // * Numero de robots
     size_t m_unRobots;
-    // */
-    //size_t m_unCirclebool;
+    // Obstaculos en la arena*/
+    std::string m_unObsbool;
     /**
      * Posiciones de los círculos negros y elementos
      */

@@ -1,3 +1,17 @@
+--[[Aggregation with two spots
+
+The goal of this exercise is to let the robot collectively decide between two black spots and aggregate.
+The robots do random walk until the find the black spot, then they stop. With a certain probability they can
+start moving again, based on the number of robots sensed. If a robot senses many robots then the probability
+to leave is lower than if it senses few robots.
+If a robots decides whether to leave every step, the other robots will not have time to go in its same spot.
+For this reason a robot "sleeps" for a certain period before deciding whether to leave. 
+
+The values for the number of steps to sleep and the base probability are very important to achieve aggregation.
+The behavior could be correct, but it could not work if these values are not set carefully.
+]]
+
+
 -- States, see more in step()
 WALK = "WALK"
 AVOID = "AVOID"

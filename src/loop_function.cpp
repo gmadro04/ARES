@@ -63,8 +63,10 @@ CForaging::~CForaging() {
 void CForaging::Init(TConfigurationNode& t_tree) {
     /* Get output file name from XML tree */
     GetNodeAttribute(t_tree, "output", m_strOutFile);
+
+
     TConfigurationNode cParametersNode;
-    TConfigurationNode cParametersNode1;
+    TConfigurationNode cDistributeNode;
     try
     {
       // Lee el atributo 'atributo' y almacénalo en una variable
@@ -73,25 +75,18 @@ void CForaging::Init(TConfigurationNode& t_tree) {
       GetNodeAttributeOrDefault(cParametersNode, "arena", m_unArenatype, m_unArenatype);
       GetNodeAttributeOrDefault(cParametersNode, "tam", m_unArenatam, m_unArenatam);
       GetNodeAttributeOrDefault(cParametersNode, "mision", m_unIDmision, m_unIDmision);
-      //GetNodeAttributeOrDefault(cParametersNode, "circles", m_unCirclebool, m_unCirclebool);
+      GetNodeAttributeOrDefault(cParametersNode, "obstaculos", m_unObsbool, m_unObsbool);
       GetNodeAttributeOrDefault(cParametersNode, "num_circles", m_unNumCircles, m_unNumCircles);
+      GetNodeAttributeOrDefault(cParametersNode, "robots", m_unRobots, m_unRobots);
     }
     catch(const std::exception& e)
     {
       LOGERR << "Problem with Attributes in node params" << std::endl;
     }
 
-    try
-    {
-        cParametersNode1 = GetNode(t_tree,"distribute");
-        GetNodeAttributeOrDefault(cParametersNode1,"quantity",m_unRobots,m_unRobots);
-    }
-    catch(const std::exception& e)
-    {
-      LOGERR << "Problem with Attributes in node arena" << std::endl;
-    }
-    m_fObjectiveFunction = 0; // Función objetivo que mide el rendimiento de la mision
 
+
+    m_fObjectiveFunction = 0; // Función objetivo que mide el rendimiento de la mision
     Init();
 
     /* Arena init*/
@@ -251,7 +246,6 @@ void CForaging::ScoreControl(){
   else if (m_unIDmision == 2)
   {
     m_fObjectiveFunction += GetAggregationScore();
-    UpdateAggregationTime();
   }
   else if (m_unIDmision == 3)
   {
@@ -311,8 +305,7 @@ void CForaging::SaveRobotPositions() {
 void CForaging::SaveExperimentData() {
     // Abrir el archivo de texto en modo de adición
     std::ofstream MyFile("datos.txt", std::ios_base::app);
-    MyFile << "----------Experimento:---------- " << std::endl;
-    MyFile << "Numero de simulacion: " << m_unExperiment << std::endl;
+    MyFile << "----------Experimento #" << m_unExperiment << ":----------"  << std::endl;
     MyFile << "----------Parametros:----------" << std::endl;
     MyFile << "Tipo comportamiento: " << m_unIDmision << std::endl;
     MyFile << "Arena: " << m_unArenatype << std::endl;
@@ -320,11 +313,7 @@ void CForaging::SaveExperimentData() {
     MyFile << "Num Robots: " << m_unRobots << std::endl;
     MyFile << "Tiempo ejecucion: " << "1:20m" << std::endl;
     MyFile << "----------Metrica M:----------" << std::endl;
-    MyFile << "Evaluacion mision: " << m_fObjectiveFunction << std::endl;
-    MyFile << "----------Metrica P:----------" << std::endl;
-    MyFile << "Escalabilidad: " << "30" << std::endl;
-    MyFile << "Flexibilidad: " << "15" << std::endl;
-    MyFile << "Tolerancia a fallos: " << "8" << std::endl;
+    MyFile << "Evaluacion mision ID->" << m_unIDmision <<": " << m_fObjectiveFunction << std::endl;
     // Cerrar el archivo
     MyFile.close();
 }
@@ -357,11 +346,9 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
             IsWithinTriangle(vCurrentPoint, cCenter, cTopLeftCorner, cTopRightCorner) ||
             IsWithinTriangle(vCurrentPoint, cCenter, cTopRightCorner, cRightCorner) ||
             (vCurrentPoint.GetY() < 0.0f)) {
-              return CColor::BLACK;
+              return CColor::GRAY60;
             }
     }
-
-    double tam = Asignar_tamano_segun_arena(m_unArenatam);
 
 
   for (const CVector2& cCirclePos : m_vCirclePositions) {
@@ -446,7 +433,6 @@ void CForaging::ComputeCirclePositions(UInt32 NumCircles) {
     }
     else{ // arena cuadrada
       for(size_t i = 0; i < NumCircles; ++i) {
-        //m_vCirclePositions.push_back(CVector2(i, 0.0));
         CRange<Real> cRangeX(-tam/2, tam/2);
         CRange<Real> cRangeY(-tam/2,tam/2);
         m_vCirclePositions.push_back(CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY)));
@@ -694,7 +680,7 @@ Real CForaging::GetAggregationScore() {
     UpdateAggregationTime();
     // Inicializar variables para contadores
     bool bInAgg;
-    UInt32 unRobotsInAgg = 0;
+    Real unRobotsInAgg = 0;
     Real fTotalAggTime = 0.0;
     TRobotStateMap::iterator it;
     // Iterar sobre los estados de los robots
@@ -702,15 +688,12 @@ Real CForaging::GetAggregationScore() {
         // Verificar si el robot está dentro del círculo de agregación
         bInAgg = IsRobotInAggCircle(it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                                it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-        if (!bInAgg) {
+        if (bInAgg) {
             unRobotsInAgg++;
             // Si está en la zona, acumular el tiempo que pasa allí
             fTotalAggTime += it->second.FTimeInAgg;
         }
     }
- 
-    // Puedes devolver ambos valores o algún tipo de combinación ponderada
-    // En este ejemplo, devolvemos el número de robots y el tiempo total en la zona
     return unRobotsInAgg;
 }
 
@@ -745,18 +728,20 @@ bool CForaging::IsRobotInAggCircle(Real x, Real y) {
     // Itera sobre las posiciones de los círculos
     for (const CVector2& circlePos : m_vCirclePositions) {
         // Calcula la distancia entre el robot y la posición del círculo actual
-        double distancia = CVector2(x, y).Length();  // Usar Length en lugar de Distance
-        double radio = RADIUS_SOURCE;
+        CVector2 robotPos(x, y);
+        CVector2 circleCenter(circlePos.GetX(), circlePos.GetY());
+        Real distancia = (robotPos - circleCenter).Length();
+        Real radio = RADIUS_SOURCE;
 
         // Verifica si el robot está dentro del círculo
-        if (distancia < radio) {
+        if (distancia <= radio) {
             return true;  // El robot está dentro de al menos un círculo
         }
     }
-
     // El robot no está dentro de ninguno de los círculos
     return false;
 }
+
 /****************************************/
 /****************************************/
 

@@ -12,7 +12,7 @@ import time
 # Nombre del archivo XML
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_spots_GMadro.lua"
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_spots.lua"
 # obstacleAvoiddance_vec.lua, obstacleAvoidance_Gmadro.lua, aggregation_spots.lua
 # color_selection_det.lua, synchronization.lua, aggregation_0_rb_taxis.lua,color_selection_prob.lua
 # color_selection_det.lua
@@ -36,7 +36,8 @@ def modificar_archivo(file,exp):
     # Configuración obstaculos en la arena
     loop.obstaculos_arena(file=file,obs=Obstaculos,pos_obs=parametros["Pos"],params=parametros)
     # configuración parametros loop_functions
-    loop.loops_params(file=file,tipo_arena=parametros["Tipo de arena"],tam_arena=parametros["Tamaño arena"],exp=exp)
+    loop.loops_params(file=file,tipo_arena=parametros["Tipo de arena"],tam_arena=parametros["Tamaño arena"],
+                      exp=exp,obstaculos=Obstaculos, robots=robots)
     # Parametros simulación.
     print("----------------------------------------------------")
     simulacion = pd.DataFrame([parametros["Tipo de arena"], parametros["Tamaño arena"],robots,time],index=["TIPO DE ARENA:","TAMAÑO:","# ROBOTS:","T_EXPERIMENTO:"])
