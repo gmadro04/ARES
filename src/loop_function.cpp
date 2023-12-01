@@ -276,7 +276,7 @@ void CForaging::PostExperiment() {
 void CForaging::SaveRobotPositions() {
   // Crear y abrir un archivo de texto
   //std::ofstream MyFile("posiciones.txt", std::ios_base::trunc);
-  std::ofstream MyFile("posiciones.txt", std::ios_base::app);
+  std::ofstream MyFile("Experimentos/posiciones.txt", std::ios_base::app);
 
   CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
   CVector2 cFootBotPosition(0, 0);
@@ -303,19 +303,35 @@ void CForaging::SaveRobotPositions() {
 }
 
 void CForaging::SaveExperimentData() {
-    // Abrir el archivo de texto en modo de adición
-    std::ofstream MyFile("datos.txt", std::ios_base::app);
-    MyFile << "----------Experimento #" << m_unExperiment << ":----------"  << std::endl;
-    MyFile << "----------Parametros:----------" << std::endl;
-    MyFile << "Tipo comportamiento: " << m_unIDmision << std::endl;
-    MyFile << "Arena: " << m_unArenatype << std::endl;
-    MyFile << "Tamano arena: " << m_unArenatam << std::endl;
-    MyFile << "Num Robots: " << m_unRobots << std::endl;
-    MyFile << "Tiempo ejecucion: " << "1:20m" << std::endl;
-    MyFile << "----------Metrica M:----------" << std::endl;
-    MyFile << "Evaluacion mision ID->" << m_unIDmision <<": " << m_fObjectiveFunction << std::endl;
-    // Cerrar el archivo
-    MyFile.close();
+  //  // Abrir el archivo de texto en modo de adición
+  //  std::ofstream MyFile("datos.txt", std::ios_base::app);
+  //  MyFile << "----------Experimento #" << m_unExperiment << ":----------"  << std::endl;
+  //  MyFile << "----------Parametros:----------" << std::endl;
+  //  MyFile << "Tipo comportamiento: " << m_unIDmision << std::endl;
+  //  MyFile << "Arena: " << m_unArenatype << std::endl;
+  //  MyFile << "Tamano arena: " << m_unArenatam << std::endl;
+  //  MyFile << "Num Robots: " << m_unRobots << std::endl;
+  //  MyFile << "Tiempo ejecucion: " << "1:20m" << std::endl;
+  //  MyFile << "----------Metrica M:----------" << std::endl;
+  //  MyFile << "Evaluacion mision ID->" << m_unIDmision <<": " << m_fObjectiveFunction << std::endl;
+  //  // Cerrar el archivo
+  //  MyFile.close();
+    // Abrir el archivo CSV en modo de adición
+  std::ofstream MyFile("Experimentos/datos.csv", std::ios_base::app);
+  // Escribir encabezados si el archivo está vacío
+  if (MyFile.tellp() == 0) {
+      MyFile << "Experimento,MisionID,Arenatype,Arenatam,NumRobots,Time,Performance" << std::endl;
+  }
+  // Escribir datos en formato CSV con cada valor en una celda separada
+  MyFile << m_unExperiment << ",";
+  MyFile << m_unIDmision << ",";
+  MyFile << m_unArenatype << ",";
+  MyFile << m_unArenatam << ",";
+  MyFile << m_unRobots << ",";
+  MyFile << "1:20m" << ",";
+  MyFile << m_fObjectiveFunction << std::endl;
+  // Cerrar el archivo
+  MyFile.close();
 }
 
 

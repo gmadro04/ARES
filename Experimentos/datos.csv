@@ -1,0 +1,11 @@
+Experimento,MisionID,Arenatype,Arenatam,NumRobots,Time,Performance
+1,2,Triangular,grande,5,1:20m,537
+2,2,Octagonal,mediana,10,1:20m,4294
+3,2,Hexagonal,pequena,15,1:20m,2380
+4,2,Cuadrada,pequena,20,1:20m,4158
+5,2,Octagonal,pequena,25,1:20m,637
+6,2,Dodecagono,mediana,30,1:20m,4876
+7,2,Hexagonal,grande,35,1:20m,4007
+8,2,Dodecagono,grande,40,1:20m,2760
+9,2,Triangular,pequena,45,1:20m,16078
+10,2,Triangular,mediana,50,1:20m,1897
