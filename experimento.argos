@@ -9,7 +9,7 @@
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function" output="output.txt">
-    <params num_experiment="10" arena="Triangular" tam="mediana" num_circles="1" mision="2" obstaculos="False" robots="50" />
+    <params num_experiment="5" arena="Hexagonal" tam="grande" num_circles="1" mision="2" obstaculos="False" robots="30" />
   </loop_functions>
 
   <controllers>
@@ -38,13 +38,13 @@
   
   <arena size="15,15,1" center="0,0,0.5">
 
-    <box id="1" size="0.1,8,0.2" movable="false"><body position="-4.0,0,0" orientation="0,0,0" /></box><box id="2" size="0.1,8.94,0.2" movable="false"><body position="0,2.0,0" orientation="63,0,0" /></box><box id="3" size="0.1,8.94,0.2" movable="false"><body position="0,-2.0,0" orientation="-63,0,0" /></box><light id="light" position="0,0,0.5" orientation="0,0,0" color="yellow" intensity="10.0" medium="leds" />
+    <box id="1" size="0.1,6.0,0.2" movable="false"><body position="6.0,0,0" orientation="0,0,0" /></box><box id="2" size="0.1,6.0,0.2" movable="false"><body position="-6.0,0,0" orientation="0,0,0" /></box><box id="3" size="0.1,6.720000000000001,0.2" movable="false"><body position="-3.0,4.5,0" orientation="-65,0,0" /></box><box id="4" size="0.1,6.720000000000001,0.2" movable="false"><body position="3.0,4.5,0" orientation="65,0,0" /></box><box id="5" size="0.1,6.720000000000001,0.2" movable="false"><body position="-3.0,-4.5,0" orientation="65,0,0" /></box><box id="6" size="0.1,6.720000000000001,0.2" movable="false"><body position="3.0,-4.5,0" orientation="-65,0,0" /></box><light id="light" position="0,0,0.5" orientation="0,0,0" color="yellow" intensity="10.0" medium="leds" />
     <floor id="floor" source="loop_functions" pixels_per_meter="100" />
 
     <distribute id="robots">
-      <position method="uniform" min="-4.0,-2.0,0" max="0,2.0,0" />
+      <position method="uniform" min="-6.0,-3.0,0" max="6.0,3.0,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
-      <entity quantity="50" max_trials="100">
+      <entity quantity="30" max_trials="100">
         <foot-bot id="fb" rab="1">
           <controller config="lua" />
         </foot-bot>

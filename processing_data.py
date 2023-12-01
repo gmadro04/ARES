@@ -8,7 +8,7 @@ df = pd.read_csv('Experimentos/datos.csv')
 
 # Ordenar los datos por el número de robots
 df.sort_values(by=['NumRobots'], inplace=True)
-
+#df['Performance'] = df['Performance']/100
 
 # Iterar sobre experimentos y calcular la escalabilidad
 escalabilidad = []

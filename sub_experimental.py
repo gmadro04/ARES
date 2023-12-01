@@ -27,9 +27,9 @@ def modificar_archivo(file,exp):
     """ Configuración parametros básicos """
     arena_params, parametros = loop.params_arena()    # Tamaño de la arena grande,mediana,pequeña y configuracion de atributos
     Obstaculos = random.choice([True, False])   # Obstaculos en el escenario si o no, según la eleccion tipo de distribución y tipo de obstaculo
-    #robots , time = loop.robots_timeDruation()   # Numero de robots y duraricion del experimento
-    robots = exp * incremento_robots + num_robots_inicial
-    time = loop.robots_timeDruation()
+    robots , time = loop.robots_timeDruation()   # Numero de robots y duraricion del experimento
+    #robots = exp * incremento_robots + num_robots_inicial
+    #time = loop.robots_timeDruation()
     """ CONFIGURACION ARCHIVO """
     loop.framework_label(file, time, codigos) #Configuración software de control y tiempo ejecucion
     # Configuración de arena
@@ -50,7 +50,7 @@ def modificar_archivo(file,exp):
 # Configuración de la cantidad de ejecuciones
 num_robots_inicial = 5
 incremento_robots = 5
-num_experimentos = 10 # Puedes cambiar esto al número deseado de ejecuciones
+num_experimentos = 5 # Puedes cambiar esto al número deseado de ejecuciones
 # Ejecuta el experimento múltiples veces
 for exp in range(num_experimentos):
     # Modifica el archivo antes de cada ejecución
