@@ -15,7 +15,7 @@ Real m_fHypotenus = m_fLengthSide/2;
 Real m_fPosMiddle = Sqrt(Square(m_fHypotenus)/2);
 
 static const Real RADIUS_NEST         = 1.5f;
-static const Real RADIUS_SOURCE         = 0.6f;
+static const Real RADIUS_SOURCE         = 1.0f;
 
 static const Real SPAWN_SIDE_LENGTH     = 3.0f;
 
@@ -200,41 +200,41 @@ void CForaging::PreStep() {
 
 /****************************************/
 /****************************************/
-
+//
 void CForaging::PostStep() {
-  UInt32 sCurrentScore = m_unNbrItemsCollected;
-  CSpace::TMapPerType& m_cFootbots = GetSpace().GetEntitiesByType("foot-bot");
-  UInt8 unRobotId;
-  for(CSpace::TMapPerType::iterator it = m_cFootbots.begin(); it != m_cFootbots.end(); ++it) {
-     /* Get handle to foot-bot entity and controller */
-     CFootBotEntity& cFootBot = *any_cast<CFootBotEntity*>(it->second);
-     /* Get the position of the foot-bot on the ground as a CVector2 */
-     CVector2 cPos;
-     cPos.Set(cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-     unRobotId = atoi(cFootBot.GetId().substr(2, 3).c_str());
-     /* If the foot-bot is on the nest, drop the item he is carrying. */
-     if (IsOnNest(cPos)) {
-       if (m_sFoodData[unRobotId-1] != 0) {
-           m_unNbrItemsCollected += 1;
-           m_sFoodData[unRobotId-1] = 0;
-       }
-     } else if (IsOnSource(cPos)) {    /* If the foot-bot is on source, takes corresponding item */
-       m_sFoodData[unRobotId-1] = 1;
-     } else if (IsOnForbidden(cPos)) {    /* If the foot-bot is on the forbbiden areas, looses corresponding item */
-         m_sFoodData[unRobotId-1] = 0;
-     }
-  }
-
-  /* Increase the time step counter */
-  m_unTimeStep += 1;
-
-  /* Writting data to output file. */
-  m_cOutFile << m_unTimeStep << "\t" << m_unNbrItemsCollected << std::endl;
-
-  /* Output in simulator */
-  if (m_unNbrItemsCollected > sCurrentScore) {
-    LOGERR << "Items collected = " << m_unNbrItemsCollected << std::endl;
-  }
+//  UInt32 sCurrentScore = m_unNbrItemsCollected;
+//  CSpace::TMapPerType& m_cFootbots = GetSpace().GetEntitiesByType("foot-bot");
+//  UInt8 unRobotId;
+//  for(CSpace::TMapPerType::iterator it = m_cFootbots.begin(); it != m_cFootbots.end(); ++it) {
+//     /* Get handle to foot-bot entity and controller */
+//     CFootBotEntity& cFootBot = *any_cast<CFootBotEntity*>(it->second);
+//     /* Get the position of the foot-bot on the ground as a CVector2 */
+//     CVector2 cPos;
+//     cPos.Set(cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+//     unRobotId = atoi(cFootBot.GetId().substr(2, 3).c_str());
+//     /* If the foot-bot is on the nest, drop the item he is carrying. */
+//     if (IsOnNest(cPos)) {
+//       if (m_sFoodData[unRobotId-1] != 0) {
+//           m_unNbrItemsCollected += 1;
+//           m_sFoodData[unRobotId-1] = 0;
+//       }
+//     } else if (IsOnSource(cPos)) {    /* If the foot-bot is on source, takes corresponding item */
+//       m_sFoodData[unRobotId-1] = 1;
+//     } else if (IsOnForbidden(cPos)) {    /* If the foot-bot is on the forbbiden areas, looses corresponding item */
+//         m_sFoodData[unRobotId-1] = 0;
+//     }
+//  }
+//
+//  /* Increase the time step counter */
+//  m_unTimeStep += 1;
+//
+//  /* Writting data to output file. */
+//  m_cOutFile << m_unTimeStep << "\t" << m_unNbrItemsCollected << std::endl;
+//
+//  /* Output in simulator */
+//  if (m_unNbrItemsCollected > sCurrentScore) {
+//    LOGERR << "Items collected = " << m_unNbrItemsCollected << std::endl;
+//  }
   // LLAMADO A LA METRICA SEGUN LA MISION
   ScoreControl();
 }
@@ -245,7 +245,7 @@ void CForaging::ScoreControl(){
   }
   else if (m_unIDmision == 2)
   {
-    m_fObjectiveFunction += GetAggregationScore();
+    m_fObjectiveFunction = GetAggregationScore();
   }
   else if (m_unIDmision == 3)
   {
@@ -270,7 +270,9 @@ void CForaging::PostExperiment() {
     // Llama a la función para guardar las posiciones finales de los robots
     SaveRobotPositions();
     SaveExperimentData();
+    m_fObjectiveFunction = GetAggregationScore();
 
+    LOG << "Agregación Score = " << m_fObjectiveFunction << std::endl;
 }
 
 void CForaging::SaveRobotPositions() {
@@ -294,7 +296,7 @@ void CForaging::SaveRobotPositions() {
 
             // Escribir en el archivo
             MyFile << "[" << strRobotId << ", " << cFootBotPosition << "]" << std::endl;
-            LOG << cFootBotPosition << std::endl;
+            //LOG << cFootBotPosition << std::endl;
         }
 
         // Cerrar el archivo
@@ -346,29 +348,29 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
     CVector2 vCoordTrianglePointLeft = CVector2(m_cCoordNest.GetX()+RADIUS_NEST, m_cCoordNest.GetY()+RADIUS_NEST);
     CVector2 vCoordTrianglePointRight = CVector2(m_cCoordNest.GetX()-RADIUS_NEST, m_cCoordNest.GetY()+RADIUS_NEST);
 
-    if ((d <= RADIUS_NEST) && (IsWithinTriangle(vCurrentPoint, m_cCoordNest, vCoordTrianglePointLeft, vCoordTrianglePointRight))) {
-      return CColor::WHITE;
-    }
-
-    d = (m_cCoordSource - vCurrentPoint).Length();
-
-    CVector2 cCenter(0,0);
-    CVector2 cLeftCorner(-Sqrt(2*Square(m_fLengthSide))/2, 0);
-    CVector2 cRightCorner(Sqrt(2*Square(m_fLengthSide))/2, 0);
-    CVector2 cTopLeftCorner(-m_fPosMiddle, m_fPosMiddle);
-    CVector2 cTopRightCorner(m_fPosMiddle, m_fPosMiddle);
-    if (d <= RADIUS_SOURCE) {
-      if (IsWithinTriangle(vCurrentPoint, cCenter, cLeftCorner, cTopLeftCorner) ||
-            IsWithinTriangle(vCurrentPoint, cCenter, cTopLeftCorner, cTopRightCorner) ||
-            IsWithinTriangle(vCurrentPoint, cCenter, cTopRightCorner, cRightCorner) ||
-            (vCurrentPoint.GetY() < 0.0f)) {
-              return CColor::GRAY60;
-            }
-    }
+  //  if ((d <= RADIUS_NEST) && (IsWithinTriangle(vCurrentPoint, m_cCoordNest, vCoordTrianglePointLeft, vCoordTrianglePointRight))) {
+  //    return CColor::WHITE;
+  //  }
+//
+  //  d = (m_cCoordSource - vCurrentPoint).Length();
+//
+  //  CVector2 cCenter(0,0);
+  //  CVector2 cLeftCorner(-Sqrt(2*Square(m_fLengthSide))/2, 0);
+  //  CVector2 cRightCorner(Sqrt(2*Square(m_fLengthSide))/2, 0);
+  //  CVector2 cTopLeftCorner(-m_fPosMiddle, m_fPosMiddle);
+  //  CVector2 cTopRightCorner(m_fPosMiddle, m_fPosMiddle);
+  //  if (d <= RADIUS_SOURCE) {
+  //    if (IsWithinTriangle(vCurrentPoint, cCenter, cLeftCorner, cTopLeftCorner) ||
+  //          IsWithinTriangle(vCurrentPoint, cCenter, cTopLeftCorner, cTopRightCorner) ||
+  //          IsWithinTriangle(vCurrentPoint, cCenter, cTopRightCorner, cRightCorner) ||
+  //          (vCurrentPoint.GetY() < 0.0f)) {
+  //            return CColor::GRAY60;
+  //          }
+  //  }
 
 
   for (const CVector2& cCirclePos : m_vCirclePositions) {
-      Real fCircleRadius = 0.6;  // Ajusta el radio del círculo según tus necesidades
+      Real fCircleRadius = RADIUS_SOURCE;  // Ajusta el radio del círculo según tus necesidades
 
       // Convertir CVector2 a std::pair<double, double>
       std::pair<double, double> point_as_pair(cCirclePos.GetX(), cCirclePos.GetY());
@@ -521,8 +523,8 @@ void CForaging::ComputeElementsPositions(UInt32 NumIter) {
     else{ // arena cuadrada
       for(size_t i = 0; i < NumIter; ++i) {
         //m_vCirclePositions.push_back(CVector2(i, 0.0));
-        CRange<Real> cRangeX(-tam/2, tam/2);
-        CRange<Real> cRangeY(-tam/2,tam/2);
+        CRange<Real> cRangeX((-tam/2) + 1.0, (tam/2) - 1.0);
+        CRange<Real> cRangeY((-tam/2) + 1.0, (tam/2) - 1.0);
         m_vElementsPositions.push_back(CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY)));
       }
     }
@@ -534,9 +536,9 @@ void CForaging::ComputeElementsPositions(UInt32 NumIter) {
 // Definir la función para verificar si un punto está dentro del triángulo
 bool CForaging::Dentro_del_triangulo(const std::pair<double, double>& punto, double tam) {
     // Definir los vértices del triángulo
-    CVector2 A(tam / 2, 0);
-    CVector2 B(-tam / 2, tam / 2);
-    CVector2 C(-tam / 2, -tam / 2);
+    CVector2 A((tam / 2)-0.7, 0);
+    CVector2 B((-tam / 2)+0.7, (tam / 2)-0.7);
+    CVector2 C((-tam / 2)+0.7, (-tam / 2)+0.7);
     // Implementación de la función que ya proporcionaste
     // ...
     double x = punto.first;
@@ -563,7 +565,7 @@ bool CForaging::Dentro_del_triangulo(const std::pair<double, double>& punto, dou
 
 bool CForaging::Dentro_del_circulo(const std::pair<double,double>& punto, double tam){
     // Calcula la distancia desde el punto al centro del círculo
-    double radio = tam / 2; // Asegúrate de que haya un punto y coma al final de la línea
+    double radio = (tam / 2) - 0.7;
     double distancia = (CVector2(punto.first, punto.second) - CVector2(0, 0)).Length();
 
     // Compara la distancia con el radio
@@ -705,7 +707,7 @@ Real CForaging::GetAggregationScore() {
         bInAgg = IsRobotInAggCircle(it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                                it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
         if (bInAgg) {
-            unRobotsInAgg++;
+            unRobotsInAgg+=1;
             // Si está en la zona, acumular el tiempo que pasa allí
             fTotalAggTime += it->second.FTimeInAgg;
         }
@@ -746,11 +748,11 @@ bool CForaging::IsRobotInAggCircle(Real x, Real y) {
         // Calcula la distancia entre el robot y la posición del círculo actual
         CVector2 robotPos(x, y);
         CVector2 circleCenter(circlePos.GetX(), circlePos.GetY());
-        Real distancia = (robotPos - circleCenter).Length();
+        Real distancia = (circleCenter-robotPos).Length();
         Real radio = RADIUS_SOURCE;
 
         // Verifica si el robot está dentro del círculo
-        if (distancia <= radio) {
+        if (distancia <= radio + 0.1) {
             return true;  // El robot está dentro de al menos un círculo
         }
     }

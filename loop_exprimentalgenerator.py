@@ -8,13 +8,15 @@ import math
 
 """FUNCIONES DE PARAMETROS BASICOS"""
 
-def params_arena():
+def params_arena(A_t,N_a):
     # Se selecciona el tipo de arena que se va a trabajar y modificar
     arenas = ["Triangular","Cuadrada","Hexagonal","Octagonal","Dodecagono"]
-    arena = random.choice(arenas)
-    #arena = arenas[0]
+    dim_tam = ['pequena','mediana','grande']
+    #arena = random.choice(arenas)
+    arena = arenas[A_t]
     # tamaño de la arena
-    dim_tam = random.choice(['pequena','mediana','grande'])  # Tipo de tamaño de la arena.
+    #dim_tam = random.choice(['pequena','mediana','grande'])  # Tipo de tamaño de la arena.
+    dim_tam = dim_tam[N_a]
     # Parametros de configuración segun la arena
 
     if arena == "Cuadrada":
@@ -36,9 +38,9 @@ def robots_timeDruation():
     # Genera un número aleatorio entre 5 y 30 utilizando una distribución uniforme
     robots = random.randrange(5, 40, 5)
     # Tiempo de suración del experimento
-    time = random.choice([170,200])
-    return robots,time
-    #return time
+    time = random.choice([500])
+    #return robots,time
+    return time
 
 def framework_label (file,time,codigos):
     tree = ET.parse(file)
