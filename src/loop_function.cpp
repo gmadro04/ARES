@@ -245,7 +245,7 @@ void CForaging::ScoreControl(){
   }
   else if (m_unIDmision == 2)
   {
-    m_fObjectiveFunction = GetAggregationScore();
+    m_fObjectiveFunction = GetAggregationScore() ;
   }
   else if (m_unIDmision == 3)
   {
@@ -265,14 +265,30 @@ void CForaging::ScoreControl(){
 /****************************************/
 
 void CForaging::PostExperiment() {
-    LOG << "Items collected = " << m_unNbrItemsCollected << std::endl;
-    LOG << "Agregación Score = " << m_fObjectiveFunction << std::endl;
     // Llama a la función para guardar las posiciones finales de los robots
     SaveRobotPositions();
     SaveExperimentData();
+  if (m_unIDmision == 1)
+  {
+    LOGERR << "ID MISION 1" << std::endl;
+  }
+  else if (m_unIDmision == 2)
+  {
     m_fObjectiveFunction = GetAggregationScore();
-
     LOG << "Agregación Score = " << m_fObjectiveFunction << std::endl;
+  }
+  else if (m_unIDmision == 3)
+  {
+    LOGERR << "ID MISION 3" << std::endl;
+  }
+  else if (m_unIDmision == 4)
+  {
+    LOGERR << "ID MISION 4" << std::endl;
+  }
+  else if (m_unIDmision == 5)
+  {
+    LOGERR << "ID MISION 5" << std::endl;
+  }
 }
 
 void CForaging::SaveRobotPositions() {

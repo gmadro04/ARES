@@ -54,8 +54,8 @@ num_robots_inicial = 5
 incremento_robots = 5
 num_experimentos = 10 # Puedes cambiar esto al número deseado de ejecuciones
 
-for arena in range(5): # Ejecución por tipos de arena
-    for tam in range(3): # Ejecución por tamaño de arena
+for arena in range(5): # Ejecución por tipos de arena T,C,H6,O8,P12
+    for tam in range(3): # Ejecución por tamaño de arena P,M,G
         # Ejecuta el experimento múltiples veces
         for exp in range(num_experimentos):
             # Modifica el archivo antes de cada ejecución
