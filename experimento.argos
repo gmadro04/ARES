@@ -4,12 +4,12 @@
   
   
   <framework>
-    <experiment length="500" ticks_per_second="10" />
+    <experiment length="200" ticks_per_second="10" />
     <system threads="0" />
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function" output="output.txt">
-    <params num_experiment="10" arena="Dodecagono" tam="grande" num_circles="1" mision="2" obstaculos="False" robots="50" />
+    <params num_experiment="10" arena="Dodecagono" tam="grande" num_circles="1" mision="1" obstaculos="False" robots="50" />
   </loop_functions>
 
   <controllers>

@@ -24,7 +24,12 @@ def calcular_escalabilidad(arena):
     escalabilidad.append(0)
 
     for i in range(len(arena)-1):
-        deltaP = (arena['Performance'].iloc[i+1] - arena['Performance'].iloc[i]) / arena['Performance'].iloc[i]
+        if arena['Performance'].iloc[i] != 0:
+            deltaP = (arena['Performance'].iloc[i+1] - arena['Performance'].iloc[i]) / arena['Performance'].iloc[i]
+        else:
+            # Si el denominador es cero, asignar un valor adecuado (por ejemplo, NaN)
+            deltaP = 0
+        #deltaP = (arena['Performance'].iloc[i+1] - arena['Performance'].iloc[i]) / arena['Performance'].iloc[i]
         deltaN = (arena['NumRobots'].iloc[i+1] - arena['NumRobots'].iloc[i]) / arena['NumRobots'].iloc[i]
         M_S = deltaP / deltaN
         escalabilidad.append(M_S)
@@ -42,8 +47,8 @@ df = pd.read_csv('Experimentos/datos.csv')
 promedio_escalabilidad_data = []
 
 
-# Ordenar los datos por el número de robots
-#df.sort_values(by=['NumRobots'], inplace=True)
+# Ordenar los datos por el número de ID mision 
+#df.sort_values(by=['MisionID'], inplace=True)
 
 # Extraer datos por tipo de arena y tamaño
 grupos_arena = df.groupby(['Arenatype', 'Arenatam','MisionID'])
@@ -54,7 +59,7 @@ for nombre, grupo in grupos_arena:
     arena_datos[nombre] = grupo
     print(arena_datos[nombre])
 
-# Calcular la escalabilidad para cada combinación de tipo de arena y tamaño
+# Calcular la escalabilidad para cada combinación de tipo de arena y tamaño 
 escalabilidad_arena = {}
 num_robots_arena = {}
 for nombre, datos in grupos_arena:
@@ -92,50 +97,55 @@ for nombre, escalabilidad in escalabilidad_arena.items():
     #print(datos[['Experimento', 'MisionID', 'Arenatype', 'Arenatam', 'NumRobots', 'Time', 'Performance', 'Scalability']])
 
     ## Graficar los resultados como diagramas de barras independientes
-    #num_robots = num_robots_arena[nombre]
-    #graficar_escalabilidad(escalabilidad, nombre, num_robots)
-    #plt.grid(True)
-    #plt.legend()
-    #plt.xlabel('Número de Robots')
-    #plt.ylabel('Escalabilidad')
-    #plt.title(f'Escalabilidad vs Número de Robots - MisionID: {mision_id} - Arena:{nombre}')
-    #plt.show()
+    num_robots = num_robots_arena[nombre]
+    graficar_escalabilidad(escalabilidad, nombre, num_robots)
+    plt.grid(True)
+    plt.legend()
+    plt.xlabel('Número de Robots')
+    plt.ylabel('Escalabilidad')
+    plt.title(f'Escalabilidad vs Número de Robots - MisionID: {mision_id} - Arena:{nombre}')
+    plt.show()
 
-#print(df[['Experimento', 'MisionID', 'Arenatype', 'Arenatam', 'NumRobots', 'Time', 'Performance', 'Scalability']])
-promedio_escalabilidad_df = pd.DataFrame(promedio_escalabilidad_data)
-print(promedio_escalabilidad_df)
-
-# Gráfica de barras
-tipos_arena = promedio_escalabilidad_df['Arenatype'].unique()
-colores_tam = {'pequena': 'blue', 'mediana': 'green', 'grande': 'orange'}
-
-fig, ax = plt.subplots()
-
-bar_width = 0.2  # Ancho de las barras
-bar_space = 0.1  # Espacio entre barras dentro del mismo tipo de arena
-group_space = 0.5  # Espacio entre grupos de tipos de arena
-
-# Calcular la cantidad total de tipos de arena y el ancho total que ocuparán
-num_tipos_arena = len(promedio_escalabilidad_df['Arenatype'].unique())
-total_width = num_tipos_arena * bar_width + (num_tipos_arena - 1) * group_space
-
-# Calcular el offset una vez fuera del bucle
-offset = -total_width / 2
-
-for i, tipo in enumerate(promedio_escalabilidad_df['Arenatype'].unique()):
-    for j, tam in enumerate(promedio_escalabilidad_df['Arenatam'].unique()):
-        subset = promedio_escalabilidad_df[(promedio_escalabilidad_df['Arenatype'] == tipo) & (promedio_escalabilidad_df['Arenatam'] == tam)]
-        promedio = subset['PromedioEscalabilidad'].iloc[0]
-        ax.bar(i * (bar_width + group_space) + offset + j * (bar_width + bar_space), promedio, width=bar_width, label=f'{tam}' if i == 0 else "", color=colores_tam[tam])
-
-ax.set_xticks(np.arange(len(promedio_escalabilidad_df['Arenatype'].unique())) * (bar_width + group_space) + offset + (bar_width + group_space) / 2)
-ax.set_xticklabels(promedio_escalabilidad_df['Arenatype'].unique())
-ax.legend(title='Tamaño de Arena', bbox_to_anchor=(1, 1))
-ax.set_xlabel('Tipo de Arena')
-ax.set_ylabel('Promedio de Escalabilidad')
-ax.set_title(f'Escalabilidad Mision ID {promedio_escalabilidad_df["MisionID"].unique()[0]}')
-
-plt.show()
+##print(df[['Experimento', 'MisionID', 'Arenatype', 'Arenatam', 'NumRobots', 'Time', 'Performance', 'Scalability']])
+#promedio_escalabilidad_df = pd.DataFrame(promedio_escalabilidad_data)
+#print(promedio_escalabilidad_df)
+#
+## Gráfica de barras
+#tipos_arena = promedio_escalabilidad_df['Arenatype'].unique()
+## Asignar colores específicos a cada tamaño de arena
+#colores_tam = {'pequena': 'blue', 'mediana': 'green', 'grande': 'orange'}
+#
+#fig, ax = plt.subplots()
+#
+#bar_width = 0.2  # Ancho de las barras
+#bar_space = 0.1  # Espacio entre barras del mismo grupo
+#group_space = 0.3  # Espacio entre grupos de barras
+#
+## Calcular la cantidad total de tamaños de arena y el ancho total que ocuparán
+#num_tam_arena = len(promedio_escalabilidad_df['Arenatam'].unique())
+#total_group_width = num_tam_arena * (bar_width + bar_space)
+#total_width = len(promedio_escalabilidad_df['Arenatype'].unique()) * total_group_width
+#
+#for i, tipo in enumerate(promedio_escalabilidad_df['Arenatype'].unique()):
+#    for j, tam in enumerate(promedio_escalabilidad_df['Arenatam'].unique()):
+#        subset = promedio_escalabilidad_df[(promedio_escalabilidad_df['Arenatype'] == tipo) & (promedio_escalabilidad_df['Arenatam'] == tam)]
+#        promedio = subset['PromedioEscalabilidad'].iloc[0]
+#        group_offset = i * total_group_width
+#        bar_offset = group_offset + j * (bar_width + bar_space)
+#        ax.bar(bar_offset, promedio, width=bar_width, label=f'{tam}' if i == 0 else "", color=colores_tam[tam])
+#        ax.text(bar_offset + bar_width / 2, promedio + 0.05, f'{promedio:.2f}', ha='center', va='bottom')
+#
+## Configuración de los ejes y la leyenda
+#ax.set_xticks(np.arange(len(promedio_escalabilidad_df['Arenatype'].unique())) * total_group_width + total_group_width / 2)
+#ax.set_xticklabels(promedio_escalabilidad_df['Arenatype'].unique())
+#ax.legend(title='Tamaño de Arena')
+#ax.set_xlabel('Tipo de Arena')
+#ax.set_ylabel('Promedio de Escalabilidad')
+#ax.set_title(f'Escalabilidad Mision ID {promedio_escalabilidad_df["MisionID"].unique()[0]}')
+## Activar la grilla
+#ax.grid(True, linestyle='--', alpha=0.7)
+#
+#plt.show()
 
 ## Extraer datos por tipo de arena 
 #arena_triangular = df[df['Arenatype'] == 'Triangular']

@@ -38,7 +38,7 @@ def robots_timeDruation():
     # Genera un número aleatorio entre 5 y 30 utilizando una distribución uniforme
     robots = random.randrange(5, 40, 5)
     # Tiempo de suración del experimento
-    time = random.choice([500])
+    time = random.choice([200])
     #return robots,time
     return time
 
@@ -69,7 +69,7 @@ def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots):
             Eparams.set("num_experiment",str(exp+1))
             Eparams.set("arena",tipo_arena)
             Eparams.set("tam",tam_arena)
-            Eparams.set("mision", "2") # ID del comportamiento que se esta evaluando para ejecutar la mision correspondiente
+            Eparams.set("mision", "1") # ID del comportamiento que se esta evaluando para ejecutar la mision correspondiente
             Eparams.set("obstaculos",str(obstaculos))
             Eparams.set("robots",str(robots)) # falso 0, verdadero 1
     tree.write(file)

@@ -84,9 +84,11 @@ void CForaging::Init(TConfigurationNode& t_tree) {
       LOGERR << "Problem with Attributes in node params" << std::endl;
     }
 
-
-
+    m_arenaSize = 0.83001;
+    m_gridSize = 10;
+    m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
     m_fObjectiveFunction = 0; // Función objetivo que mide el rendimiento de la mision
+
     Init();
 
     /* Arena init*/
@@ -241,7 +243,8 @@ void CForaging::PostStep() {
 void CForaging::ScoreControl(){
   if (m_unIDmision == 1)
   {
-    LOGERR << "ID MISION 1" << std::endl;
+    //LOGERR << "ID MISION 1" << std::endl;
+    m_fObjectiveFunction = GetExplorationScore();
   }
   else if (m_unIDmision == 2)
   {
@@ -270,7 +273,8 @@ void CForaging::PostExperiment() {
     SaveExperimentData();
   if (m_unIDmision == 1)
   {
-    LOGERR << "ID MISION 1" << std::endl;
+    m_fObjectiveFunction = m_fObjectiveFunction / m_gridSize / m_gridSize;
+    LOG << "Exploration Score = " << m_fObjectiveFunction << std::endl;
   }
   else if (m_unIDmision == 2)
   {
@@ -321,20 +325,6 @@ void CForaging::SaveRobotPositions() {
 }
 
 void CForaging::SaveExperimentData() {
-  //  // Abrir el archivo de texto en modo de adición
-  //  std::ofstream MyFile("datos.txt", std::ios_base::app);
-  //  MyFile << "----------Experimento #" << m_unExperiment << ":----------"  << std::endl;
-  //  MyFile << "----------Parametros:----------" << std::endl;
-  //  MyFile << "Tipo comportamiento: " << m_unIDmision << std::endl;
-  //  MyFile << "Arena: " << m_unArenatype << std::endl;
-  //  MyFile << "Tamano arena: " << m_unArenatam << std::endl;
-  //  MyFile << "Num Robots: " << m_unRobots << std::endl;
-  //  MyFile << "Tiempo ejecucion: " << "1:20m" << std::endl;
-  //  MyFile << "----------Metrica M:----------" << std::endl;
-  //  MyFile << "Evaluacion mision ID->" << m_unIDmision <<": " << m_fObjectiveFunction << std::endl;
-  //  // Cerrar el archivo
-  //  MyFile.close();
-    // Abrir el archivo CSV en modo de adición
   std::ofstream MyFile("Experimentos/datos.csv", std::ios_base::app);
   // Escribir encabezados si el archivo está vacío
   if (MyFile.tellp() == 0) {
@@ -691,7 +681,7 @@ void CForaging::ComputePositionselements() {
 /* METRICAS DE LA MISION
 */
 /****************************************/
-
+//---- AGREGACIÓN ----
 void CForaging::InitRobotStates() {
   CSpace::TMapPerType& tFootbotMap = GetSpace().GetEntitiesByType("foot-bot");
   CVector2 cFootbotPosition(0, 0);
@@ -706,7 +696,6 @@ void CForaging::InitRobotStates() {
       m_tRobotStates[&cFootBot].FTimeInAgg = 0.0;
   }
 }
-
 
 Real CForaging::GetAggregationScore() {
 
@@ -775,6 +764,37 @@ bool CForaging::IsRobotInAggCircle(Real x, Real y) {
     // El robot no está dentro de ninguno de los círculos
     return false;
 }
+// --- EXPLORACION ----
+
+Real CForaging::GetExplorationScore(){
+  CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+  CVector2 cFootBotPosition(0, 0);
+  Real Exploration = 0;
+  for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+      CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
+      cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+          pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+
+      UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
+      UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
+      if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0)
+      {
+          m_grid[X][Y] = 0;
+      }
+  }
+
+    UInt32 total = 0;
+    for (UInt32 i = 0; i < m_gridSize; i++)
+    {
+        for (UInt32 j = 0; j < m_gridSize; j++)
+        {
+            total += m_grid[i][j];
+            m_grid[i][j] += 1;
+        }
+    }
+  return Exploration += Real(total);
+}
+
 
 /****************************************/
 /****************************************/

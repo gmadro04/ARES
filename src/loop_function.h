@@ -101,12 +101,14 @@ public:
    // FUNCION QUE LLAMA A LA METRICA A EVALUAR
    void ScoreControl();
    void UpdateRobotPositions();
-   // Función para obtener la puntuación de agregación
+   // --- Función para obtener la puntuación de agregación
    Real GetAggregationScore();
    // Función para verificar si el robot está dentro del círculo de agregación
    bool IsRobotInAggCircle(Real x, Real y);
    // Función para actualizar el tiempo de agregación
    void UpdateAggregationTime();
+   // --- Función para obtener la puntuación de exploración
+   Real GetExplorationScore(); 
 
 
 private:
@@ -190,7 +192,12 @@ private:
 
     CVector2 m_cCoordSource;
     CVector2 m_cCoordNest;
-    Real m_fObjectiveFunction;
+    // Variables de las misiones
+    Real m_fObjectiveFunction; // funcion objetio para cada mision 
+    // --- Variables de Exploración
+    std::vector<std::vector<int>> m_grid;
+    Real m_arenaSize; // Varaiable Exploración
+    UInt32 m_gridSize; // cuadricula Explorasción
 
    struct RobotStateStruct {
         CVector2 cLastPosition;
