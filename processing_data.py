@@ -39,6 +39,12 @@ def calcular_escalabilidad(arena):
 # Función para graficar la escalabilidad
 def graficar_escalabilidad(escalabilidad, num_robots, nombre, mision_id):
     plt.bar(num_robots, escalabilidad, label=f'Mision ID {mision_id} - Arena {nombre}')
+    plt.xlabel('Número de Robots')
+    plt.ylabel('Escalabilidad')
+    plt.title(f'Escalabilidad vs Número de Robots - MisionID: {mision_id} - Arena: {nombre}')
+    plt.legend()
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.show()
 
 # Leer el archivo CSV
 df = pd.read_csv('Experimentos/datos.csv')
@@ -46,29 +52,33 @@ df = pd.read_csv('Experimentos/datos.csv')
 # Obtener los IDs únicos de las misiones
 mision_ids = df['MisionID'].unique()
 
-# Iterar sobre cada MisionID
-for mision_id in mision_ids:
-    # Filtrar los datos por MisionID
-    mision_df = df[df['MisionID'] == mision_id]
+# Agregar la columna 'Scalability' al DataFrame original
+df['Scalability'] = np.nan
 
-    # Obtener las combinaciones únicas de tipo de arena y tamaño
-    combinaciones_arena = mision_df[['Arenatype', 'Arenatam']].drop_duplicates()
+# Iterar sobre cada Tipo de Arena
+for tipo_arena in df['Arenatype'].unique():
+    # Filtrar los datos por Tipo de Arena
+    tipo_arena_df = df[df['Arenatype'] == tipo_arena]
 
-    # Graficar la escalabilidad para cada combinación de tipo de arena y tamaño
-    for index, row in combinaciones_arena.iterrows():
-        tipo_arena = row['Arenatype']
-        tam_arena = row['Arenatam']
-        subset = mision_df[(mision_df['Arenatype'] == tipo_arena) & (mision_df['Arenatam'] == tam_arena)]
+    # Iterar sobre cada MisionID
+    for mision_id in mision_ids:
+        # Filtrar los datos por MisionID
+        mision_df = tipo_arena_df[tipo_arena_df['MisionID'] == mision_id]
 
-        escalabilidad = calcular_escalabilidad(subset)
-        num_robots = subset['NumRobots'].tolist()
+        # Obtener las combinaciones únicas de tamaño de arena
+        tamanos_arena = mision_df['Arenatam'].unique()
 
-        graficar_escalabilidad(escalabilidad, num_robots, f'{tipo_arena} - {tam_arena}', mision_id)
+        # Calcular y almacenar la escalabilidad para cada tamaño de arena
+        for tam_arena in tamanos_arena:
+            subset = mision_df[mision_df['Arenatam'] == tam_arena]
 
-# Configuración de la leyenda y etiquetas
-plt.legend()
-plt.xlabel('Número de Robots')
-plt.ylabel('Escalabilidad')
-plt.title('Escalabilidad vs Número de Robots para cada MisionID y Arena')
-plt.grid(True, linestyle='--', alpha=0.7)
-plt.show()
+            escalabilidad = calcular_escalabilidad(subset)
+            num_robots = subset['NumRobots'].tolist()
+
+            # Almacenar valores de escalabilidad en la columna 'Scalability'
+            indices = df.index[(df['Arenatype'] == tipo_arena) & (df['Arenatam'] == tam_arena) & (df['MisionID'] == mision_id)]
+            df.loc[indices, 'Scalability'] = escalabilidad
+
+            # Graficar la escalabilidad
+            graficar_escalabilidad(escalabilidad, num_robots, f'{tipo_arena} - {tam_arena}', mision_id)
+print(df[['Experimento', 'MisionID', 'Arenatype', 'Arenatam', 'NumRobots', 'Time', 'Performance', 'Scalability']])
