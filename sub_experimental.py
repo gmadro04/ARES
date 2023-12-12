@@ -29,7 +29,10 @@ def modificar_archivo(file,exp,arenas,tams):
     # Obstaculos = random.choice([True, False]) 
     Obstaculos = False  # Obstaculos en el escenario si o no, según la eleccion tipo de distribución y tipo de obstaculo
     #robots , time = loop.robots_timeDruation()   # Numero de robots y duraricion del experimento
-    robots = exp * incremento_robots + num_robots_inicial
+    if exp >= 1:
+        robots = exp*(incremento_robots + num_robots_inicial)
+    else:
+        robots = num_robots_inicial
     time = loop.robots_timeDruation()
     """ CONFIGURACION ARCHIVO """
     loop.framework_label(file, time, codigos) #Configuración software de control y tiempo ejecucion

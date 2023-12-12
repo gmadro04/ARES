@@ -9,7 +9,7 @@
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function" output="output.txt">
-    <params num_experiment="10" arena="Dodecagono" tam="grande" num_circles="1" mision="1" obstaculos="False" robots="50" />
+    <params num_experiment="10" arena="Dodecagono" tam="grande" num_circles="1" mision="2" obstaculos="False" robots="90" />
   </loop_functions>
 
   <controllers>
@@ -44,7 +44,7 @@
     <distribute id="robots">
       <position method="uniform" min="-5.0,-4.0,0" max="5.0,4.0,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
-      <entity quantity="50" max_trials="100">
+      <entity quantity="90" max_trials="100">
         <foot-bot id="fb" rab="1">
           <controller config="lua" />
         </foot-bot>
