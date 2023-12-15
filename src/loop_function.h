@@ -182,7 +182,7 @@ private:
     void ComputeCirclePositions(UInt32 NumCircles);
     void ComputeElementsPositions(UInt32 NumIter);
     void InitRobotStates();
-
+    CVector2 GetRandomPositionInHexagon(double tam);
 
     CRadians ComputeOrientation(CVector2 vec_a, CVector2 vec_b);
     CVector2 ComputeMiddle(CVector2 vec_a, CVector2 vec_b);

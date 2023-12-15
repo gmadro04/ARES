@@ -2,6 +2,7 @@
 #include "loop_function.h"
 #include <fstream>  // Para trabajar con archivos de salida
 #include <argos3/core/utility/math/rng.h>
+#include <cmath>
 
 
 
@@ -145,9 +146,10 @@ void CForaging::Init() {
   // Inicializar las posiciones de los círculos
   ComputeCirclePositions(m_unNumCircles);
   // Posicionar elementos y robots en la arena 
-  if (m_unArenatype == "Triangular" || m_unArenatype == "Dodecagono")
+  if (m_unArenatype == "Triangular" )
   {
-    ComputePositionselements();
+    //ComputePositionselements();
+    MoveRobots();
   }
   InitRobotStates();
 
@@ -870,6 +872,7 @@ void CForaging::PositionArena() {
 /****************************************/
 
 void CForaging::MoveRobots() {
+  double tam = Asignar_tamano_segun_arena(m_unArenatam);
   CFootBotEntity* pcFootBot;
   bool bPlaced = false;
   UInt32 unTrials;
@@ -881,7 +884,8 @@ void CForaging::MoveRobots() {
     do {
        ++unTrials;
        CVector3 cFootBotPosition = GetRandomPosition();
-       bPlaced = MoveEntity(pcFootBot->GetEmbodiedEntity(),
+       //cFootBotPosition.GetX();
+      bPlaced = MoveEntity(pcFootBot->GetEmbodiedEntity(),
                             cFootBotPosition,
                             CQuaternion().FromEulerAngles(m_pcRNG->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
                             CRadians::ZERO,CRadians::ZERO),false);
@@ -896,10 +900,30 @@ void CForaging::MoveRobots() {
 /****************************************/
 
 CVector3 CForaging::GetRandomPosition() {
+  double tam = Asignar_tamano_segun_arena(m_unArenatam);
   Real a = m_pcRNG->Uniform(CRange<Real>(-1.0f, 1.0f));
   Real b = m_pcRNG->Uniform(CRange<Real>(-1.0f, 1.0f));
-  return CVector3(a*SPAWN_SIDE_LENGTH, b*SPAWN_SIDE_LENGTH, 0.0f);
+  Real x;
+  Real y;
+  //return CVector3(a*SPAWN_SIDE_LENGTH, b*SPAWN_SIDE_LENGTH, 0.0f);
+
+  if (m_unArenatype == "Triangular")
+  {
+    CVector2 A((tam / 2), 0);
+    CVector2 B((-tam / 2), (tam / 2));
+    CVector2 C((-tam / 2), (-tam / 2));
+    // Ajustar valores de a y b al rango [0, 1]
+    a = (a + 1.0) / 2.0;
+    b = (b + 1.0) / 2.0;
+    // Interpolación para obtener una posición aleatoria dentro del triángulo
+    x = (1.0 - std::sqrt(a)) * A.GetX() + std::sqrt(a) * (1.0 - b) * B.GetX() + std::sqrt(a) * b * C.GetX();
+    y = (1.0 - std::sqrt(a)) * A.GetY() + std::sqrt(a) * (1.0 - b) * B.GetY() + std::sqrt(a) * b * C.GetY();
+
+  }
+
+    return CVector3(x, y, 0.0);
 }
+
 
 /****************************************/
 /****************************************/

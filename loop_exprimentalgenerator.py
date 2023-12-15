@@ -188,12 +188,12 @@ def parametros_arena_hexagonal(tamaño,tipo_arena):
     # Parametros configuración de la arena
     arena_conf_params = {
     "Hexagonal": [
-        ('1', ",".join(map(str,[0.1,size/2,0.2])), ",".join(map(str,[pos,0,0])),'0,0,0'),
-        ('2', ",".join(map(str,[0.1,size/2,0.2])), ",".join(map(str,[-pos,0,0])),'0,0,0'),
-        ('3', ",".join(map(str,[0.1,R_param*L,0.2])), ",".join(map(str,[-pos/2,R_param*1.5,0])),'-65,0,0'),
-        ('4', ",".join(map(str,[0.1,R_param*L,0.2])), ",".join(map(str,[pos/2,R_param*1.5,0])),'65,0,0'),
-        ('5', ",".join(map(str,[0.1,R_param*L,0.2])), ",".join(map(str,[-pos/2,-R_param*1.5,0])),'65,0,0'),
-        ('6', ",".join(map(str,[0.1,R_param*L,0.2])), ",".join(map(str,[pos/2,-R_param*1.5,0])),'-65,0,0')
+        ('1', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[R_param*2.2893,0,0])),'0,0,0'),
+        ('2', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[-R_param*2.2893,0,0])),'0,0,0'),
+        ('3', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[-R_param*1.144672,R_param*1.982632,0])),'-60,0,0'),
+        ('4', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[R_param*1.144672,R_param*1.982632,0])),'60,0,0'),
+        ('5', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[-R_param*1.144672,-R_param*1.982632,0])),'60,0,0'),
+        ('6', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[R_param*1.144672,-R_param*1.982632,0])),'-60,0,0')
     ]
 
     }
@@ -323,7 +323,7 @@ def arena_configuracion(file,arena_params,params,robots):
     if arena is not None:
         # Realiza las modificaciones que desees en la etiqueta "arena" y sus subetiquetas aquí
         # nuevo_size = [params['T_arena'],params['T_arena'],1] # Configuración arena con su tamaño
-        size = [15,15,1] # Tamaño de la arena, estandar
+        size = [17,17,1] # Tamaño de la arena, estandar
         arena.set("size", ",".join(map(str, size))) # Nuevas dimensiones de la arena  Convierte la lista a una cadena separada por comas
 
     # Borra las subetiquetas <box> dentro de la etiqueta <arena>

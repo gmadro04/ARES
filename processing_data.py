@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns  # Importar seaborn para facilitar la asignación de colores
+import seaborn as sns
 import numpy as np
 
 """
@@ -30,31 +30,37 @@ def plot_metrica_promedio(mision_df, metrica, bar_width=0.25, bar_space=0.01):
     plt.show()
 
 def calcular_flexibilidad(arena):
-    flexibilidad = [0]
+    flexibilidad = [1]
     deltaP = 0
     deltaX = 0
     for i in range(len(arena)-1):
-        if arena['Performance'].iloc[i] != 0:
+        # Verificar si el denominador es cero antes de realizar la división
+        if arena['Performance'].iloc[0] != 0 and arena['NumRobots'].iloc[0] != 0:
             deltaP = (arena['Performance'].iloc[i+1] - arena['Performance'].iloc[0]) / arena['Performance'].iloc[0]
+            deltaX = (arena['NumRobots'].iloc[i+1] - arena['NumRobots'].iloc[0]) / arena['NumRobots'].iloc[0]
+            # Evitar la división por cero en el cálculo de M_F
+            if deltaX != 0:
+                M_F = (deltaP / deltaX) + 1
+                flexibilidad.append(M_F)
+            else:
+                flexibilidad.append(0.1)
         else:
-            deltaP = 0
-        deltaX = (arena['NumRobots'].iloc[i+1] - arena['NumRobots'].iloc[0]) / arena['NumRobots'].iloc[0]
-        M_F = (deltaP / deltaX) +1 
-        flexibilidad.append(M_F)
+            # Si el denominador es cero, asignar un valor adecuado (por ejemplo, NaN)
+            flexibilidad.append(0.1)
     return flexibilidad
 
 def calcular_escalabilidad(arena):
     escalabilidad = []
     deltaP = 0
     deltaN = 0
-    escalabilidad.append(0)
+    escalabilidad.append(1)
 
     for i in range(len(arena)-1):
         if arena['Performance'].iloc[i] != 0:
             deltaP = (arena['Performance'].iloc[i+1] - arena['Performance'].iloc[i]) / arena['Performance'].iloc[i]
         else:
             # Si el denominador es cero, asignar un valor adecuado (por ejemplo, NaN)
-            deltaP = 0
+            deltaP = 0.1
         #deltaP = (arena['Performance'].iloc[i+1] - arena['Performance'].iloc[i]) / arena['Performance'].iloc[i]
         deltaN = (arena['NumRobots'].iloc[i+1] - arena['NumRobots'].iloc[i]) / arena['NumRobots'].iloc[i]
         M_S = deltaP / deltaN
@@ -62,8 +68,32 @@ def calcular_escalabilidad(arena):
 
     return escalabilidad
 # Función para graficar propiedades
-def graficar_propiedades(data_metrica, num_robots, nombre, mision_id, name_metrica,color):
-    plt.bar(num_robots, data_metrica, width=2,label=f'Mision ID {mision_id} - Arena {nombre}', color = color)
+#def graficar_propiedades(data_metrica, num_robots, nombre, mision_id, name_metrica,color):
+#    plt.bar(num_robots, data_metrica, width=2,label=f'Mision ID {mision_id} - Arena {nombre}', color = color)
+#    plt.xlabel('Número de Robots')
+#    plt.ylabel(f'{name_metrica}')
+#    plt.title(f'{name_metrica} resultados - MisionID: {mision_id} - Arena: {nombre}')
+#    plt.legend()
+#    plt.grid(True, linestyle='--', alpha=0.7)
+#    plt.show()
+
+def graficar_propiedades(data_metrica, num_robots, nombre, mision_id, name_metrica, color):
+    print(f'Longitud de data_metrica: {len(data_metrica)}')
+    print(f'Longitud de num_robots: {len(num_robots)}')
+
+    # Verificar que las longitudes sean iguales
+    if len(data_metrica) != len(num_robots):
+        raise ValueError("Las longitudes de data_metrica y num_robots deben ser iguales.")
+
+    # Crear un DataFrame para facilitar el uso de boxplot
+    df = pd.DataFrame({'NumRobots': num_robots, name_metrica: data_metrica})
+
+    # Configurar el boxplot
+    plt.boxplot([df[df['NumRobots'] == num]['Escalabilidad'].tolist() for num in num_robots],
+                positions=num_robots,
+                labels=[f'Mision ID {mision_id} - Arena {nombre}'],
+                boxprops=dict(color=color))
+
     plt.xlabel('Número de Robots')
     plt.ylabel(f'{name_metrica}')
     plt.title(f'{name_metrica} resultados - MisionID: {mision_id} - Arena: {nombre}')
@@ -138,6 +168,6 @@ for mision_id in mision_ids:
     # Filtrar datos por MisionID
     mision_df = metricas_promedio_df[metricas_promedio_df['MisionID'] == mision_id]
     # Llamar a la función para graficar escalabilidad
-    #plot_metrica_promedio(mision_df, 'Escalabilidad')
+    plot_metrica_promedio(mision_df, 'Escalabilidad')
     # Llamar a la función para graficar flexibilidad
-    #plot_metrica_promedio(mision_df, 'Flexibilidad')
+    plot_metrica_promedio(mision_df, 'Flexibilidad')
