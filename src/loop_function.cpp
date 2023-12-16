@@ -3,6 +3,8 @@
 #include <fstream>  // Para trabajar con archivos de salida
 #include <argos3/core/utility/math/rng.h>
 #include <cmath>
+#include <numeric>
+
 
 
 
@@ -84,10 +86,12 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     {
       LOGERR << "Problem with Attributes in node params" << std::endl;
     }
-
-    m_arenaSize = 0.83001;
+    // Variables para el uso de las metricas de evaluación seun la misión
+    // --- Exploración ---
+    m_arenaSize = 0.0; // se ajusta segun la arena
     m_gridSize = 10;
     m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
+    // -- Variable funcion objetivo
     m_fObjectiveFunction = 0; // Función objetivo que mide el rendimiento de la mision
 
     Init();
@@ -146,7 +150,7 @@ void CForaging::Init() {
   // Inicializar las posiciones de los círculos
   ComputeCirclePositions(m_unNumCircles);
   // Posicionar elementos y robots en la arena 
-  if (m_unArenatype == "Triangular" )
+  if (m_unArenatype == "Triangular"|| m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono")
   {
     //ComputePositionselements();
     MoveRobots();
@@ -167,7 +171,7 @@ void CForaging::Reset() {
     }
 
     Init();
-    //MoveRobots();
+    MoveRobots();
     m_fObjectiveFunction = 0;
     m_tRobotStates.clear();
     InitRobotStates();
@@ -206,39 +210,6 @@ void CForaging::PreStep() {
 /****************************************/
 //
 void CForaging::PostStep() {
-//  UInt32 sCurrentScore = m_unNbrItemsCollected;
-//  CSpace::TMapPerType& m_cFootbots = GetSpace().GetEntitiesByType("foot-bot");
-//  UInt8 unRobotId;
-//  for(CSpace::TMapPerType::iterator it = m_cFootbots.begin(); it != m_cFootbots.end(); ++it) {
-//     /* Get handle to foot-bot entity and controller */
-//     CFootBotEntity& cFootBot = *any_cast<CFootBotEntity*>(it->second);
-//     /* Get the position of the foot-bot on the ground as a CVector2 */
-//     CVector2 cPos;
-//     cPos.Set(cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetX(), cFootBot.GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-//     unRobotId = atoi(cFootBot.GetId().substr(2, 3).c_str());
-//     /* If the foot-bot is on the nest, drop the item he is carrying. */
-//     if (IsOnNest(cPos)) {
-//       if (m_sFoodData[unRobotId-1] != 0) {
-//           m_unNbrItemsCollected += 1;
-//           m_sFoodData[unRobotId-1] = 0;
-//       }
-//     } else if (IsOnSource(cPos)) {    /* If the foot-bot is on source, takes corresponding item */
-//       m_sFoodData[unRobotId-1] = 1;
-//     } else if (IsOnForbidden(cPos)) {    /* If the foot-bot is on the forbbiden areas, looses corresponding item */
-//         m_sFoodData[unRobotId-1] = 0;
-//     }
-//  }
-//
-//  /* Increase the time step counter */
-//  m_unTimeStep += 1;
-//
-//  /* Writting data to output file. */
-//  m_cOutFile << m_unTimeStep << "\t" << m_unNbrItemsCollected << std::endl;
-//
-//  /* Output in simulator */
-//  if (m_unNbrItemsCollected > sCurrentScore) {
-//    LOGERR << "Items collected = " << m_unNbrItemsCollected << std::endl;
-//  }
   // LLAMADO A LA METRICA SEGUN LA MISION
   ScoreControl();
 }
@@ -320,7 +291,6 @@ void CForaging::SaveRobotPositions() {
             MyFile << "[" << strRobotId << ", " << cFootBotPosition << "]" << std::endl;
             //LOG << cFootBotPosition << std::endl;
         }
-
         // Cerrar el archivo
         MyFile.close();
 
@@ -330,15 +300,40 @@ void CForaging::SaveExperimentData() {
   std::ofstream MyFile("Experimentos/datos.csv", std::ios_base::app);
   // Escribir encabezados si el archivo está vacío
   if (MyFile.tellp() == 0) {
-      MyFile << "Experimento,MisionID,Arenatype,Arenatam,NumRobots,Time,Performance" << std::endl;
+      MyFile << "Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Time,Performance" << std::endl;
   }
+  std::string Mision;
+  if (m_unIDmision == 1)
+  {
+    Mision = "Exploration";
+  }
+  else if (m_unIDmision == 2)
+  {
+    Mision = "Aggregation";
+  }
+  else if (m_unIDmision == 3)
+  {
+    Mision = "Pattern formation";
+  }
+  else if (m_unIDmision == 4)
+  {
+    Mision = "Synchronization";
+  }
+  else{
+    Mision = "Color selection";
+  }
+  
+  
+  
+  
   // Escribir datos en formato CSV con cada valor en una celda separada
   MyFile << m_unExperiment << ",";
   MyFile << m_unIDmision << ",";
+  MyFile << Mision << ",";
   MyFile << m_unArenatype << ",";
   MyFile << m_unArenatam << ",";
   MyFile << m_unRobots << ",";
-  MyFile << "1:20m" << ",";
+  MyFile << "240 Seg" << ",";
   MyFile << m_fObjectiveFunction << std::endl;
   // Cerrar el archivo
   MyFile.close();
@@ -387,7 +382,6 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
         return CColor::BLACK;
       }
   }
-
     /* Rest of the arena is gray. */
     return CColor::GRAY60;
 }
@@ -580,7 +574,6 @@ bool CForaging::Dentro_del_circulo(const std::pair<double,double>& punto, double
     return distancia < radio;
 }
 
-
 // Función para asignar el tamaño según el tipo de arena
 double CForaging::Asignar_tamano_segun_arena(const std::string& arena_tipo) {
     if (arena_tipo == "pequena") {
@@ -772,6 +765,7 @@ Real CForaging::GetExplorationScore(){
   CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
   CVector2 cFootBotPosition(0, 0);
   Real Exploration = 0;
+  m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
   for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
       CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
       cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
@@ -872,7 +866,6 @@ void CForaging::PositionArena() {
 /****************************************/
 
 void CForaging::MoveRobots() {
-  double tam = Asignar_tamano_segun_arena(m_unArenatam);
   CFootBotEntity* pcFootBot;
   bool bPlaced = false;
   UInt32 unTrials;
@@ -889,7 +882,7 @@ void CForaging::MoveRobots() {
                             cFootBotPosition,
                             CQuaternion().FromEulerAngles(m_pcRNG->Uniform(CRange<CRadians>(CRadians::ZERO,CRadians::TWO_PI)),
                             CRadians::ZERO,CRadians::ZERO),false);
-    } while(!bPlaced && unTrials < 100);
+    } while(!bPlaced && unTrials < 200);
     if(!bPlaced) {
        THROW_ARGOSEXCEPTION("Can't place robot");
     }
@@ -920,8 +913,87 @@ CVector3 CForaging::GetRandomPosition() {
     y = (1.0 - std::sqrt(a)) * A.GetY() + std::sqrt(a) * (1.0 - b) * B.GetY() + std::sqrt(a) * b * C.GetY();
 
   }
+  else if (m_unArenatype == "Octagonal") {
+    // Definir las coordenadas de los vértices del octágono
+    double OctagonRadius = tam / 2;
+    std::vector<CVector2> octagonVertices;
+    for (UInt32 i = 0; i < 8; ++i) {
+      CRadians angle = CRadians::PI_OVER_FOUR * i;
 
-    return CVector3(x, y, 0.0);
+      // Introducir aleatoriedad en las coordenadas de los vértices
+      Real randomnessFactor = m_pcRNG->Uniform(CRange<Real>(-1.7f, 1.7f));
+      Real m = OctagonRadius * randomnessFactor * std::cos(angle.GetValue());
+      Real n = OctagonRadius * randomnessFactor * std::sin(angle.GetValue());
+
+      octagonVertices.emplace_back(m, n);
+    }
+
+    a = (a + 1.0) / 2.0;
+    b = (b + 1.0) / 2.0;
+
+    // Inicializar posiciones
+    x = 0.0;
+    y = 0.0;
+
+    // Generar pesos aleatorios
+    std::vector<Real> weights;
+    for (size_t i = 0; i < octagonVertices.size(); ++i) {
+      weights.push_back(m_pcRNG->Uniform(CRange<Real>(0.0, 1.0)));
+    }
+
+    // Normalizar pesos para asegurar que sumen 1.0
+    Real totalWeight = std::accumulate(weights.begin(), weights.end(), 0.0);
+    for (size_t i = 0; i < octagonVertices.size(); ++i) {
+      weights[i] /= totalWeight;
+    }
+
+    // Aplicar pesos para obtener una posición aleatoria dentro del octágono
+    for (size_t i = 0; i < octagonVertices.size(); ++i) {
+      x += weights[i] * octagonVertices[i].GetX();
+      y += weights[i] * octagonVertices[i].GetY();
+    }
+  }
+  else if (m_unArenatype == "Dodecagono") {
+    // Definir las coordenadas de los vértices del dodecágono
+    double DodecagonRadius = tam / 2;
+    std::vector<CVector2> dodecagonVertices;
+    for (UInt32 i = 0; i < 12; ++i) {
+      CRadians angle = CRadians::TWO_PI / 12 * i;
+
+      // Introducir aleatoriedad en las coordenadas de los vértices
+      Real randomnessFactor = m_pcRNG->Uniform(CRange<Real>(-2.0f, 2.0f));
+      Real m = DodecagonRadius * randomnessFactor * std::cos(angle.GetValue());
+      Real n = DodecagonRadius * randomnessFactor * std::sin(angle.GetValue());
+
+      dodecagonVertices.emplace_back(m, n);
+    }
+
+    a = (a + 1.0) / 2.0;
+    b = (b + 1.0) / 2.0;
+
+    // Inicializar posiciones
+    x = 0.0;
+    y = 0.0;
+
+    // Generar pesos aleatorios
+    std::vector<Real> weights;
+    for (size_t i = 0; i < dodecagonVertices.size(); ++i) {
+      weights.push_back(m_pcRNG->Uniform(CRange<Real>(0.0, 1.0)));
+    }
+
+    // Normalizar pesos para asegurar que sumen 1.0
+    Real totalWeight = std::accumulate(weights.begin(), weights.end(), 0.0);
+    for (size_t i = 0; i < dodecagonVertices.size(); ++i) {
+      weights[i] /= totalWeight;
+    }
+
+    // Aplicar pesos para obtener una posición aleatoria dentro del dodecágono
+    for (size_t i = 0; i < dodecagonVertices.size(); ++i) {
+      x += weights[i] * dodecagonVertices[i].GetX();
+      y += weights[i] * dodecagonVertices[i].GetY();
+    }
+  }
+  return CVector3(x, y, 0.0);
 }
 
 

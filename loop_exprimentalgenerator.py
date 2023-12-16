@@ -13,7 +13,7 @@ def params_arena(A_t,N_a):
     arenas = ["Triangular","Cuadrada","Hexagonal","Octagonal","Dodecagono"]
     dim_tam = ['pequena','mediana','grande']
     #arena = random.choice(arenas)
-    arena = arenas[A_t]
+    arena = arenas[4]
     # tamaño de la arena
     #dim_tam = random.choice(['pequena','mediana','grande'])  # Tipo de tamaño de la arena.
     dim_tam = dim_tam[N_a]
@@ -38,7 +38,7 @@ def robots_timeDruation():
     # Genera un número aleatorio entre 5 y 30 utilizando una distribución uniforme
     robots = random.randrange(5, 40, 5)
     # Tiempo de suración del experimento
-    time = random.choice([200])
+    time = random.choice([240])
     #return robots,time
     return time
 
@@ -57,7 +57,7 @@ def framework_label (file,time,codigos):
         params.set("script", codigos) # pasamos el script de control
     tree.write(file)
 
-def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots):
+def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID):
     tree = ET.parse(file)
     root = tree.getroot()
             # MODIFICAR PARAMETROS LOOP_FUNCTIONS
@@ -69,7 +69,7 @@ def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots):
             Eparams.set("num_experiment",str(exp+1))
             Eparams.set("arena",tipo_arena)
             Eparams.set("tam",tam_arena)
-            Eparams.set("mision", "2") # ID del comportamiento que se esta evaluando para ejecutar la mision correspondiente
+            Eparams.set("mision", str(m_ID)) # ID del comportamiento que se esta evaluando para ejecutar la mision correspondiente
             Eparams.set("obstaculos",str(obstaculos))
             Eparams.set("robots",str(robots)) # falso 0, verdadero 1
     tree.write(file)
@@ -112,10 +112,10 @@ def parametros_arena_cuadrada(tamaño,tipo_arena):
     # Parametros configuración de la arena
     arena_conf_params = {
     "Cuadrada": [
-        ('1', ",".join(map(str,[0.1,box_size,0.2])), ",".join(map(str,[pos,0,0])), '0,0,0'),
-        ('2', ",".join(map(str,[0.1,box_size,0.2])), ",".join(map(str,[-pos,0,0])), '0,0,0'),
-        ('3', ",".join(map(str,[box_size,0.1,0.2])), ",".join(map(str,[0,-pos,0])), '0,0,0'),
-        ('4', ",".join(map(str,[box_size,0.1,0.2])), ",".join(map(str,[0,pos,0])), '0,0,0')
+        ('1', ",".join(map(str,[0.055,box_size,0.2])), ",".join(map(str,[pos,0,0])), '0,0,0'),
+        ('2', ",".join(map(str,[0.055,box_size,0.2])), ",".join(map(str,[-pos,0,0])), '0,0,0'),
+        ('3', ",".join(map(str,[box_size,0.055,0.2])), ",".join(map(str,[0,-pos,0])), '0,0,0'),
+        ('4', ",".join(map(str,[box_size,0.055,0.2])), ",".join(map(str,[0,pos,0])), '0,0,0')
     ]
     }
 
@@ -151,9 +151,9 @@ def parametros_arena_triangular(tamaño,tipo_arena):
     # Parametros configuración de la arena
     arena_conf_params = {
     "Triangular": [
-        ('1', ",".join(map(str,[0.1,box_size,0.2])), ",".join(map(str,[-pos,0,0])),'0,0,0'),
-        ('2', ",".join(map(str,[0.1,R_param*L,0.2])), ",".join(map(str,[0,pos/2,0])),'63,0,0'),
-        ('3', ",".join(map(str,[0.1,R_param*L,0.2])), ",".join(map(str,[0,-pos/2,0])),'-63,0,0')
+        ('1', ",".join(map(str,[0.055,box_size,0.2])), ",".join(map(str,[-pos,0,0])),'0,0,0'),
+        ('2', ",".join(map(str,[0.055,R_param*L,0.2])), ",".join(map(str,[0,pos/2,0])),'63.66,0,0'),
+        ('3', ",".join(map(str,[0.055,R_param*L,0.2])), ",".join(map(str,[0,-pos/2,0])),'-63.66,0,0')
     ]
 
     }
@@ -188,12 +188,12 @@ def parametros_arena_hexagonal(tamaño,tipo_arena):
     # Parametros configuración de la arena
     arena_conf_params = {
     "Hexagonal": [
-        ('1', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[R_param*2.2893,0,0])),'0,0,0'),
-        ('2', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[-R_param*2.2893,0,0])),'0,0,0'),
-        ('3', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[-R_param*1.144672,R_param*1.982632,0])),'-60,0,0'),
-        ('4', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[R_param*1.144672,R_param*1.982632,0])),'60,0,0'),
-        ('5', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[-R_param*1.144672,-R_param*1.982632,0])),'60,0,0'),
-        ('6', ",".join(map(str,[0.1,R_param*2.66,0.2])), ",".join(map(str,[R_param*1.144672,-R_param*1.982632,0])),'-60,0,0')
+        ('1', ",".join(map(str,[0.055,R_param*2.66,0.2])), ",".join(map(str,[R_param*2.2893,0,0])),'0,0,0'),
+        ('2', ",".join(map(str,[0.055,R_param*2.66,0.2])), ",".join(map(str,[-R_param*2.2893,0,0])),'0,0,0'),
+        ('3', ",".join(map(str,[0.055,R_param*2.66,0.2])), ",".join(map(str,[-R_param*1.144672,R_param*1.982632,0])),'-60,0,0'),
+        ('4', ",".join(map(str,[0.055,R_param*2.66,0.2])), ",".join(map(str,[R_param*1.144672,R_param*1.982632,0])),'60,0,0'),
+        ('5', ",".join(map(str,[0.055,R_param*2.66,0.2])), ",".join(map(str,[-R_param*1.144672,-R_param*1.982632,0])),'60,0,0'),
+        ('6', ",".join(map(str,[0.055,R_param*2.66,0.2])), ",".join(map(str,[R_param*1.144672,-R_param*1.982632,0])),'-60,0,0')
     ]
 
     }
@@ -228,14 +228,14 @@ def parametros_arena_octagonal(tamaño,tipo_arena):
     # Parametros configuración de la arena
     arena_conf_params = {
     "Octagonal": [
-        ('1', ",".join(map(str,[0.1,size/2,0.2])), ",".join(map(str,[pos,0,0])),'0,0,0'),
-        ('2', ",".join(map(str,[0.1,size/2,0.2])), ",".join(map(str,[-pos,0,0])),'0,0,0'),
-        ('3', ",".join(map(str,[0.1,size/2,0.2])), ",".join(map(str,[0,pos,0])),'90,0,0'),
-        ('4', ",".join(map(str,[0.1,size/2,0.2])), ",".join(map(str,[0,-pos,0])),'90,0,0'),
-        ('5', ",".join(map(str,[0.1,R_param*L,0.2])), ",".join(map(str,[-R_param*1.5,-R_param*1.5,0])),'45,0,0'),
-        ('6', ",".join(map(str,[0.1,R_param*L,0.2])), ",".join(map(str,[R_param*1.5,R_param*1.5,0])),'45,0,0'),
-        ('7', ",".join(map(str,[0.1,R_param*L,0.2])), ",".join(map(str,[R_param*1.5,-R_param*1.5,0])),'-45,0,0'),
-        ('8', ",".join(map(str,[0.1,R_param*L,0.2])), ",".join(map(str,[-R_param*1.5,R_param*1.5,0])),'-45,0,0')
+        ('1', ",".join(map(str,[0.055,size/2,0.2])), ",".join(map(str,[pos,0,0])),'0,0,0'),
+        ('2', ",".join(map(str,[0.055,size/2,0.2])), ",".join(map(str,[-pos,0,0])),'0,0,0'),
+        ('3', ",".join(map(str,[0.055,size/2,0.2])), ",".join(map(str,[0,pos,0])),'90,0,0'),
+        ('4', ",".join(map(str,[0.055,size/2,0.2])), ",".join(map(str,[0,-pos,0])),'90,0,0'),
+        ('5', ",".join(map(str,[0.055,R_param*L,0.2])), ",".join(map(str,[-R_param*1.5,-R_param*1.5,0])),'45,0,0'),
+        ('6', ",".join(map(str,[0.055,R_param*L,0.2])), ",".join(map(str,[R_param*1.5,R_param*1.5,0])),'45,0,0'),
+        ('7', ",".join(map(str,[0.055,R_param*L,0.2])), ",".join(map(str,[R_param*1.5,-R_param*1.5,0])),'-45,0,0'),
+        ('8', ",".join(map(str,[0.055,R_param*L,0.2])), ",".join(map(str,[-R_param*1.5,R_param*1.5,0])),'-45,0,0')
     ]
 
     }
@@ -270,18 +270,18 @@ def parametros_arena_dodecagono(tamaño,tipo_arena):
     # Parametros configuración de la arena
     arena_conf_params = {
     "Dodecagono": [
-        ('1', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[-pos,0,0])),'0,0,0'),
-        ('2', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[pos,0,0])),'0,0,0'),
-        ('3', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[0,pos,0])),'90,0,0'),
-        ('4', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[0,-pos,0])),'90,0,0'),
-        ('5', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[-R_param*1,-R_param*1.733,0])),'60,0,0'),
-        ('6', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[-R_param*1.733,-R_param*1,0])),'30,0,0'),
-        ('7', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[R_param*1,R_param*1.733,0])),'60,0,0'),
-        ('8', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[R_param*1.733,R_param*1,0])),'30,0,0'),
-        ('9', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[-R_param*1,R_param*1.733,0])),'-60,0,0'),
-        ('10', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[-R_param*1.733,R_param*1,0])),'-30,0,0'),
-        ('11', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[R_param*1,-R_param*1.733,0])),'-60,0,0'),
-        ('12', ",".join(map(str,[0.1,R_param*1.1,0.2])), ",".join(map(str,[R_param*1.733,-R_param*1,0])),'-30,0,0')
+        ('1', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[-pos,0,0])),'0,0,0'),
+        ('2', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[pos,0,0])),'0,0,0'),
+        ('3', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[0,pos,0])),'90,0,0'),
+        ('4', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[0,-pos,0])),'90,0,0'),
+        ('5', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[-R_param*1,-R_param*1.733,0])),'60,0,0'),
+        ('6', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[-R_param*1.733,-R_param*1,0])),'30,0,0'),
+        ('7', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[R_param*1,R_param*1.733,0])),'60,0,0'),
+        ('8', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[R_param*1.733,R_param*1,0])),'30,0,0'),
+        ('9', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[-R_param*1,R_param*1.733,0])),'-60,0,0'),
+        ('10', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[-R_param*1.733,R_param*1,0])),'-30,0,0'),
+        ('11', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[R_param*1,-R_param*1.733,0])),'-60,0,0'),
+        ('12', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[R_param*1.733,-R_param*1,0])),'-30,0,0')
     ]
 
     }

@@ -12,7 +12,16 @@ import time
 # Nombre del archivo XML
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_spots.lua"
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/obstacleAvoiddance_sta.lua"
+misionID = 1 # Configura el id de la mision a evaluar
+"""Path del software de control a evaluar
+Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
+* Mision ID = 1 -> Mision exploración
+* Mision ID = 2 -> Mision agregación
+* Mision ID = 3 -> Mision marcha en formación
+* Mision ID = 4 -> Mision Sincronización
+* Mision ID = 5 -> Mision toma de decisiones colectiva
+"""
 # obstacleAvoiddance_vec.lua, obstacleAvoidance_Gmadro.lua, aggregation_spots.lua
 # color_selection_det.lua, synchronization.lua, aggregation_0_rb_taxis.lua,color_selection_prob.lua
 # color_selection_det.lua
@@ -26,7 +35,7 @@ root = tree.getroot()
 def modificar_archivo(file,exp,arenas,tams):
     """ Configuración parametros básicos """
     arena_params, parametros = loop.params_arena(arenas,tams)    # Tamaño de la arena grande,mediana,pequeña y configuracion de atributos
-    # Obstaculos = random.choice([True, False]) 
+    # Obstaculos = random.choice([True, False])
     Obstaculos = False  # Obstaculos en el escenario si o no, según la eleccion tipo de distribución y tipo de obstaculo
     #robots , time = loop.robots_timeDruation()   # Numero de robots y duraricion del experimento
     if exp >= 1:
@@ -42,7 +51,7 @@ def modificar_archivo(file,exp,arenas,tams):
     loop.obstaculos_arena(file=file,obs=Obstaculos,pos_obs=parametros["Pos"],params=parametros)
     # configuración parametros loop_functions
     loop.loops_params(file=file,tipo_arena=parametros["Tipo de arena"],tam_arena=parametros["Tamaño arena"],
-                      exp=exp,obstaculos=Obstaculos, robots=robots)
+                      exp=exp,obstaculos=Obstaculos, robots=robots, m_ID=misionID)
     # Parametros simulación.
     print("----------------------------------------------------")
     simulacion = pd.DataFrame([parametros["Tipo de arena"], parametros["Tamaño arena"],robots,time],index=["TIPO DE ARENA:","TAMAÑO:","# ROBOTS:","T_EXPERIMENTO:"])
@@ -55,7 +64,7 @@ def modificar_archivo(file,exp,arenas,tams):
 # Configuración de la cantidad de ejecuciones
 num_robots_inicial = 5
 incremento_robots = 5
-num_experimentos = 10 # Puedes cambiar esto al número deseado de ejecuciones
+num_experimentos = 11 # Puedes cambiar esto al número deseado de ejecuciones
 
 for arena in range(5): # Ejecución por tipos de arena T,C,H6,O8,P12
     for tam in range(3): # Ejecución por tamaño de arena P,M,G
