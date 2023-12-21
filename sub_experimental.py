@@ -12,8 +12,8 @@ import time
 # Nombre del archivo XML
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/obstacleAvoiddance_sta.lua"
-misionID = 1 # Configura el id de la mision a evaluar
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_spots.lua"
+misionID = 2 # Configura el id de la mision a evaluar
 """Path del software de control a evaluar
 Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
 * Mision ID = 1 -> Mision exploración

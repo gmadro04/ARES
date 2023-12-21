@@ -9,7 +9,7 @@
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function" output="output.txt">
-    <params num_experiment="1" arena="Octagonal" tam="pequena" num_circles="1" mision="1" obstaculos="False" robots="5" />
+    <params num_experiment="11" arena="Dodecagono" tam="grande" num_circles="1" mision="2" obstaculos="False" robots="100" />
   </loop_functions>
 
   <controllers>
@@ -29,7 +29,7 @@
         <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
         <footbot_light implementation="rot_z_only" show_rays="false" />
       </sensors>
-      <params script="/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/obstacleAvoiddance_sta.lua" />
+      <params script="/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_spots.lua" />
     </lua_controller>
 
   </controllers>
@@ -38,13 +38,13 @@
   
   <arena size="17,17,1" center="0,0,0.5">
 
-    <box id="1" size="0.055,2.0,0.2" movable="false"><body position="2.0,0,0" orientation="0,0,0" /></box><box id="2" size="0.055,2.0,0.2" movable="false"><body position="-2.0,0,0" orientation="0,0,0" /></box><box id="3" size="0.055,2.0,0.2" movable="false"><body position="0,2.0,0" orientation="90,0,0" /></box><box id="4" size="0.055,2.0,0.2" movable="false"><body position="0,-2.0,0" orientation="90,0,0" /></box><box id="5" size="0.055,1.41,0.2" movable="false"><body position="-1.5,-1.5,0" orientation="45,0,0" /></box><box id="6" size="0.055,1.41,0.2" movable="false"><body position="1.5,1.5,0" orientation="45,0,0" /></box><box id="7" size="0.055,1.41,0.2" movable="false"><body position="1.5,-1.5,0" orientation="-45,0,0" /></box><box id="8" size="0.055,1.41,0.2" movable="false"><body position="-1.5,1.5,0" orientation="-45,0,0" /></box><light id="light" position="0,0,0.5" orientation="0,0,0" color="yellow" intensity="10.0" medium="leds" />
+    <box id="1" size="0.055,3.3000000000000003,0.2" movable="false"><body position="-6.0,0,0" orientation="0,0,0" /></box><box id="2" size="0.055,3.3000000000000003,0.2" movable="false"><body position="6.0,0,0" orientation="0,0,0" /></box><box id="3" size="0.055,3.3000000000000003,0.2" movable="false"><body position="0,6.0,0" orientation="90,0,0" /></box><box id="4" size="0.055,3.3000000000000003,0.2" movable="false"><body position="0,-6.0,0" orientation="90,0,0" /></box><box id="5" size="0.055,3.3000000000000003,0.2" movable="false"><body position="-3.0,-5.199,0" orientation="60,0,0" /></box><box id="6" size="0.055,3.3000000000000003,0.2" movable="false"><body position="-5.199,-3.0,0" orientation="30,0,0" /></box><box id="7" size="0.055,3.3000000000000003,0.2" movable="false"><body position="3.0,5.199,0" orientation="60,0,0" /></box><box id="8" size="0.055,3.3000000000000003,0.2" movable="false"><body position="5.199,3.0,0" orientation="30,0,0" /></box><box id="9" size="0.055,3.3000000000000003,0.2" movable="false"><body position="-3.0,5.199,0" orientation="-60,0,0" /></box><box id="10" size="0.055,3.3000000000000003,0.2" movable="false"><body position="-5.199,3.0,0" orientation="-30,0,0" /></box><box id="11" size="0.055,3.3000000000000003,0.2" movable="false"><body position="3.0,-5.199,0" orientation="-60,0,0" /></box><box id="12" size="0.055,3.3000000000000003,0.2" movable="false"><body position="5.199,-3.0,0" orientation="-30,0,0" /></box><light id="light" position="0,0,0.5" orientation="0,0,0" color="yellow" intensity="10.0" medium="leds" />
     <floor id="floor" source="loop_functions" pixels_per_meter="100" />
 
     <distribute id="robots">
-      <position method="uniform" min="-1.0,-2.0,0" max="1.0,2.0,0" />
+      <position method="uniform" min="-5.0,-4.0,0" max="5.0,4.0,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
-      <entity quantity="5" max_trials="100">
+      <entity quantity="100" max_trials="100">
         <foot-bot id="fb" rab="1">
           <controller config="lua" />
         </foot-bot>
@@ -73,14 +73,7 @@
   
   
   <visualization>
-    <qt-opengl lua_editor="false">
-      <camera>
-        <placement idx="0" position="0,0,10" look_at="0,0,0" up="3,0,0" lens_focal_length="20" />
-        <placement idx="1" position="0.0,-2.0,7.0" look_at="0,-1.5,0" lens_focal_length="18" />
-        <placement idx="2" position="0.0,0.0,5.0" look_at="0,-1.9,0" lens_focal_length="20" />
-        <placement idx="3" position="0,-5.0,5.0" look_at="0,-4,0" lens_focal_length="25" />
-      </camera>
-    </qt-opengl>
+
   </visualization>
 
 </argos-configuration>

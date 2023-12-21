@@ -11,11 +11,11 @@ def plot_metrica_promedio(mision_df, metrica, bar_width=0.25, bar_space=0.01):
     colores_tam = {'pequena': 'blue', 'mediana': 'green', 'grande': 'orange'}
     x = np.arange(len(tipos_arena))
 
-    for i, tam in enumerate(mision_df['Arenatam'].unique()):
+    for i, tam in enumerate(mision_df['Arenasize'].unique()):
         metrica_valores = []
 
         for tipo in tipos_arena:
-            subset = mision_df[(mision_df['Arenatype'] == tipo) & (mision_df['Arenatam'] == tam)]
+            subset = mision_df[(mision_df['Arenatype'] == tipo) & (mision_df['Arenasize'] == tam)]
             promedio_metrica = subset[f'Promedio{metrica}'].iloc[0]
             metrica_valores.append(promedio_metrica)
 
@@ -24,7 +24,7 @@ def plot_metrica_promedio(mision_df, metrica, bar_width=0.25, bar_space=0.01):
     plt.xlabel('Tipo de Arena')
     plt.ylabel(f'Promedio de {metrica}')
     plt.title(f'Promedio de {metrica} - Mision ID: {mision_id}')
-    plt.xticks(x + (bar_width + bar_space) * (len(mision_df['Arenatam'].unique()) - 1) / 2, tipos_arena)
+    plt.xticks(x + (bar_width + bar_space) * (len(mision_df['Arenasize'].unique()) - 1) / 2, tipos_arena)
     plt.legend(title='Tamaño de Arena')
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.show()
@@ -68,38 +68,38 @@ def calcular_escalabilidad(arena):
 
     return escalabilidad
 # Función para graficar propiedades
-#def graficar_propiedades(data_metrica, num_robots, nombre, mision_id, name_metrica,color):
-#    plt.bar(num_robots, data_metrica, width=2,label=f'Mision ID {mision_id} - Arena {nombre}', color = color)
-#    plt.xlabel('Número de Robots')
-#    plt.ylabel(f'{name_metrica}')
-#    plt.title(f'{name_metrica} resultados - MisionID: {mision_id} - Arena: {nombre}')
-#    plt.legend()
-#    plt.grid(True, linestyle='--', alpha=0.7)
-#    plt.show()
-
-def graficar_propiedades(data_metrica, num_robots, nombre, mision_id, name_metrica, color):
-    print(f'Longitud de data_metrica: {len(data_metrica)}')
-    print(f'Longitud de num_robots: {len(num_robots)}')
-
-    # Verificar que las longitudes sean iguales
-    if len(data_metrica) != len(num_robots):
-        raise ValueError("Las longitudes de data_metrica y num_robots deben ser iguales.")
-
-    # Crear un DataFrame para facilitar el uso de boxplot
-    df = pd.DataFrame({'NumRobots': num_robots, name_metrica: data_metrica})
-
-    # Configurar el boxplot
-    plt.boxplot([df[df['NumRobots'] == num]['Escalabilidad'].tolist() for num in num_robots],
-                positions=num_robots,
-                labels=[f'Mision ID {mision_id} - Arena {nombre}'],
-                boxprops=dict(color=color))
-
+def graficar_propiedades(data_metrica, num_robots, nombre, mision_id, name_metrica,color):
+    plt.bar(num_robots, data_metrica, width=2,label=f'Mision ID {mision_id} - Arena {nombre}', color = color)
     plt.xlabel('Número de Robots')
     plt.ylabel(f'{name_metrica}')
     plt.title(f'{name_metrica} resultados - MisionID: {mision_id} - Arena: {nombre}')
     plt.legend()
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.show()
+
+#def graficar_propiedades(data_metrica, num_robots, nombre, mision_id, name_metrica, color):
+#    print(f'Longitud de data_metrica: {len(data_metrica)}')
+#    print(f'Longitud de num_robots: {len(num_robots)}')
+#
+#    # Verificar que las longitudes sean iguales
+#    if len(data_metrica) != len(num_robots):
+#        raise ValueError("Las longitudes de data_metrica y num_robots deben ser iguales.")
+#
+#    # Crear un DataFrame para facilitar el uso de boxplot
+#    df = pd.DataFrame({'NumRobots': num_robots, name_metrica: data_metrica})
+#
+#    # Configurar el boxplot
+#    plt.boxplot([df[df['NumRobots'] == num]['Escalabilidad'].tolist() for num in num_robots],
+#                positions=num_robots,
+#                labels=[f'Mision ID {mision_id} - Arena {nombre}'],
+#                boxprops=dict(color=color))
+#
+#    plt.xlabel('Número de Robots')
+#    plt.ylabel(f'{name_metrica}')
+#    plt.title(f'{name_metrica} resultados - MisionID: {mision_id} - Arena: {nombre}')
+#    plt.legend()
+#    plt.grid(True, linestyle='--', alpha=0.7)
+#    plt.show()
 
 # Leer el archivo CSV
 df = pd.read_csv('Experimentos/datos.csv')
@@ -124,18 +124,18 @@ for tipo_arena in df['Arenatype'].unique():
         mision_df = tipo_arena_df[tipo_arena_df['MisionID'] == mision_id]
 
         # Obtener las combinaciones únicas de tamaño de arena
-        tamanos_arena = mision_df['Arenatam'].unique()
+        tamanos_arena = mision_df['Arenasize'].unique()
 
         # Calcular y almacenar la escalabilidad para cada tamaño de arena
         for tam_arena in tamanos_arena:
-            subset = mision_df[mision_df['Arenatam'] == tam_arena]
+            subset = mision_df[mision_df['Arenasize'] == tam_arena]
             #print(subset)
             escalabilidad = calcular_escalabilidad(subset)
             flexibilidad = calcular_flexibilidad(subset)
             num_robots = subset['NumRobots'].tolist()
 
             # Almacenar valores de escalabilidad en la columna 'Scalability'
-            indices = df.index[(df['Arenatype'] == tipo_arena) & (df['Arenatam'] == tam_arena) & (df['MisionID'] == mision_id)]
+            indices = df.index[(df['Arenatype'] == tipo_arena) & (df['Arenasize'] == tam_arena) & (df['MisionID'] == mision_id)]
             df.loc[indices, 'Scalability'] = escalabilidad
             df.loc[indices, 'Flexibility'] = flexibilidad
 
@@ -145,7 +145,7 @@ for tipo_arena in df['Arenatype'].unique():
             metricas_promedio_data.append({
                 'MisionID': mision_id,
                 'Arenatype': tipo_arena,
-                'Arenatam': tam_arena,
+                'Arenasize': tam_arena,
                 'PromedioEscalabilidad': promedio_escalabilidad,
                 'PromedioFlexibilidad': promedio_flexibilidad
             })
@@ -157,9 +157,9 @@ for tipo_arena in df['Arenatype'].unique():
 metricas_promedio_df = pd.DataFrame(metricas_promedio_data)
 
 # Mostrar los resultados
-print(df[['Experimento', 'MisionID', 'Arenatype', 'Arenatam', 'NumRobots', 'Time', 'Performance', 'Scalability','Flexibility']])
+#print(df[['Experimento', 'MisionID', 'Mision','Arenatype', 'Arenasize', 'NumRobots', 'Time', 'Performance', 'Scalability','Flexibility']])
 print(metricas_promedio_df)
-
+print(df)
 # Obtener IDs únicos de las misiones
 mision_ids = metricas_promedio_df['MisionID'].unique()
 

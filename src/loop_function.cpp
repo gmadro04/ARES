@@ -89,7 +89,14 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     // Variables para el uso de las metricas de evaluación seun la misión
     // --- Exploración ---
     m_arenaSize = 0.0; // se ajusta segun la arena
-    m_gridSize = 10;
+    if (m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono")
+    {
+      m_gridSize = 10;
+    }
+    else
+    {
+      m_gridSize = Asignar_tamano_segun_arena(m_unArenatam);
+    }
     m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
     // -- Variable funcion objetivo
     m_fObjectiveFunction = 0; // Función objetivo que mide el rendimiento de la mision
@@ -241,9 +248,6 @@ void CForaging::ScoreControl(){
 /****************************************/
 
 void CForaging::PostExperiment() {
-    // Llama a la función para guardar las posiciones finales de los robots
-    SaveRobotPositions();
-    SaveExperimentData();
   if (m_unIDmision == 1)
   {
     m_fObjectiveFunction = m_fObjectiveFunction / m_gridSize / m_gridSize;
@@ -266,6 +270,9 @@ void CForaging::PostExperiment() {
   {
     LOGERR << "ID MISION 5" << std::endl;
   }
+  // Llama a la función para guardar las posiciones finales de los robots
+  SaveRobotPositions();
+  SaveExperimentData();
 }
 
 void CForaging::SaveRobotPositions() {
@@ -322,10 +329,7 @@ void CForaging::SaveExperimentData() {
   else{
     Mision = "Color selection";
   }
-  
-  
-  
-  
+
   // Escribir datos en formato CSV con cada valor en una celda separada
   MyFile << m_unExperiment << ",";
   MyFile << m_unIDmision << ",";
@@ -760,36 +764,38 @@ bool CForaging::IsRobotInAggCircle(Real x, Real y) {
     return false;
 }
 // --- EXPLORACION ----
+Real CForaging::GetExplorationScore() {
+    CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+    CVector2 cFootBotPosition(0, 0);
+    Real Exploration = 0;
+    m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
 
-Real CForaging::GetExplorationScore(){
-  CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-  CVector2 cFootBotPosition(0, 0);
-  Real Exploration = 0;
-  m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
-  for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
-      CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
-      cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-          pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+    // Actualiza el contador de tiempo para las baldosas cruzadas por robots
+    for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+        CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
+        cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+            pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
-      UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
-      UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
-      if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0)
-      {
-          m_grid[X][Y] = 0;
-      }
-  }
+        UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
+        UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
 
+        if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0) {
+            m_grid[X][Y] = 0;
+        }
+    }
+
+    // Calcula la métrica de exploración
     UInt32 total = 0;
-    for (UInt32 i = 0; i < m_gridSize; i++)
-    {
-        for (UInt32 j = 0; j < m_gridSize; j++)
-        {
+    for (UInt32 i = 0; i < m_gridSize; i++) {
+        for (UInt32 j = 0; j < m_gridSize; j++) {
             total += m_grid[i][j];
             m_grid[i][j] += 1;
         }
     }
-  return Exploration += Real(total);
+    Exploration += Real(total);
+    return Exploration;
 }
+
 
 
 /****************************************/
