@@ -30,7 +30,7 @@ def plot_metrica_promedio(mision_df, metrica, bar_width=0.25, bar_space=0.01):
     plt.show()
 
 def calcular_flexibilidad(arena):
-    flexibilidad = [1]
+    flexibilidad = [0]
     deltaP = 0
     deltaX = 0
     for i in range(len(arena)-1):
@@ -53,7 +53,7 @@ def calcular_escalabilidad(arena):
     escalabilidad = []
     deltaP = 0
     deltaN = 0
-    escalabilidad.append(1)
+    escalabilidad.append(0)
 
     for i in range(len(arena)-1):
         if arena['Performance'].iloc[i] != 0:

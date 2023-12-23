@@ -72,13 +72,13 @@ for arena in range(5): # Ejecución por tipos de arena T,C,H6,O8,P12
         for exp in range(num_experimentos):
             # Modifica el archivo antes de cada ejecución
             modificar_archivo(file,exp,arena,tam)
+            for i in range(10):
+                # EJECUCIÓN DEL EXPERIMENTO
+                ejecucion = ["argos3" ,"-c", file]
+                sb.run(ejecucion)
 
-            # EJECUCIÓN DEL EXPERIMENTO
-            ejecucion = ["argos3" ,"-c", file]
-            sb.run(ejecucion)
-
-            # Esperar un tiempo suficiente para que ARGoS3 cargue antes de simular
-            time.sleep(2)
+                # Esperar un tiempo suficiente para que ARGoS3 cargue antes de simular
+                time.sleep(2)
             # Puedes imprimir alguna información después de cada ejecución si lo deseas
             print(f"Experimento {exp + 1} ejecutado")
 
