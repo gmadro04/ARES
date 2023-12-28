@@ -157,7 +157,8 @@ void CForaging::Init() {
   // Inicializar las posiciones de los círculos
   ComputeCirclePositions(m_unNumCircles);
   // Posicionar elementos y robots en la arena 
-  if (m_unArenatype == "Triangular"|| m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono")
+  if (m_unArenatype == "Triangular" || m_unArenatype == "Dodecagono")
+  // m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono"
   {
     //ComputePositionselements();
     MoveRobots();
