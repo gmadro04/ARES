@@ -53,11 +53,11 @@ def modificar_archivo(file,exp,arenas,tams):
     Obstaculos = False  # Obstaculos en el escenario si o no, según la eleccion tipo de distribución y tipo de obstaculo
     #robots , time = loop.robots_timeDruation()   # Numero de robots y duraricion del experimento
     if exp >= 1:
-        #robots = exp*(incremento_robots + num_robots_inicial)
-        robots = 10
+        robots = exp*(incremento_robots + num_robots_inicial)
+        #robots = 10
     else:
-        #robots = num_robots_inicial
-        robots = 10
+        robots = num_robots_inicial
+        #robots = 10
     time = loop.robots_timeDruation()
     """ CONFIGURACION ARCHIVO """
     loop.framework_label(file, time, codigos) #Configuración software de control y tiempo ejecucion
@@ -82,9 +82,9 @@ for arena in range(5): # Ejecución por tipos de arena T,C,H6,O8,P12
     for tam in range(3): # Ejecución por tamaño de arena P,M,G
         # Ejecuta el experimento múltiples veces
         for exp in range(num_experimentos):
-            # Modifica el archivo antes de cada ejecución
-            modificar_archivo(file,exp,arena,tam)
             for i in range(10):
+                # Modifica el archivo antes de cada ejecución
+                modificar_archivo(file,exp,arena,tam)
                 # EJECUCIÓN DEL EXPERIMENTO
                 ejecucion = ["argos3" ,"-c", file]
                 sb.run(ejecucion)

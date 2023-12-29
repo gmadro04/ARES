@@ -53,6 +53,7 @@ def framework_label (file,time,codigos):
         experiment = framework.find("experiment")
         if experiment is not None:
             experiment.set("length", str(time))
+            experiment.set("random_seed",str(random.randrange(42,50,1)))
     for params in controller.iter("params"):
         params.set("script", codigos) # pasamos el script de control
     tree.write(file)

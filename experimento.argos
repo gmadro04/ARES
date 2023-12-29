@@ -9,7 +9,7 @@
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function" output="output.txt">
-    <params num_experiment="1" arena="Triangular" tam="pequena" num_circles="1" mision="2" obstaculos="False" robots="10" />
+    <params num_experiment="3" arena="Triangular" tam="pequena" num_circles="1" mision="2" obstaculos="False" robots="20" />
   </loop_functions>
 
   <controllers>
@@ -44,7 +44,7 @@
     <distribute id="robots">
       <position method="uniform" min="-2.0,-1.0,0" max="0,1.0,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
-      <entity quantity="10" max_trials="100">
+      <entity quantity="20" max_trials="100">
         <foot-bot id="fb" rab="1">
           <controller config="lua" />
         </foot-bot>
@@ -73,11 +73,7 @@
   
   
   <visualization>
-    <qt-opengl lua_editor="false">
-      <camera>
-	      <placement idx="0" position="0,0,10" look_at="0,0,0" up="3,0,0" lens_focal_length="20" />			
-      </camera>
-    </qt-opengl>
+
   </visualization>
 
 </argos-configuration>
