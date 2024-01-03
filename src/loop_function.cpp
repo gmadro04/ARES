@@ -157,7 +157,7 @@ void CForaging::Init() {
   // Inicializar las posiciones de los círculos
   ComputeCirclePositions(m_unNumCircles);
   // Posicionar elementos y robots en la arena 
-  if (m_unArenatype == "Triangular" || m_unArenatype == "Dodecagono")
+  if (m_unArenatype == "Triangular" || m_unArenatype == "Dodecagono" || m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal")
   // m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono"
   {
     //ComputePositionselements();
@@ -920,6 +920,46 @@ CVector3 CForaging::GetRandomPosition() {
     y = (1.0 - std::sqrt(a)) * A.GetY() + std::sqrt(a) * (1.0 - b) * B.GetY() + std::sqrt(a) * b * C.GetY();
 
   }
+  else if (m_unArenatype == "Hexagonal") {
+    // Definir las coordenadas de los vértices del octágono
+    double HexagonRadius = tam / 2;
+    std::vector<CVector2> HexagonVertices;
+    for (UInt32 i = 0; i < 6; ++i) {
+      CRadians angle = CRadians::PI_OVER_FOUR * i;
+
+      // Introducir aleatoriedad en las coordenadas de los vértices
+      Real randomnessFactor = m_pcRNG->Uniform(CRange<Real>(-1.7f, 1.7f));
+      Real m = HexagonRadius * randomnessFactor * std::cos(angle.GetValue());
+      Real n = HexagonRadius * randomnessFactor * std::sin(angle.GetValue());
+
+      HexagonVertices.emplace_back(m, n);
+    }
+
+    a = (a + 1.0) / 2.0;
+    b = (b + 1.0) / 2.0;
+
+    // Inicializar posiciones
+    x = 0.0;
+    y = 0.0;
+
+    // Generar pesos aleatorios
+    std::vector<Real> weights;
+    for (size_t i = 0; i < HexagonVertices.size(); ++i) {
+      weights.push_back(m_pcRNG->Uniform(CRange<Real>(0.0, HexagonRadius)));
+    }
+
+    // Normalizar pesos para asegurar que sumen 1.0
+    Real totalWeight = std::accumulate(weights.begin(), weights.end(), 0.0);
+    for (size_t i = 0; i < HexagonVertices.size(); ++i) {
+      weights[i] /= totalWeight;
+    }
+
+    // Aplicar pesos para obtener una posición aleatoria dentro del hexagono
+    for (size_t i = 0; i < HexagonVertices.size(); ++i) {
+      x += weights[i] * HexagonVertices[i].GetX();
+      y += weights[i] * HexagonVertices[i].GetY();
+    }
+  }
   else if (m_unArenatype == "Octagonal") {
     // Definir las coordenadas de los vértices del octágono
     double OctagonRadius = tam / 2;
@@ -945,7 +985,7 @@ CVector3 CForaging::GetRandomPosition() {
     // Generar pesos aleatorios
     std::vector<Real> weights;
     for (size_t i = 0; i < octagonVertices.size(); ++i) {
-      weights.push_back(m_pcRNG->Uniform(CRange<Real>(0.0, 1.0)));
+      weights.push_back(m_pcRNG->Uniform(CRange<Real>(0.0, OctagonRadius)));
     }
 
     // Normalizar pesos para asegurar que sumen 1.0

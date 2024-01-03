@@ -1630,3 +1630,9 @@ Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Time,Performance
 11,2,Aggregation,Dodecagono,grande,100,240 Seg,19
 11,2,Aggregation,Dodecagono,grande,100,240 Seg,19
 
+2,2,Aggregation,Hexagonal,pequena,10,240 Seg,6
+2,2,Aggregation,Hexagonal,pequena,10,240 Seg,4
+2,2,Aggregation,Hexagonal,pequena,10,240 Seg,1
+4,2,Aggregation,Hexagonal,mediana,30,240 Seg,0
+4,2,Aggregation,Hexagonal,mediana,30,240 Seg,1
+4,2,Aggregation,Hexagonal,mediana,30,240 Seg,3

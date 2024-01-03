@@ -49,15 +49,9 @@ root = tree.getroot()
 def modificar_archivo(file,exp,arenas,tams):
     """ Configuración parametros básicos """
     arena_params, parametros = loop.params_arena(arenas,tams)    # Tamaño de la arena grande,mediana,pequeña y configuracion de atributos
-    # Obstaculos = random.choice([True, False])
     Obstaculos = False  # Obstaculos en el escenario si o no, según la eleccion tipo de distribución y tipo de obstaculo
-    #robots , time = loop.robots_timeDruation()   # Numero de robots y duraricion del experimento
-    if exp >= 1:
-        robots = exp*(incremento_robots + num_robots_inicial)
-        #robots = 10
-    else:
-        robots = num_robots_inicial
-        #robots = 10
+    # Numero de robots y tiempo de duración del experimento
+    robots =  exp*(incremento_robots + num_robots_inicial) if exp >=1  else num_robots_inicial
     time = loop.robots_timeDruation()
     """ CONFIGURACION ARCHIVO """
     loop.framework_label(file, time, codigos) #Configuración software de control y tiempo ejecucion
@@ -89,7 +83,7 @@ for arena in range(5): # Ejecución por tipos de arena T,C,H6,O8,P12
                 ejecucion = ["argos3" ,"-c", file]
                 sb.run(ejecucion)
                 # Esperar un tiempo suficiente para que ARGoS3 cargue antes de simular
-                time.sleep(2)
+                time.sleep(1)
             # Puedes imprimir alguna información después de cada ejecución si lo deseas
             print(pyfiglet.figlet_format( f"Experimento {exp + 1} ejecutado", font="digital"))
 
