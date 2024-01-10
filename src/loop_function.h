@@ -194,10 +194,16 @@ private:
     CVector2 m_cCoordNest;
     // Variables de las misiones
     Real m_fObjectiveFunction; // funcion objetio para cada mision 
-    // --- Variables de Exploración
+    // ---------- Variables de Exploración ----------
     std::vector<std::vector<int>> m_grid;
     Real m_arenaSize; // Varaiable Exploración
-    UInt32 m_gridSize; // cuadricula Explorasción
+    UInt32 m_gridSize; // cuadricula Exploración
+    std::vector<bool> grid;
+    CVector2 sizeArena;
+	 Real maxScore;
+    void RegisterPositions();
+
+
 
    struct RobotStateStruct {
         CVector2 cLastPosition;

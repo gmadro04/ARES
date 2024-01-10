@@ -46,16 +46,6 @@ static const Real WIDTH_WALLS         = 0.05f;
 /****************************************/
 /****************************************/
 
-CForaging::CForaging() {
-  m_unNbrItemsCollected = 0;
-  m_unTimeStep = 0;
-  for (size_t i = 0; i < NUM_ROBOTS; ++i) {
-    m_sFoodData[i] = 0;
-  }
-}
-
-/****************************************/
-/****************************************/
 
 CForaging::~CForaging() {
 }
@@ -64,9 +54,7 @@ CForaging::~CForaging() {
 /****************************************/
 
 void CForaging::Init(TConfigurationNode& t_tree) {
-    /* Get output file name from XML tree */
-    GetNodeAttribute(t_tree, "output", m_strOutFile);
-
+    /* Get parameters file name from XML tree */
 
     TConfigurationNode cParametersNode;
     TConfigurationNode cDistributeNode;
@@ -86,25 +74,22 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     {
       LOGERR << "Problem with Attributes in node params" << std::endl;
     }
-    // Variables para el uso de las metricas de evaluación seun la misión
-    // --- Exploración ---
-    m_arenaSize = 0.0; // se ajusta segun la arena
-    if (m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono")
-    {
-      m_gridSize = 10;
-    }
-    else
-    {
-      m_gridSize = Asignar_tamano_segun_arena(m_unArenatam);
-    }
-    m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
-    // -- Variable funcion objetivo
+
+    // ---------- Variable funcion objetivo
+    // Esta variable se trabaja para cada una de las metricas.
     m_fObjectiveFunction = 0; // Función objetivo que mide el rendimiento de la mision
 
-    Init();
+    // Variables para el uso de las metricas de evaluación segun la misión
+    // --- Exploración ---
+    maxScore = 1.0;
+    sizeArena.Set(1,1);
+    m_arenaSize = 0.0; // se ajusta segun la arena
 
-    /* Arena init*/
-    //PositionArena();
+    //m_gridSize = 10; // celdas que dividen la arena segun el tamaño de esta
+    //m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
+
+
+    Init(); // inicializa configuraciones de arena y codigo c++ loop
 }
 
 void CForaging::Init() {
@@ -137,10 +122,6 @@ void CForaging::Init() {
   }
   while(!bDone);
 
-  /* Position of the nest */
-  m_cCoordNest = CVector2(0, -m_fPosMiddle*2);
-  m_unNbrItemsCollected = 0;
-
   /* Position of the light source */
 
   CSpace::TMapPerType& m_cLight = GetSpace().GetEntitiesByType("light");
@@ -151,20 +132,21 @@ void CForaging::Init() {
      cLight.SetPosition(CVector3(m_cCoordSource.GetX(),m_cCoordSource.GetY(),0.5));
   }
 
-  /* Write the header of the output file */
-  m_cOutFile << "#Clock\tItemsCollected" << std::endl;
+  // ESTABELCER ALGUNAS VARIABLES QUE SE USAN SEGUN LA  MISION 
+  double tam = Asignar_tamano_segun_arena(m_unArenatam);
+  sizeArena.Set(tam,tam);
+  maxScore = ((int)(sizeArena.GetY()*100*sizeArena.GetX()*100))*1.0;
+  grid.reserve((unsigned int)maxScore);
 
   // Inicializar las posiciones de los círculos
   ComputeCirclePositions(m_unNumCircles);
   // Posicionar elementos y robots en la arena 
   if (m_unArenatype == "Triangular" || m_unArenatype == "Dodecagono" || m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal")
-  // m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono"
   {
     //ComputePositionselements();
     MoveRobots();
   }
   InitRobotStates();
-
 }
 
 /****************************************/
@@ -172,28 +154,13 @@ void CForaging::Init() {
 
 void CForaging::Reset() {
 
-    /* Close the output file */
-    m_cOutFile.close();
-    if(m_cOutFile.fail()) {
-        THROW_ARGOSEXCEPTION("Error closing file \"" << m_strOutFile << "\": " << ::strerror(errno));
-    }
+  /* Reseting the variables. */
+  Init();
+  MoveRobots();
+  m_fObjectiveFunction = 0;
+  m_tRobotStates.clear();
+  InitRobotStates();
 
-    Init();
-    MoveRobots();
-    m_fObjectiveFunction = 0;
-    m_tRobotStates.clear();
-    InitRobotStates();
-
-    /* Reseting the variables. */
-    for (size_t i = 0; i < NUM_ROBOTS; ++i) {
-      m_sFoodData[i] = 0;
-    }
-    m_unNbrItemsCollected = 0;
-    m_unTimeStep = 0;
-
-
-    /* Errasing content of file. Writting new header. */
-    m_cOutFile << "#Clock\tItems" << std::endl;
 }
 
 /****************************************/
@@ -218,14 +185,14 @@ void CForaging::PreStep() {
 /****************************************/
 //
 void CForaging::PostStep() {
-  // LLAMADO A LA METRICA SEGUN LA MISION
-  ScoreControl();
+  ScoreControl(); // LLAMADO A LA METRICA SEGUN LA MISION
 }
 void CForaging::ScoreControl(){
   if (m_unIDmision == 1)
   {
     //LOGERR << "ID MISION 1" << std::endl;
-    m_fObjectiveFunction = GetExplorationScore();
+    RegisterPositions();
+    m_fObjectiveFunction += GetExplorationScore();
   }
   else if (m_unIDmision == 2)
   {
@@ -251,7 +218,7 @@ void CForaging::ScoreControl(){
 void CForaging::PostExperiment() {
   if (m_unIDmision == 1)
   {
-    m_fObjectiveFunction = m_fObjectiveFunction / m_gridSize / m_gridSize;
+    //m_fObjectiveFunction = m_fObjectiveFunction / m_gridSize / m_gridSize;
     LOG << "Exploration Score = " << m_fObjectiveFunction << std::endl;
   }
   else if (m_unIDmision == 2)
@@ -271,37 +238,8 @@ void CForaging::PostExperiment() {
   {
     LOGERR << "ID MISION 5" << std::endl;
   }
-  // Llama a la función para guardar las posiciones finales de los robots
-  SaveRobotPositions();
+  // Llama a la función para guardar los datos finales de los experimentos
   SaveExperimentData();
-}
-
-void CForaging::SaveRobotPositions() {
-  // Crear y abrir un archivo de texto
-  //std::ofstream MyFile("posiciones.txt", std::ios_base::trunc);
-  std::ofstream MyFile("Experimentos/posiciones.txt", std::ios_base::app);
-
-  CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-  CVector2 cFootBotPosition(0, 0);
-
-  // Escribir el número de simulación en el archivo
-        // Escribir el número de simulación y encabezado en el archivo
-        MyFile << "Experimento: " << m_unExperiment << std::endl;
-        MyFile << "Posiciones robots:" << std::endl;
-
-        for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
-            CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
-            std::string strRobotId = pcFootBot->GetId();
-            cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-
-            // Escribir en el archivo
-            MyFile << "[" << strRobotId << ", " << cFootBotPosition << "]" << std::endl;
-            //LOG << cFootBotPosition << std::endl;
-        }
-        // Cerrar el archivo
-        MyFile.close();
-
 }
 
 void CForaging::SaveExperimentData() {
@@ -343,7 +281,6 @@ void CForaging::SaveExperimentData() {
   // Cerrar el archivo
   MyFile.close();
 }
-
 
 /****************************************/
 /****************************************/
@@ -679,9 +616,8 @@ void CForaging::ComputePositionselements() {
 
 /****************************************/
 /* METRICAS DE LA MISION
-*/
 /****************************************/
-//---- AGREGACIÓN ----
+//------------------------------------- AGREGACIÓN -------------------------------------
 void CForaging::InitRobotStates() {
   CSpace::TMapPerType& tFootbotMap = GetSpace().GetEntitiesByType("foot-bot");
   CVector2 cFootbotPosition(0, 0);
@@ -764,37 +700,55 @@ bool CForaging::IsRobotInAggCircle(Real x, Real y) {
     // El robot no está dentro de ninguno de los círculos
     return false;
 }
-// --- EXPLORACION ----
+// ------------------------------------- EXPLORACION -------------------------------------
+void CForaging::RegisterPositions(){
+  CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+  for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+      CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
+      unsigned int x = (unsigned int)((pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX()+sizeArena.GetX()/2.0)*100);
+      unsigned int y = (unsigned int)((pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY()+sizeArena.GetY()/2.0)*100);
+      grid[(unsigned int)(x*sizeArena.GetX()*100+y)] = true;
+
+  }
+
+}
 Real CForaging::GetExplorationScore() {
-    CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-    CVector2 cFootBotPosition(0, 0);
-    Real Exploration = 0;
-    m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
-
-    // Actualiza el contador de tiempo para las baldosas cruzadas por robots
-    for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
-        CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
-        cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-            pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-
-        UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
-        UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
-
-        if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0) {
-            m_grid[X][Y] = 0;
-        }
+    //CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+    //CVector2 cFootBotPosition(0, 0);
+    //Real Exploration = 0;
+    //m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
+//
+    //// Actualiza el contador de tiempo para las baldosas cruzadas por robots
+    //for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+    //    CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
+    //    cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+    //        pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+//
+    //    UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
+    //    UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
+//
+    //    if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0) {
+    //        m_grid[X][Y] = 0;
+    //    }
+    //}
+//
+    //// Calcula la métrica de exploración
+    //UInt32 total = 0;
+    //for (UInt32 i = 0; i < m_gridSize; i++) {
+    //    for (UInt32 j = 0; j < m_gridSize; j++) {
+    //        total += m_grid[i][j];
+    //        m_grid[i][j] += 1;
+    //    }
+    //}
+    //Exploration += Real(total);
+    //return Exploration;
+  Real temp = 0;
+  for (unsigned int i = 0; i<(unsigned int)(sizeArena.GetX()*100*sizeArena.GetY()*100); i++) {
+    if (grid[i]==true){
+      temp+=1;
     }
-
-    // Calcula la métrica de exploración
-    UInt32 total = 0;
-    for (UInt32 i = 0; i < m_gridSize; i++) {
-        for (UInt32 j = 0; j < m_gridSize; j++) {
-            total += m_grid[i][j];
-            m_grid[i][j] += 1;
-        }
-    }
-    Exploration += Real(total);
-    return Exploration;
+  }
+  return temp/maxScore;
 }
 
 
@@ -802,45 +756,6 @@ Real CForaging::GetExplorationScore() {
 /****************************************/
 /****************************************/
 
-bool CForaging::IsOnForbidden(CVector2& c_position_robot) {
-
-  /*
-  if(c_position_robot.GetY()<=FORB_A_MAXY && c_position_robot.GetY()>=FORB_A_MINY){
-    if(c_position_robot.GetX()<FORB_A_MAXX)
-      return true;
-  }
-  */
-
-  if(c_position_robot.GetY()<=FORB_B_MAXY && c_position_robot.GetY()>=FORB_B_MINY){
-    if(c_position_robot.GetX()>FORB_B_MINX)
-      return true;
-  }
-
-  return false;
-}
-
-/****************************************/
-/****************************************/
-
-bool CForaging::IsOnNest(CVector2& c_position_robot) {
-  if ((m_cCoordNest - c_position_robot).Length() <= RADIUS_NEST) {
-     return true;
-  }
-  return false;
-}
-
-/****************************************/
-/****************************************/
-
-bool CForaging::IsOnSource(CVector2& c_position_robot) {
-  if ((m_cCoordSource - c_position_robot).Length() <= RADIUS_SOURCE) {
-     return true;
-  }
-  return false;
-}
-
-/****************************************/
-/****************************************/
 
 bool CForaging::IsWithinTriangle(CVector2& c_point_q, CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c) {
   Real fAreaTriangle = AreaTriangle(c_point_a, c_point_b, c_point_c);
@@ -861,12 +776,6 @@ bool CForaging::IsWithinTriangle(CVector2& c_point_q, CVector2& c_point_a, CVect
 Real CForaging::AreaTriangle(CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c) {
   Real fArea = Abs(c_point_a.GetX()*(c_point_b.GetY()-c_point_c.GetY()) + c_point_b.GetX()*(c_point_c.GetY()-c_point_a.GetY()) + c_point_c.GetX()*(c_point_a.GetY()-c_point_b.GetY()))/2;
   return fArea;
-}
-
-/****************************************/
-/****************************************/
-void CForaging::PositionArena() {
-
 }
 
 /****************************************/
@@ -1042,7 +951,6 @@ CVector3 CForaging::GetRandomPosition() {
   }
   return CVector3(x, y, 0.0);
 }
-
 
 /****************************************/
 /****************************************/
