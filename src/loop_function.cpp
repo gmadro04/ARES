@@ -38,14 +38,15 @@ static const Real FORB_B_MINX            = -1.0f;
 static const Real HEIGHT_WALLS         = 0.15f;
 static const Real WIDTH_WALLS         = 0.05f;
 
-
-
 #define PI 3.14159265
 
 
 /****************************************/
 /****************************************/
 
+CForaging::CForaging() {
+
+}
 
 CForaging::~CForaging() {
 }
@@ -92,35 +93,9 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     Init(); // inicializa configuraciones de arena y codigo c++ loop
 }
 
-void CForaging::Init() {
-  /* Open the file for text writing */
-  m_cOutFile.open(m_strOutFile.c_str(), std::ofstream::out | std::ofstream::trunc);
-  if(m_cOutFile.fail()) {
-     THROW_ARGOSEXCEPTION("Error opening file \"" << m_strOutFile << "\": " << ::strerror(errno));
-  }
+void CForaging::Init() { 
 
   m_pcRNG = CRandom::CreateRNG("argos");
-
-  /* Random position for the source*/
-  CRange<Real> cRangeX(-Sqrt(2*Square(m_fLengthSide))/2, Sqrt(2*Square(m_fLengthSide))/2);
-  CRange<Real> cRangeY(0, m_fPosMiddle);
-  bool bDone = false;
-  do {
-    m_cCoordSource = CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY));
-
-    CVector2 cLeftCorner(-Sqrt(2*Square(m_fLengthSide))/2, 0);
-    CVector2 cTopLeftCorner(-m_fPosMiddle, m_fPosMiddle);
-    CVector2 cOutsideLeftCorner(-Sqrt(2*Square(m_fLengthSide))/2, m_fPosMiddle);
-    CVector2 cRightCorner(Sqrt(2*Square(m_fLengthSide))/2, 0);
-    CVector2 cTopRightCorner(m_fPosMiddle, m_fPosMiddle);
-    CVector2 cOutsideRightCorner(Sqrt(2*Square(m_fLengthSide))/2, m_fPosMiddle);
-
-    if (!(IsWithinTriangle(m_cCoordSource, cLeftCorner, cTopLeftCorner, cOutsideLeftCorner) ||
-          IsWithinTriangle(m_cCoordSource, cRightCorner, cTopRightCorner, cOutsideRightCorner))) {
-      bDone = true;
-    }
-  }
-  while(!bDone);
 
   /* Position of the light source */
 
@@ -129,7 +104,9 @@ void CForaging::Init() {
      /* Get handle to foot-bot entity and controller */
      CLightEntity& cLight = *any_cast<CLightEntity*>(it->second);
      /* Set the position of the light source over the food source*/
-     cLight.SetPosition(CVector3(m_cCoordSource.GetX(),m_cCoordSource.GetY(),0.5));
+     CVector3 lightPosition = GetRandomPosition();
+     //cLight.SetPosition(CVector3(m_cCoordSource.GetX(),m_cCoordSource.GetY(),0.5));
+     cLight.SetPosition(CVector3(lightPosition.GetX(),lightPosition.GetY(),0.5));
   }
 
   // ESTABELCER ALGUNAS VARIABLES QUE SE USAN SEGUN LA  MISION 
@@ -286,37 +263,9 @@ void CForaging::SaveExperimentData() {
 /****************************************/
 
 CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
-    /* Nest area is black. */ 
-    CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
-    Real d = (m_cCoordNest - vCurrentPoint).Length();
-
-    CVector2 vCoordTrianglePointLeft = CVector2(m_cCoordNest.GetX()+RADIUS_NEST, m_cCoordNest.GetY()+RADIUS_NEST);
-    CVector2 vCoordTrianglePointRight = CVector2(m_cCoordNest.GetX()-RADIUS_NEST, m_cCoordNest.GetY()+RADIUS_NEST);
-
-  //  if ((d <= RADIUS_NEST) && (IsWithinTriangle(vCurrentPoint, m_cCoordNest, vCoordTrianglePointLeft, vCoordTrianglePointRight))) {
-  //    return CColor::WHITE;
-  //  }
-//
-  //  d = (m_cCoordSource - vCurrentPoint).Length();
-//
-  //  CVector2 cCenter(0,0);
-  //  CVector2 cLeftCorner(-Sqrt(2*Square(m_fLengthSide))/2, 0);
-  //  CVector2 cRightCorner(Sqrt(2*Square(m_fLengthSide))/2, 0);
-  //  CVector2 cTopLeftCorner(-m_fPosMiddle, m_fPosMiddle);
-  //  CVector2 cTopRightCorner(m_fPosMiddle, m_fPosMiddle);
-  //  if (d <= RADIUS_SOURCE) {
-  //    if (IsWithinTriangle(vCurrentPoint, cCenter, cLeftCorner, cTopLeftCorner) ||
-  //          IsWithinTriangle(vCurrentPoint, cCenter, cTopLeftCorner, cTopRightCorner) ||
-  //          IsWithinTriangle(vCurrentPoint, cCenter, cTopRightCorner, cRightCorner) ||
-  //          (vCurrentPoint.GetY() < 0.0f)) {
-  //            return CColor::GRAY60;
-  //          }
-  //  }
-
 
   for (const CVector2& cCirclePos : m_vCirclePositions) {
       Real fCircleRadius = RADIUS_SOURCE;  // Ajusta el radio del círculo según tus necesidades
-
       // Convertir CVector2 a std::pair<double, double>
       std::pair<double, double> point_as_pair(cCirclePos.GetX(), cCirclePos.GetY());
 
@@ -608,7 +557,6 @@ void CForaging::ComputePositionselements() {
         if (!bPlaced) {
             THROW_ARGOSEXCEPTION("No se pudo colocar el robot después de varios intentos");
         }
-
         // Incrementar el índice para obtener la siguiente posición precalculada
         ++i;
     }
@@ -617,7 +565,58 @@ void CForaging::ComputePositionselements() {
 /****************************************/
 /* METRICAS DE LA MISION
 /****************************************/
-//------------------------------------- AGREGACIÓN -------------------------------------
+
+// ------------------------------------- EXPLORACION ID 1-------------------------------------
+void CForaging::RegisterPositions(){
+  CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+  for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+      CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
+      unsigned int x = (unsigned int)((pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX()+sizeArena.GetX()/2.0)*100);
+      unsigned int y = (unsigned int)((pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY()+sizeArena.GetY()/2.0)*100);
+      grid[(unsigned int)(x*sizeArena.GetX()*100+y)] = true;
+
+  }
+
+}
+Real CForaging::GetExplorationScore() {
+    //CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+    //CVector2 cFootBotPosition(0, 0);
+    //Real Exploration = 0;
+    //m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
+//
+    //// Actualiza el contador de tiempo para las baldosas cruzadas por robots
+    //for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+    //    CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
+    //    cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+    //        pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+//
+    //    UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
+    //    UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
+//
+    //    if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0) {
+    //        m_grid[X][Y] = 0;
+    //    }
+    //}
+//
+    //// Calcula la métrica de exploración
+    //UInt32 total = 0;
+    //for (UInt32 i = 0; i < m_gridSize; i++) {
+    //    for (UInt32 j = 0; j < m_gridSize; j++) {
+    //        total += m_grid[i][j];
+    //        m_grid[i][j] += 1;
+    //    }
+    //}
+    //Exploration += Real(total);
+    //return Exploration;
+  Real temp = 0;
+  for (unsigned int i = 0; i<(unsigned int)(sizeArena.GetX()*100*sizeArena.GetY()*100); i++) {
+    if (grid[i]==true){
+      temp+=1;
+    }
+  }
+  return temp/maxScore;
+}
+//------------------------------------- AGREGACIÓN ID 2-------------------------------------
 void CForaging::InitRobotStates() {
   CSpace::TMapPerType& tFootbotMap = GetSpace().GetEntitiesByType("foot-bot");
   CVector2 cFootbotPosition(0, 0);
@@ -700,58 +699,7 @@ bool CForaging::IsRobotInAggCircle(Real x, Real y) {
     // El robot no está dentro de ninguno de los círculos
     return false;
 }
-// ------------------------------------- EXPLORACION -------------------------------------
-void CForaging::RegisterPositions(){
-  CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-  for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
-      CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
-      unsigned int x = (unsigned int)((pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX()+sizeArena.GetX()/2.0)*100);
-      unsigned int y = (unsigned int)((pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY()+sizeArena.GetY()/2.0)*100);
-      grid[(unsigned int)(x*sizeArena.GetX()*100+y)] = true;
-
-  }
-
-}
-Real CForaging::GetExplorationScore() {
-    //CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-    //CVector2 cFootBotPosition(0, 0);
-    //Real Exploration = 0;
-    //m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
-//
-    //// Actualiza el contador de tiempo para las baldosas cruzadas por robots
-    //for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
-    //    CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
-    //    cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-    //        pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-//
-    //    UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
-    //    UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
-//
-    //    if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0) {
-    //        m_grid[X][Y] = 0;
-    //    }
-    //}
-//
-    //// Calcula la métrica de exploración
-    //UInt32 total = 0;
-    //for (UInt32 i = 0; i < m_gridSize; i++) {
-    //    for (UInt32 j = 0; j < m_gridSize; j++) {
-    //        total += m_grid[i][j];
-    //        m_grid[i][j] += 1;
-    //    }
-    //}
-    //Exploration += Real(total);
-    //return Exploration;
-  Real temp = 0;
-  for (unsigned int i = 0; i<(unsigned int)(sizeArena.GetX()*100*sizeArena.GetY()*100); i++) {
-    if (grid[i]==true){
-      temp+=1;
-    }
-  }
-  return temp/maxScore;
-}
-
-
+// ------------------------------------- MARCHA EN FORMACION ID 3 -------------------------------------
 
 /****************************************/
 /****************************************/
@@ -805,150 +753,40 @@ void CForaging::MoveRobots() {
   }
 }
 
-/****************************************/
-/****************************************/
-
 CVector3 CForaging::GetRandomPosition() {
   double tam = Asignar_tamano_segun_arena(m_unArenatam);
-  Real a = m_pcRNG->Uniform(CRange<Real>(-1.0f, 1.0f));
-  Real b = m_pcRNG->Uniform(CRange<Real>(-1.0f, 1.0f));
+  Real temp;
+  Real a = m_pcRNG->Uniform(CRange<Real>(0.0f, 1.0f));
+  Real b = m_pcRNG->Uniform(CRange<Real>(0.0f, 1.0f));
   Real x;
   Real y;
-  //return CVector3(a*SPAWN_SIDE_LENGTH, b*SPAWN_SIDE_LENGTH, 0.0f);
 
   if (m_unArenatype == "Triangular")
   {
+    Real Ta = m_pcRNG->Uniform(CRange<Real>(-1.0f, 1.0f));
+    Real Tb = m_pcRNG->Uniform(CRange<Real>(-1.0f, 1.0f));
     CVector2 A((tam / 2), 0);
     CVector2 B((-tam / 2), (tam / 2));
     CVector2 C((-tam / 2), (-tam / 2));
     // Ajustar valores de a y b al rango [0, 1]
-    a = (a + 1.0) / 2.0;
-    b = (b + 1.0) / 2.0;
+    Ta = (Ta + 1.0) / 2.0;
+    Tb = (Tb + 1.0) / 2.0;
     // Interpolación para obtener una posición aleatoria dentro del triángulo
-    x = (1.0 - std::sqrt(a)) * A.GetX() + std::sqrt(a) * (1.0 - b) * B.GetX() + std::sqrt(a) * b * C.GetX();
-    y = (1.0 - std::sqrt(a)) * A.GetY() + std::sqrt(a) * (1.0 - b) * B.GetY() + std::sqrt(a) * b * C.GetY();
+    x = (1.0 - std::sqrt(Ta)) * A.GetX() + std::sqrt(Ta) * (1.0 - Tb) * B.GetX() + std::sqrt(Ta) * Tb * C.GetX();
+    y = (1.0 - std::sqrt(Ta)) * A.GetY() + std::sqrt(Ta) * (1.0 - Tb) * B.GetY() + std::sqrt(Ta) * Tb * C.GetY();
 
   }
-  else if (m_unArenatype == "Hexagonal") {
-    // Definir las coordenadas de los vértices del octágono
-    double HexagonRadius = tam / 2;
-    std::vector<CVector2> HexagonVertices;
-    for (UInt32 i = 0; i < 6; ++i) {
-      CRadians angle = CRadians::PI_OVER_FOUR * i;
-
-      // Introducir aleatoriedad en las coordenadas de los vértices
-      Real randomnessFactor = m_pcRNG->Uniform(CRange<Real>(-1.7f, 1.7f));
-      Real m = HexagonRadius * randomnessFactor * std::cos(angle.GetValue());
-      Real n = HexagonRadius * randomnessFactor * std::sin(angle.GetValue());
-
-      HexagonVertices.emplace_back(m, n);
+  else {
+    double DisRadius = tam / 2;
+    if (b < a){
+      temp = a;
+      a = b;
+      b = temp;
     }
-
-    a = (a + 1.0) / 2.0;
-    b = (b + 1.0) / 2.0;
-
-    // Inicializar posiciones
-    x = 0.0;
-    y = 0.0;
-
-    // Generar pesos aleatorios
-    std::vector<Real> weights;
-    for (size_t i = 0; i < HexagonVertices.size(); ++i) {
-      weights.push_back(m_pcRNG->Uniform(CRange<Real>(0.0, HexagonRadius)));
-    }
-
-    // Normalizar pesos para asegurar que sumen 1.0
-    Real totalWeight = std::accumulate(weights.begin(), weights.end(), 0.0);
-    for (size_t i = 0; i < HexagonVertices.size(); ++i) {
-      weights[i] /= totalWeight;
-    }
-
-    // Aplicar pesos para obtener una posición aleatoria dentro del hexagono
-    for (size_t i = 0; i < HexagonVertices.size(); ++i) {
-      x += weights[i] * HexagonVertices[i].GetX();
-      y += weights[i] * HexagonVertices[i].GetY();
-    }
+    x = b * DisRadius * cos(2 * PI * (a/b));
+    y = b * DisRadius * sin(2 * PI * (a/b));
   }
-  else if (m_unArenatype == "Octagonal") {
-    // Definir las coordenadas de los vértices del octágono
-    double OctagonRadius = tam / 2;
-    std::vector<CVector2> octagonVertices;
-    for (UInt32 i = 0; i < 8; ++i) {
-      CRadians angle = CRadians::PI_OVER_FOUR * i;
 
-      // Introducir aleatoriedad en las coordenadas de los vértices
-      Real randomnessFactor = m_pcRNG->Uniform(CRange<Real>(-1.7f, 1.7f));
-      Real m = OctagonRadius * randomnessFactor * std::cos(angle.GetValue());
-      Real n = OctagonRadius * randomnessFactor * std::sin(angle.GetValue());
-
-      octagonVertices.emplace_back(m, n);
-    }
-
-    a = (a + 1.0) / 2.0;
-    b = (b + 1.0) / 2.0;
-
-    // Inicializar posiciones
-    x = 0.0;
-    y = 0.0;
-
-    // Generar pesos aleatorios
-    std::vector<Real> weights;
-    for (size_t i = 0; i < octagonVertices.size(); ++i) {
-      weights.push_back(m_pcRNG->Uniform(CRange<Real>(0.0, OctagonRadius)));
-    }
-
-    // Normalizar pesos para asegurar que sumen 1.0
-    Real totalWeight = std::accumulate(weights.begin(), weights.end(), 0.0);
-    for (size_t i = 0; i < octagonVertices.size(); ++i) {
-      weights[i] /= totalWeight;
-    }
-
-    // Aplicar pesos para obtener una posición aleatoria dentro del octágono
-    for (size_t i = 0; i < octagonVertices.size(); ++i) {
-      x += weights[i] * octagonVertices[i].GetX();
-      y += weights[i] * octagonVertices[i].GetY();
-    }
-  }
-  else if (m_unArenatype == "Dodecagono") {
-    // Definir las coordenadas de los vértices del dodecágono
-    double DodecagonRadius = tam / 2;
-    std::vector<CVector2> dodecagonVertices;
-    for (UInt32 i = 0; i < 12; ++i) {
-      CRadians angle = CRadians::TWO_PI / 12 * i;
-
-      // Introducir aleatoriedad en las coordenadas de los vértices
-      Real randomnessFactor = m_pcRNG->Uniform(CRange<Real>(-2.0f, 2.0f));
-      Real m = DodecagonRadius * randomnessFactor * std::cos(angle.GetValue());
-      Real n = DodecagonRadius * randomnessFactor * std::sin(angle.GetValue());
-
-      dodecagonVertices.emplace_back(m, n);
-    }
-
-    a = (a + 1.0) / 2.0;
-    b = (b + 1.0) / 2.0;
-
-    // Inicializar posiciones
-    x = 0.0;
-    y = 0.0;
-
-    // Generar pesos aleatorios
-    std::vector<Real> weights;
-    for (size_t i = 0; i < dodecagonVertices.size(); ++i) {
-      weights.push_back(m_pcRNG->Uniform(CRange<Real>(0.0, 1.0)));
-    }
-
-    // Normalizar pesos para asegurar que sumen 1.0
-    Real totalWeight = std::accumulate(weights.begin(), weights.end(), 0.0);
-    for (size_t i = 0; i < dodecagonVertices.size(); ++i) {
-      weights[i] /= totalWeight;
-    }
-
-    // Aplicar pesos para obtener una posición aleatoria dentro del dodecágono
-    for (size_t i = 0; i < dodecagonVertices.size(); ++i) {
-      x += weights[i] * dodecagonVertices[i].GetX();
-      y += weights[i] * dodecagonVertices[i].GetY();
-    }
-  }
   return CVector3(x, y, 0.0);
 }
 

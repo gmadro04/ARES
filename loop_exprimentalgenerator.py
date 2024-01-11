@@ -12,11 +12,9 @@ def params_arena(A_t,N_a):
     # Se selecciona el tipo de arena que se va a trabajar y modificar
     arenas = ["Triangular","Cuadrada","Hexagonal","Octagonal","Dodecagono"]
     dim_tam = ['pequena','mediana','grande']
-    #arena = random.choice(arenas)
-    arena = arenas[4]
-    # tamaño de la arena
-    #dim_tam = random.choice(['pequena','mediana','grande'])  # Tipo de tamaño de la arena.
-    dim_tam = dim_tam[0]
+
+    arena = arenas[A_t] # Tipo de arena A_t
+    dim_tam = dim_tam[N_a] # Tamaño de la arena N_a
     # Parametros de configuración segun la arena
 
     if arena == "Cuadrada":
