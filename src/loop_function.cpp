@@ -145,10 +145,7 @@ void CForaging::Reset() {
 
 void CForaging::Destroy() {
     /* Close the output file */
-    m_cOutFile.close();
-    if(m_cOutFile.fail()) {
-        THROW_ARGOSEXCEPTION("Error closing file \"" << m_strOutFile << "\": " << ::strerror(errno));
-    }
+
 }
 
 /****************************************/
