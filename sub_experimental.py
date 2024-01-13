@@ -26,8 +26,8 @@ import pyfiglet
 # Nombre del archivo XML
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/obstacleAvoiddance_sta.lua"
-misionID = 1 # Configura el id de la mision a evaluar
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_spots.lua"
+misionID = 2 # Configura el id de la mision a evaluar
 """Path del software de control a evaluar
 Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
 * Mision ID = 1 -> Mision exploración
@@ -72,7 +72,7 @@ num_robots_inicial = 5
 incremento_robots = 5
 num_experimentos = 11 # Puedes cambiar esto al número deseado de ejecuciones
 
-for arena in range(1): # Ejecución por tipos de arena T,C,H6,O8,P12 range(5)
+for arena in range(5): # Ejecución por tipos de arena T,C,H6,O8,P12 range(5)
     for tam in range(3): # Ejecución por tamaño de arena P,M,G range(3)
         # Ejecuta el experimento múltiples veces
         for exp in range(num_experimentos):
