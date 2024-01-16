@@ -70,6 +70,7 @@ void CForaging::Init(TConfigurationNode& t_tree) {
       GetNodeAttributeOrDefault(cParametersNode, "obstaculos", m_unObsbool, m_unObsbool);
       GetNodeAttributeOrDefault(cParametersNode, "num_circles", m_unNumCircles, m_unNumCircles);
       GetNodeAttributeOrDefault(cParametersNode, "robots", m_unRobots, m_unRobots);
+      GetNodeAttributeOrDefault(cParametersNode, "seed", m_unSeed, m_unSeed);
     }
     catch(const std::exception& e)
     {
@@ -86,14 +87,14 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     sizeArena.Set(1,1);
     m_arenaSize = 0.0; // se ajusta segun la arena
 
-    //m_gridSize = 10; // celdas que dividen la arena segun el tamaño de esta
-    //m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
+    m_gridSize = 10; // celdas que dividen la arena segun el tamaño de esta
+    m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
 
 
     Init(); // inicializa configuraciones de arena y codigo c++ loop
 }
 
-void CForaging::Init() { 
+void CForaging::Init() {
 
   m_pcRNG = CRandom::CreateRNG("argos");
 
@@ -114,6 +115,7 @@ void CForaging::Init() {
   sizeArena.Set(tam,tam);
   maxScore = ((int)(sizeArena.GetY()*100*sizeArena.GetX()*100))*1.0;
   grid.reserve((unsigned int)maxScore);
+  m_arenaSize = tam;
 
   // Inicializar las posiciones de los círculos
   ComputeCirclePositions(m_unNumCircles);
@@ -166,11 +168,11 @@ void CForaging::ScoreControl(){
   {
     //LOGERR << "ID MISION 1" << std::endl;
     RegisterPositions();
-    m_fObjectiveFunction += GetExplorationScore();
+    m_fObjectiveFunction = GetExplorationScore() / m_gridSize / m_gridSize ;
   }
   else if (m_unIDmision == 2)
   {
-    m_fObjectiveFunction = GetAggregationScore() ;
+    m_fObjectiveFunction += GetAggregationScore();
   }
   else if (m_unIDmision == 3)
   {
@@ -220,7 +222,7 @@ void CForaging::SaveExperimentData() {
   std::ofstream MyFile("Experimentos/datos.csv", std::ios_base::app);
   // Escribir encabezados si el archivo está vacío
   if (MyFile.tellp() == 0) {
-      MyFile << "Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Time,Performance" << std::endl;
+      MyFile << "Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Seed,Time,Performance" << std::endl;
   }
   std::string Mision;
   if (m_unIDmision == 1)
@@ -250,6 +252,7 @@ void CForaging::SaveExperimentData() {
   MyFile << m_unArenatype << ",";
   MyFile << m_unArenatam << ",";
   MyFile << m_unRobots << ",";
+  MyFile << m_unSeed << ",";
   MyFile << "240 Seg" << ",";
   MyFile << m_fObjectiveFunction << std::endl;
   // Cerrar el archivo
@@ -341,81 +344,9 @@ void CForaging::ComputeCirclePositions(UInt32 NumCircles) {
     }
     else{ // arena cuadrada
       for(size_t i = 0; i < NumCircles; ++i) {
-        CRange<Real> cRangeX(-tam/2, tam/2);
-        CRange<Real> cRangeY(-tam/2,tam/2);
-        m_vCirclePositions.push_back(CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY)));
-      }
-    }
-}
-
-void CForaging::ComputeElementsPositions(UInt32 NumIter) {
-    double tam = Asignar_tamano_segun_arena(m_unArenatam);
-
-    if (tam < 0.0) {
-        // Lanza una excepción indicando el error
-        THROW_ARGOSEXCEPTION("Error al asignar un tamaño");
-    }
-
-    m_vElementsPositions.clear();  // Limpia el vector antes de añadir nuevas posiciones
-    if (m_unArenatype == "Triangular"){
-
-      // Almacenar las posiciones dentro del triángulo en un vector
-      std::vector<CVector2> puntos_en_el_triangulo;
-
-      // Recorrer puntos en x desde -tam a tam con variación de 0.2
-      for (double x = -tam; x <= tam; x += 0.2) {
-        // Recorrer puntos en y desde -tam a tam con variaciones de 0.5
-        for (double y = -tam; y <= tam; y += 0.5) {
-            std::pair<double, double> punto_actual = std::make_pair(x, y);
-
-            // Verificar si el punto está dentro del triángulo
-            if (Dentro_del_triangulo(punto_actual, tam)) {
-              puntos_en_el_triangulo.push_back(CVector2(punto_actual.first, punto_actual.second));
-            }
-        }
-        // Seleccionar aleatoriamente NumCircles posiciones del vector
-        if (puntos_en_el_triangulo.size() < NumIter) {
-            // Si hay menos puntos dentro del triángulo que el número deseado de círculos,
-            // simplemente selecciona todos los puntos disponibles
-            m_vElementsPositions = puntos_en_el_triangulo;
-        } else {
-            // Si hay más puntos dentro del triángulo que el número deseado de círculos,
-            // selecciona aleatoriamente NumCircles posiciones
-            std::random_shuffle(puntos_en_el_triangulo.begin(), puntos_en_el_triangulo.end());
-            m_vElementsPositions.assign(puntos_en_el_triangulo.begin(), puntos_en_el_triangulo.begin() + NumIter);
-        }
-      }
-    }
-    else if (m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono"){
-      // Almacenar las posiciones dentro del circulo inscrito en los poligonos en un vector
-      std::vector<CVector2> puntos_en_el_circulo;
-
-      for (double x = -tam; x <= tam; x += 0.2) {
-          for (double y = -tam; y <= tam; y += 0.5) {
-              std::pair<double, double> punto_actual = std::make_pair(x, y);
-              if (Dentro_del_circulo(punto_actual, tam)) {
-                  puntos_en_el_circulo.push_back(CVector2(punto_actual.first, punto_actual.second));
-              }
-          }
-      }
-      // Seleccionar aleatoriamente NumCircles posiciones del vector
-      if (puntos_en_el_circulo.size() < NumIter) {
-          // Si hay menos puntos dentro del círculo que el número deseado de círculos,
-          // simplemente selecciona todos los puntos disponibles
-          m_vElementsPositions = puntos_en_el_circulo;
-      } else {
-          // Si hay más puntos dentro del círculo que el número deseado de círculos,
-          // selecciona aleatoriamente NumCircles posiciones
-          std::random_shuffle(puntos_en_el_circulo.begin(), puntos_en_el_circulo.end());
-          m_vElementsPositions.assign(puntos_en_el_circulo.begin(), puntos_en_el_circulo.begin() + NumIter);
-      }
-    }
-    else{ // arena cuadrada
-      for(size_t i = 0; i < NumIter; ++i) {
-        //m_vCirclePositions.push_back(CVector2(i, 0.0));
-        CRange<Real> cRangeX((-tam/2) + 1.0, (tam/2) - 1.0);
-        CRange<Real> cRangeY((-tam/2) + 1.0, (tam/2) - 1.0);
-        m_vElementsPositions.push_back(CVector2(m_pcRNG->Uniform(cRangeX), m_pcRNG->Uniform(cRangeY)));
+        Real x = m_pcRNG->Uniform(CRange<Real>((-tam/2)+1.0, (tam/2)-1.0));
+        Real y = m_pcRNG->Uniform(CRange<Real>((-tam/2)+1.0, (tam/2)-1.0));
+        m_vCirclePositions.push_back(CVector2(x, y));
       }
     }
 }
@@ -426,9 +357,9 @@ void CForaging::ComputeElementsPositions(UInt32 NumIter) {
 // Definir la función para verificar si un punto está dentro del triángulo
 bool CForaging::Dentro_del_triangulo(const std::pair<double, double>& punto, double tam) {
     // Definir los vértices del triángulo
-    CVector2 A((tam / 2)-0.7, 0);
-    CVector2 B((-tam / 2)+0.7, (tam / 2)-0.7);
-    CVector2 C((-tam / 2)+0.7, (-tam / 2)+0.7);
+    CVector2 A((tam / 2)-1.5, 0);
+    CVector2 B((-tam / 2)+1.5, (tam / 2)-1.5);
+    CVector2 C((-tam / 2)+1.5, (-tam / 2)+1.5);
     // Implementación de la función que ya proporcionaste
     // ...
     double x = punto.first;
@@ -440,7 +371,6 @@ bool CForaging::Dentro_del_triangulo(const std::pair<double, double>& punto, dou
     double y2 = B.GetY();
     double x3 = C.GetX();
     double y3 = C.GetY();
-
 
     double denominador = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3);
     double alpha = ((y2 - y3) * (x - x3) + (x3 - x2) * (y - y3)) / denominador;
@@ -455,107 +385,39 @@ bool CForaging::Dentro_del_triangulo(const std::pair<double, double>& punto, dou
 
 bool CForaging::Dentro_del_circulo(const std::pair<double,double>& punto, double tam){
     // Calcula la distancia desde el punto al centro del círculo
-    double radio = (tam / 2) - 0.7;
+    double radio = (tam / 2) - 1.0; // se le da un ofsset para evitar que el circulo o parte de este salga de las paredes
     double distancia = (CVector2(punto.first, punto.second) - CVector2(0, 0)).Length();
-
     // Compara la distancia con el radio
     return distancia < radio;
 }
 
 // Función para asignar el tamaño según el tipo de arena
 double CForaging::Asignar_tamano_segun_arena(const std::string& arena_tipo) {
-    if (arena_tipo == "pequena") {
-        return 4.0;
-    } else if (arena_tipo == "mediana") {
-        return 8.0;
-    } else if (arena_tipo == "grande") {
-        return 12.0;
-    } else {
+    if (m_unArenatype == "Hexagonal"){
+      if (arena_tipo == "pequena") {
+        return 5.0;
+      } else if (arena_tipo == "mediana") {
+        return 9.0;
+      } else if (arena_tipo == "grande") {
+        return 13.0;
+      } else {
         // Manejar el caso en el que arena_tipo no sea un valor válido
         std::cerr << "Valor no válido para arena_tipo: " << arena_tipo << std::endl;
         return -1.0;  // Otra forma de manejar el error, devolver un valor no válido
-    }
-}
-// Posicionar objetos y robots, si la arena es triangular
-void CForaging::ComputePositionselements() {
-    CFootBotEntity* pcFootBot;
-    CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-    double tam = Asignar_tamano_segun_arena(m_unArenatam);
-
-    // Almacenar las posiciones dentro del triángulo en un vector
-    std::vector<CVector2> pos_triangulo;
-
-    // Recorrer puntos en x desde -tam a tam con variación de 0.1
-    for (double x = -tam; x <= tam; x += 0.1) {
-        // Recorrer puntos en y desde -tam a tam con variaciones de 0.1
-        for (double y = -tam; y <= tam; y += 0.1) {
-            std::pair<double, double> punto_actual = std::make_pair(x, y);
-            if ( m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal" || m_unArenatype == "Octagonal" || m_unArenatype == "Dodecagono")
-            {
-              // Verificar si el punto está dentro de la circunferenciainscrita en el poligono
-              if (Dentro_del_circulo(punto_actual, tam)) {
-                  pos_triangulo.push_back(CVector2(punto_actual.first, punto_actual.second));
-              }
-            }
-            else{
-              // Verificar si el punto está dentro del triángulo
-              if (Dentro_del_triangulo(punto_actual, tam)) {
-                  pos_triangulo.push_back(CVector2(punto_actual.first, punto_actual.second));
-              }
-            }
-        }
-    }
-
-    // Verificar si hay suficientes posiciones precalculadas
-    if (pos_triangulo.size() < tFootBotMap.size()) {
-        // Calcular nuevas posiciones
-        ComputeElementsPositions(tFootBotMap.size());
-
-        // Verificar si todavía no hay suficientes posiciones
-        if (m_vElementsPositions.size() < tFootBotMap.size()) {
-            THROW_ARGOSEXCEPTION("No hay suficientes posiciones precalculadas para colocar todos los robots");
-        }
-    }
-
-    size_t i = 0;
-    UInt32 unTrials;
-
-    for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
-        pcFootBot = any_cast<CFootBotEntity*>(it->second);
-
-        // Obtener la posición del vector precalculado
-        const CVector2& cPosition = (pos_triangulo.size() >= tFootBotMap.size()) ? pos_triangulo[i] : m_vElementsPositions[i];
-
-        // Mover el robot a la posición
-        bool bPlaced = MoveEntity(pcFootBot->GetEmbodiedEntity(),
-            CVector3(cPosition.GetX(), cPosition.GetY(), 0.0),
-            CQuaternion().FromEulerAngles(m_pcRNG->Uniform(CRange<CRadians>(CRadians::ZERO, CRadians::TWO_PI)),
-                CRadians::ZERO, CRadians::ZERO), false);
-
-        // Intentar colocar el robot hasta un máximo de 100 veces
-        unTrials = 0;
-        while (!bPlaced && unTrials < 100) {
-            // Calcular nuevas posiciones
-            ComputeElementsPositions(1);
-
-            // Obtener la nueva posición del vector precalculado
-            const CVector2& cNewPosition = m_vElementsPositions[0];
-
-            // Mover el robot a la nueva posición
-            bPlaced = MoveEntity(pcFootBot->GetEmbodiedEntity(),
-                CVector3(cNewPosition.GetX(), cNewPosition.GetY(), 0.0),
-                CQuaternion().FromEulerAngles(m_pcRNG->Uniform(CRange<CRadians>(CRadians::ZERO, CRadians::TWO_PI)),
-                    CRadians::ZERO, CRadians::ZERO), false);
-
-            ++unTrials;
-        }
-
-        // Verificar si todavía no se pudo colocar el robot
-        if (!bPlaced) {
-            THROW_ARGOSEXCEPTION("No se pudo colocar el robot después de varios intentos");
-        }
-        // Incrementar el índice para obtener la siguiente posición precalculada
-        ++i;
+      }
+    }else
+    {
+      if (arena_tipo == "pequena") {
+        return 5.0;
+      } else if (arena_tipo == "mediana") {
+        return 8.0;
+      } else if (arena_tipo == "grande") {
+        return 12.0;
+      } else {
+        // Manejar el caso en el que arena_tipo no sea un valor válido
+        std::cerr << "Valor no válido para arena_tipo: " << arena_tipo << std::endl;
+        return -1.0;  // Otra forma de manejar el error, devolver un valor no válido
+      }
     }
 }
 
@@ -576,42 +438,42 @@ void CForaging::RegisterPositions(){
 
 }
 Real CForaging::GetExplorationScore() {
-    //CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-    //CVector2 cFootBotPosition(0, 0);
-    //Real Exploration = 0;
+    CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+    CVector2 cFootBotPosition(0, 0);
+    Real Exploration = 0;
     //m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
-//
-    //// Actualiza el contador de tiempo para las baldosas cruzadas por robots
-    //for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
-    //    CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
-    //    cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-    //        pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-//
-    //    UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
-    //    UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
-//
-    //    if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0) {
-    //        m_grid[X][Y] = 0;
-    //    }
-    //}
-//
-    //// Calcula la métrica de exploración
-    //UInt32 total = 0;
-    //for (UInt32 i = 0; i < m_gridSize; i++) {
-    //    for (UInt32 j = 0; j < m_gridSize; j++) {
-    //        total += m_grid[i][j];
-    //        m_grid[i][j] += 1;
-    //    }
-    //}
-    //Exploration += Real(total);
-    //return Exploration;
-  Real temp = 0;
-  for (unsigned int i = 0; i<(unsigned int)(sizeArena.GetX()*100*sizeArena.GetY()*100); i++) {
-    if (grid[i]==true){
-      temp+=1;
+
+    // Actualiza el contador de tiempo para las baldosas cruzadas por robots
+    for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+        CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
+        cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+            pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+
+        UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
+        UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
+
+        if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0) {
+            m_grid[X][Y] = 0;
+        }
     }
-  }
-  return temp/maxScore;
+
+    // Calcula la métrica de exploración
+    UInt32 total = 0;
+    for (UInt32 i = 0; i < m_gridSize; i++) {
+        for (UInt32 j = 0; j < m_gridSize; j++) {
+            total += m_grid[i][j];
+            m_grid[i][j] += 1;
+        }
+    }
+    Exploration += Real(total);
+    return Exploration;
+  //Real temp = 0;
+  //for (unsigned int i = 0; i<(unsigned int)(sizeArena.GetX()*100*sizeArena.GetY()*100); i++) {
+  //  if (grid[i]==true){
+  //    temp+=1;
+  //  }
+  //}
+  //return temp/maxScore;
 }
 //------------------------------------- AGREGACIÓN ID 2-------------------------------------
 void CForaging::InitRobotStates() {
@@ -644,7 +506,7 @@ Real CForaging::GetAggregationScore() {
         bInAgg = IsRobotInAggCircle(it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                                it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
         if (bInAgg) {
-            unRobotsInAgg+=1;
+            unRobotsInAgg+=1; // contabiliza ell robot  ue esta dentro de la zona negra
             // Si está en la zona, acumular el tiempo que pasa allí
             fTotalAggTime += it->second.FTimeInAgg;
         }
@@ -772,7 +634,12 @@ CVector3 CForaging::GetRandomPosition() {
     x = (1.0 - std::sqrt(Ta)) * A.GetX() + std::sqrt(Ta) * (1.0 - Tb) * B.GetX() + std::sqrt(Ta) * Tb * C.GetX();
     y = (1.0 - std::sqrt(Ta)) * A.GetY() + std::sqrt(Ta) * (1.0 - Tb) * B.GetY() + std::sqrt(Ta) * Tb * C.GetY();
 
+  } else if (m_unArenatype == "Cuadrada")
+  {
+    x = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
+    y = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
   }
+  
   else {
     double DisRadius = tam / 2;
     if (b < a){

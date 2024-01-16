@@ -59,8 +59,10 @@ def framework_label (file,time,codigos):
 def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID):
     tree = ET.parse(file)
     root = tree.getroot()
-            # MODIFICAR PARAMETROS LOOP_FUNCTIONS
+    # MODIFICAR PARAMETROS LOOP_FUNCTIONS
     loops = root.find("loop_functions") #
+    random_seed_value = root.find(".//framework/experiment").get("random_seed")
+
     if loops is not None:
         Eparams = loops.find("params")
         # establecer los parametros en las sub etiquetas del loop:functions
@@ -70,7 +72,8 @@ def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID):
             Eparams.set("tam",tam_arena)
             Eparams.set("mision", str(m_ID)) # ID del comportamiento que se esta evaluando para ejecutar la mision correspondiente
             Eparams.set("obstaculos",str(obstaculos))
-            Eparams.set("robots",str(robots)) # falso 0, verdadero 1
+            Eparams.set("robots",str(robots))
+            Eparams.set("seed",str(random_seed_value)) # falso 0, verdadero 1
     tree.write(file)
 
 """FUNCIONES CONFIGURACION PARAMETROS SEGUN LA ARENA"""
@@ -87,7 +90,7 @@ def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID):
 def parametros_arena_cuadrada(tamaño,tipo_arena):
     paredes = 4 # numero de paredes
     if tamaño == "pequena":
-        size  = 4 # medida de la arena pequeña
+        size  = 5 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
         pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
     elif tamaño ==  "mediana":
@@ -123,7 +126,7 @@ def parametros_arena_cuadrada(tamaño,tipo_arena):
 def parametros_arena_triangular(tamaño,tipo_arena):
 
     if tamaño == "pequena":
-        size  = 4 # medida de la arena pequeña
+        size  = 5 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
         pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
     elif tamaño ==  "mediana":
@@ -160,7 +163,7 @@ def parametros_arena_triangular(tamaño,tipo_arena):
 
 def parametros_arena_hexagonal(tamaño,tipo_arena):
     if tamaño == "pequena":
-        size  = 4 # medida de la arena pequeña
+        size  = 5 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
         pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
     elif tamaño ==  "mediana":
@@ -200,7 +203,7 @@ def parametros_arena_hexagonal(tamaño,tipo_arena):
 
 def parametros_arena_octagonal(tamaño,tipo_arena):
     if tamaño == "pequena":
-        size  = 4 # medida de la arena pequeña
+        size  = 5 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
         pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
     elif tamaño ==  "mediana":
@@ -242,7 +245,7 @@ def parametros_arena_octagonal(tamaño,tipo_arena):
 
 def parametros_arena_dodecagono(tamaño,tipo_arena):
     if tamaño == "pequena":
-        size  = 4 # medida de la arena pequeña
+        size  = 5 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
         pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
     elif tamaño ==  "mediana":

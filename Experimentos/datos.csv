@@ -1,4 +1,4 @@
-Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Time,Performance
+Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Seed,Time,Performance
 1,1,Exploration,Triangular,pequena,5,240 Seg,39.4955
 1,1,Exploration,Triangular,pequena,5,240 Seg,40.9878
 1,1,Exploration,Triangular,pequena,5,240 Seg,39.7859
@@ -2947,3 +2947,13 @@ Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Time,Performance
 11,2,Aggregation,Dodecagono,grande,100,240 Seg,17
 11,2,Aggregation,Dodecagono,grande,100,240 Seg,17
 11,2,Aggregation,Dodecagono,grande,100,240 Seg,15
+
+
+1,1,Exploration,Cuadrada,pequena,5,198,240 Seg,1168.4
+1,1,Exploration,Cuadrada,pequena,100,127,240 Seg,27.9
+1,1,Exploration,Cuadrada,mediana,100,105,240 Seg,38.48
+1,1,Exploration,Cuadrada,mediana,5,105,240 Seg,1162.56
+1,2,Aggregation,Hexagonal,mediana,5,151,240 Seg,0
+1,1,Exploration,Hexagonal,mediana,5,123,240 Seg,1280.56
+1,1,Exploration,Hexagonal,mediana,5,167,240 Seg,1425.49
+1,1,Exploration,Triangular,pequena,5,117,240 Seg,1402.82

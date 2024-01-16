@@ -50,7 +50,7 @@ function explore()
 	end
 
 	if value == 0 then
-		robot.wheels.set_velocity(5,5)
+		robot.wheels.set_velocity(10,10)
 		
 	else
 		

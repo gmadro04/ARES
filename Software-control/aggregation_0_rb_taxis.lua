@@ -1,3 +1,18 @@
+--[[Aggregation with two spots
+
+The goal of this exercise is to let the robot collectively decide between two black spots and aggregate.
+The robots do random walk until the find the black spot, then they stop. With a certain probability they can
+start moving again, based on the number of robots sensed. If a robot senses many robots then the probability
+to leave is lower than if it senses few robots.
+If a robots decides whether to leave every step, the other robots will not have time to go in its same spot.
+For this reason a robot "sleeps" for a certain period before deciding whether to leave. 
+In addition, when a robot senses at least two other neighbors in stop state, it follows the resulting vector going towards them.
+
+The values for the number of steps to sleep and the base probability are very important to achieve aggregation.
+The behavior could be correct, but it could not work if these values are not set carefully.
+]]
+
+
 -- States, see more in step()
 WALK = "WALK"
 AVOID = "AVOID"
@@ -12,14 +27,14 @@ is_black_sensed = false -- is the robot sensing black?
 number_robot_sensed = 0
 
 -- variables for obstacle avoidance
-MAX_TURN_STEPS = 20 
+MAX_TURN_STEPS = 40 
 current_turn_steps = 0
 
 -- variables for go straight behavior
 current_fwd_steps = 0
 
 -- sleeping variables
-SLEEP_STEPS = 50 -- we sleep for this number of steps
+SLEEP_STEPS = 30 -- we sleep for this number of steps
 current_sleep_steps = 0
 BASE_LEAVE_PROB = 0.3 -- the basic probability to stay. It should be small enough to avoid splitting the group, but big enough to achieve stability
 STOP_PROB = 0.2 
@@ -37,7 +52,7 @@ end
 -- the main loop
 function step()
    ProcessProx() -- check for obstacles
-	robot.range_and_bearing.set_data(1,1) -- send something to the other robots
+	ProcessGround() -- check for black spots	
 
    -- The default behavior is to go straight.
    -- The robot changes behavior if it senses an obstacle or a black spot
@@ -46,6 +61,8 @@ function step()
 		if is_obstacle_sensed then -- obstacle sensed
 		   current_state = AVOID -- change state to avoidance
 		   current_turn_steps = robot.random.uniform_int(2,MAX_TURN_STEPS) -- set the number of steps to turn on the spot
+		elseif is_black_sensed and robot.random.bernoulli(STOP_PROB) then -- black area sensed, with stop with STOP_PROB probability
+			current_state = STOP -- change state
 		else
 			CountRAB()
 			if number_robot_sensed > 2 then
@@ -69,22 +86,8 @@ function step()
 			if is_obstacle_sensed then -- obstacle sensed
 		   		current_state = AVOID -- change state to avoidance
 		   		current_turn_steps = robot.random.uniform_int(2,MAX_TURN_STEPS) -- set the number of steps to turn on the spot
-			elseif number_robot_sensed > 4 and robot.random.bernoulli(STOP_PROB) then -- black area sensed, with stop with STOP_PROB probability
+			elseif is_black_sensed and robot.random.bernoulli(STOP_PROB) then -- black area sensed, with stop with STOP_PROB probability
 				current_state = STOP -- change state
-			else 
-				prob = BASE_LEAVE_PROB
-				if number_robot_sensed ~= 0 then 
-					prob = BASE_LEAVE_PROB / math.pow(number_robot_sensed,2)
-				end
-			
-				if robot.random.uniform() > prob then -- stay
-					current_state = RAB_TAXIS
-				else
-					--Leave, stop sending messages to the others
-					robot.range_and_bearing.set_data(1,0)
-					current_state = LEAVE
-					current_sleep_steps = 0
-				end
 			end
 	-- to avoid obstacles, the robot turns on itself for a random number of steps 
    -- between 2 and MAX_TURN_STEPS
@@ -97,6 +100,7 @@ function step()
 	-- the robot is stopped: sleep, then count the neighbors and decide whether to leave
 	elseif current_state == STOP then
 		robot.wheels.set_velocity(0,0)
+		robot.range_and_bearing.set_data(1,1) -- send something to the other robots
 		current_sleep_steps = current_sleep_steps + 1
 		if current_sleep_steps >= SLEEP_STEPS then -- time to decide
 			current_sleep_steps = 0
@@ -104,7 +108,7 @@ function step()
 			CountRAB() -- count the close robots
 			prob = BASE_LEAVE_PROB
 			if number_robot_sensed ~= 0 then 
-				prob = BASE_LEAVE_PROB / math.pow(number_robot_sensed,2)
+				prob = BASE_LEAVE_PROB / math.pow(number_robot_sensed,2) -- +1 is for this robot
 			end
 			
 			if robot.random.uniform() > prob then -- stay
@@ -141,6 +145,16 @@ function ProcessProx()
    if sort_prox[1].value > 0.05 and math.abs(sort_prox[1].angle) < math.pi/2
       then is_obstacle_sensed = true
    end
+end
+
+-- Sense the black spot. If at least one sensor is sensing black, we return true
+function ProcessGround()
+	is_black_sensed = false
+	sort_ground = table.copy(robot.motor_ground)
+   table.sort(sort_ground, function(a,b) return a.value<b.value end)
+	if sort_ground[1].value == 0 then
+		is_black_sensed = true
+	end
 end
 
 -- Count the number of robots sensed close to the robot

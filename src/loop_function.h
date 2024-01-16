@@ -42,7 +42,6 @@ public:
 
    CVector3 GetRandomPosition();
    void MoveRobots();
-   void ComputePositionselements();
    void InitializeArena();
 
    /**
@@ -158,6 +157,9 @@ private:
     // * Tamaño de arena
     // */
     std::string m_unArenatam;
+    // * Semilla aleatorea
+    // */
+    std::string m_unSeed;
     // /**
     // * Id mision y comportamiento
     // */
@@ -180,7 +182,6 @@ private:
      */
     void PositionArena();
     void ComputeCirclePositions(UInt32 NumCircles);
-    void ComputeElementsPositions(UInt32 NumIter);
     void InitRobotStates();
     CVector2 GetRandomPositionInHexagon(double tam);
 

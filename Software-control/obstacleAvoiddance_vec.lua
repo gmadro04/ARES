@@ -40,7 +40,7 @@
 			 end
 		 else 
 				 -- No obstacle. We go straight
-				 robot.wheels.set_velocity(5,5)
+				 robot.wheels.set_velocity(10,10)
 		 end
 	 
 	 end
