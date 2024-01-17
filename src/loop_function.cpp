@@ -85,10 +85,12 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     // --- Exploración ---
     maxScore = 1.0;
     sizeArena.Set(1,1);
-    m_arenaSize = 0.0; // se ajusta segun la arena
 
+    m_arenaSize = 0.0; // se ajusta segun la arena
     m_gridSize = 10; // celdas que dividen la arena segun el tamaño de esta
     m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
+    // --- Marcha en formación --
+    m_unNumberPoints = 1000;
 
 
     Init(); // inicializa configuraciones de arena y codigo c++ loop
@@ -111,18 +113,19 @@ void CForaging::Init() {
   }
 
   // ESTABELCER ALGUNAS VARIABLES QUE SE USAN SEGUN LA  MISION 
+  // ---------- Exploracion -----------
   double tam = Asignar_tamano_segun_arena(m_unArenatam);
   sizeArena.Set(tam,tam);
-  maxScore = ((int)(sizeArena.GetY()*100*sizeArena.GetX()*100))*1.0;
+  maxScore = ((int)(sizeArena.GetY()*1*sizeArena.GetX()*1))*1.0;
   grid.reserve((unsigned int)maxScore);
   m_arenaSize = tam;
-
-  // Inicializar las posiciones de los círculos
+  m_gridSize = tam; // celdas que dividen la arena segun el tamaño de esta
+  m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
+  // ---------Inicializar las posiciones de los círculos
   ComputeCirclePositions(m_unNumCircles);
   // Posicionar elementos y robots en la arena 
   if (m_unArenatype == "Triangular" || m_unArenatype == "Dodecagono" || m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal")
   {
-    //ComputePositionselements();
     MoveRobots();
   }
   InitRobotStates();
@@ -161,14 +164,11 @@ void CForaging::PreStep() {
 /****************************************/
 //
 void CForaging::PostStep() {
-  ScoreControl(); // LLAMADO A LA METRICA SEGUN LA MISION
-}
-void CForaging::ScoreControl(){
+  // LLAMADO A LA METRICA SEGUN LA MISION
   if (m_unIDmision == 1)
   {
-    //LOGERR << "ID MISION 1" << std::endl;
     RegisterPositions();
-    m_fObjectiveFunction = GetExplorationScore() / m_gridSize / m_gridSize ;
+    m_fObjectiveFunction += GetExplorationScore();
   }
   else if (m_unIDmision == 2)
   {
@@ -176,7 +176,8 @@ void CForaging::ScoreControl(){
   }
   else if (m_unIDmision == 3)
   {
-    LOGERR << "ID MISION 3" << std::endl;
+    //LOGERR << "ID MISION 3" << std::endl;
+    m_fObjectiveFunction = GetPatternFormationScore();
   }
   else if (m_unIDmision == 4)
   {
@@ -204,7 +205,8 @@ void CForaging::PostExperiment() {
   }
   else if (m_unIDmision == 3)
   {
-    LOGERR << "ID MISION 3" << std::endl;
+    m_fObjectiveFunction = GetPatternFormationScore();
+    LOG << "Marcha en formación Score = " << m_fObjectiveFunction << std::endl;
   }
   else if (m_unIDmision == 4)
   {
@@ -430,50 +432,49 @@ void CForaging::RegisterPositions(){
   CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
   for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
       CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
-      unsigned int x = (unsigned int)((pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX()+sizeArena.GetX()/2.0)*100);
-      unsigned int y = (unsigned int)((pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY()+sizeArena.GetY()/2.0)*100);
-      grid[(unsigned int)(x*sizeArena.GetX()*100+y)] = true;
+      unsigned int x = (unsigned int)((pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX()+sizeArena.GetX()/2.0)*1);
+      unsigned int y = (unsigned int)((pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY()+sizeArena.GetY()/2.0)*1);
+      grid[(unsigned int)(x*sizeArena.GetX()*1+y)] = true;
 
   }
 
 }
 Real CForaging::GetExplorationScore() {
-    CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-    CVector2 cFootBotPosition(0, 0);
-    Real Exploration = 0;
-    //m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
-
-    // Actualiza el contador de tiempo para las baldosas cruzadas por robots
-    for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
-        CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
-        cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-            pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-
-        UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
-        UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
-
-        if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0) {
-            m_grid[X][Y] = 0;
-        }
+    //CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+    //CVector2 cFootBotPosition(0, 0);
+    ////m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
+    //Real Exploration;
+    //// Actualiza el contador de tiempo para las baldosas cruzadas por robots
+    //for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+    //    CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
+    //    cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+    //        pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+//
+    //    UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
+    //    UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
+//
+    //    if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0) {
+    //        m_grid[X][Y] = 0;
+    //    }
+    //}
+//
+    //// Calcula la métrica de exploración
+    //UInt32 total = 0;
+    //for (UInt32 i = 0; i < m_gridSize; i++) {
+    //    for (UInt32 j = 0; j < m_gridSize; j++) {
+    //        total += m_grid[i][j];
+    //        m_grid[i][j] += 1;
+    //    }
+    //}
+    //Exploration += Real(total);
+    //return Exploration;
+  Real temp = 0;
+  for (unsigned int i = 0; i<(unsigned int)(sizeArena.GetX()*1*sizeArena.GetY()*1); i++) {
+    if (grid[i]==true){
+      temp+=1;
     }
-
-    // Calcula la métrica de exploración
-    UInt32 total = 0;
-    for (UInt32 i = 0; i < m_gridSize; i++) {
-        for (UInt32 j = 0; j < m_gridSize; j++) {
-            total += m_grid[i][j];
-            m_grid[i][j] += 1;
-        }
-    }
-    Exploration += Real(total);
-    return Exploration;
-  //Real temp = 0;
-  //for (unsigned int i = 0; i<(unsigned int)(sizeArena.GetX()*100*sizeArena.GetY()*100); i++) {
-  //  if (grid[i]==true){
-  //    temp+=1;
-  //  }
-  //}
-  //return temp/maxScore;
+  }
+  return temp/maxScore;
 }
 //------------------------------------- AGREGACIÓN ID 2-------------------------------------
 void CForaging::InitRobotStates() {
@@ -560,6 +561,41 @@ bool CForaging::IsRobotInAggCircle(Real x, Real y) {
 }
 // ------------------------------------- MARCHA EN FORMACION ID 3 -------------------------------------
 
+Real CForaging::GetPatternFormationScore(){
+  CVector2 cRandomPoint;
+  Real dA=0, dp=0;
+
+  CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+  CVector2 cFootbotPosition(0, 0);
+  Real fDistanceToRandomPoint = 0;
+
+  for (UInt32 i = 0 ; i < m_unNumberPoints; i++)
+  {
+    Real fMinDistanceOnSquare = 0.67;  // Correspond to worst case, only one robot in the corner of the square
+    
+    cRandomPoint = GetRandomPoint();
+    for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+      CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
+      cFootbotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+                           pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+      fDistanceToRandomPoint = (cRandomPoint - cFootbotPosition).Length();
+
+      if (fDistanceToRandomPoint < fMinDistanceOnSquare){
+          fMinDistanceOnSquare = fDistanceToRandomPoint;
+      }
+    
+    }
+
+    dA += fMinDistanceOnSquare;
+  }
+  
+  dA /= m_unNumberPoints;
+
+
+  Real performance = 100*100*dA*dA; // in cm2
+
+  return performance;
+}
 /****************************************/
 /****************************************/
 
@@ -652,6 +688,48 @@ CVector3 CForaging::GetRandomPosition() {
   }
 
   return CVector3(x, y, 0.0);
+}
+
+CVector2 CForaging::GetRandomPoint() {
+  double tam = Asignar_tamano_segun_arena(m_unArenatam);
+  Real temp;
+  Real a = m_pcRNG->Uniform(CRange<Real>(0.0f, 1.0f));
+  Real b = m_pcRNG->Uniform(CRange<Real>(0.0f, 1.0f));
+  Real x;
+  Real y;
+
+  if (m_unArenatype == "Triangular")
+  {
+    Real Ta = m_pcRNG->Uniform(CRange<Real>(-1.0f, 1.0f));
+    Real Tb = m_pcRNG->Uniform(CRange<Real>(-1.0f, 1.0f));
+    CVector2 A((tam / 2), 0);
+    CVector2 B((-tam / 2), (tam / 2));
+    CVector2 C((-tam / 2), (-tam / 2));
+    // Ajustar valores de a y b al rango [0, 1]
+    Ta = (Ta + 1.0) / 2.0;
+    Tb = (Tb + 1.0) / 2.0;
+    // Interpolación para obtener una posición aleatoria dentro del triángulo
+    x = (1.0 - std::sqrt(Ta)) * A.GetX() + std::sqrt(Ta) * (1.0 - Tb) * B.GetX() + std::sqrt(Ta) * Tb * C.GetX();
+    y = (1.0 - std::sqrt(Ta)) * A.GetY() + std::sqrt(Ta) * (1.0 - Tb) * B.GetY() + std::sqrt(Ta) * Tb * C.GetY();
+
+  } else if (m_unArenatype == "Cuadrada")
+  {
+    x = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
+    y = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
+  }
+  
+  else {
+    double DisRadius = tam / 2;
+    if (b < a){
+      temp = a;
+      a = b;
+      b = temp;
+    }
+    x = b * DisRadius * cos(2 * PI * (a/b));
+    y = b * DisRadius * sin(2 * PI * (a/b));
+  }
+
+  return CVector2(x, y);
 }
 
 /****************************************/

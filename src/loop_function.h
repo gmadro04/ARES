@@ -41,6 +41,7 @@ public:
    virtual void Init();
 
    CVector3 GetRandomPosition();
+   CVector2 GetRandomPoint();
    void MoveRobots();
    void InitializeArena();
 
@@ -108,7 +109,8 @@ public:
    void UpdateAggregationTime();
    // --- Función para obtener la puntuación de exploración
    Real GetExplorationScore(); 
-
+   // -- Función para obtener la puntuación de marcha en formación
+   Real GetPatternFormationScore();
 
 private:
 
@@ -202,6 +204,9 @@ private:
     std::vector<bool> grid;
     CVector2 sizeArena;
 	 Real maxScore;
+    // ----- Marcha en formación
+    UInt32 m_unNumberPoints;
+
     void RegisterPositions();
 
 
