@@ -26,19 +26,20 @@ import pyfiglet
 # Nombre del archivo XML
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/pattern_formation.lua"
-misionID = 3 # Configura el id de la mision a evaluar
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/color_selection_prob.lua"
+misionID = 4 # Configura el id de la mision a evaluar
 """Path del software de control a evaluar
 Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
 * Mision ID = 1 -> Mision exploración
 * Mision ID = 2 -> Mision agregación
 * Mision ID = 3 -> Mision marcha en formación
-* Mision ID = 4 -> Mision Sincronización
-* Mision ID = 5 -> Mision toma de decisiones colectiva
+* Mision ID = 4 -> Mision toma de decisiones colectiva
 """
-# obstacleAvoiddance_vec.lua, obstacleAvoidance_Gmadro.lua,obstacleAvoiddance_sta.lua, aggregation_spots.lua
-# color_selection_det.lua, synchronization.lua, aggregation_0_rb_taxis.lua,color_selection_prob.lua
-# color_selection_det.lua 
+# obstacleAvoiddance_vec.lua, obstacleAvoidance_Gmadro.lua,obstacleAvoiddance_sta.lua, 
+# aggregation_spots.lua aggregation_0_rb_taxis.lua, aggregation_spots_GMadro.lua
+# pattern_formation.lua, pattern_formation_circle.lua, pattern_formation_flocking.lua
+# color_selection_prob.lua, color_selection_det.lua 
+
 """ARCHIVO DEL EXPERIMENTO"""
 file = dir+"/"+"experimento.argos" # cargamos el archivo .argos
 #cargamos los datos desde fichero
@@ -51,7 +52,7 @@ def modificar_archivo(file,exp,arenas,tams):
     arena_params, parametros = loop.params_arena(arenas,tams)    # Tamaño de la arena grande,mediana,pequeña y configuracion de atributos
     Obstaculos = False  # Obstaculos en el escenario si o no, según la eleccion tipo de distribución y tipo de obstaculo
     # Numero de robots y tiempo de duración del experimento
-    robots =  exp*(incremento_robots + num_robots_inicial) if exp >=1  else 5#num_robots_inicial
+    robots =  exp*(incremento_robots + num_robots_inicial) if exp >=1  else 100#num_robots_inicial
     time = loop.robots_timeDruation()
     """ CONFIGURACION ARCHIVO """
     loop.framework_label(file, time, codigos) #Configuración software de control y tiempo ejecucion

@@ -4949,3 +4949,9 @@ Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Seed,Time,Performance
 11,3,Pattern formation,Dodecagono,grande,100,160,240 Seg,2676.72
 11,3,Pattern formation,Dodecagono,grande,100,121,240 Seg,2562.27
 11,3,Pattern formation,Dodecagono,grande,100,156,240 Seg,2620.95
+
+1,4,Color selection,Triangular,pequena,5,114,240 Seg,0
+1,4,Color selection,Triangular,pequena,100,139,240 Seg,0
+1,4,Color selection,Triangular,pequena,100,158,240 Seg,0
+1,4,Color selection,Triangular,grande,100,131,240 Seg,0
+1,4,Color selection,Triangular,grande,100,126,240 Seg,0

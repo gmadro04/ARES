@@ -181,11 +181,8 @@ void CForaging::PostStep() {
   }
   else if (m_unIDmision == 4)
   {
-    LOGERR << "ID MISION 4" << std::endl;
-  }
-  else if (m_unIDmision == 5)
-  {
-    LOGERR << "ID MISION 5" << std::endl;
+    //LOGERR << "ID MISION 4" << std::endl;
+    //LOG << "Toma de decisión Score = " << m_fObjectiveFunction << std::endl;
   }
 }
 
@@ -210,12 +207,11 @@ void CForaging::PostExperiment() {
   }
   else if (m_unIDmision == 4)
   {
-    LOGERR << "ID MISION 4" << std::endl;
+    //LOGERR << "ID MISION 4" << std::endl;
+    LOG << "Toma de decisión Score = " << m_fObjectiveFunction << std::endl;
+
   }
-  else if (m_unIDmision == 5)
-  {
-    LOGERR << "ID MISION 5" << std::endl;
-  }
+
   // Llama a la función para guardar los datos finales de los experimentos
   SaveExperimentData();
 }
@@ -241,9 +237,6 @@ void CForaging::SaveExperimentData() {
   }
   else if (m_unIDmision == 4)
   {
-    Mision = "Synchronization";
-  }
-  else{
     Mision = "Color selection";
   }
 
