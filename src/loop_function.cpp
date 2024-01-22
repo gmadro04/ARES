@@ -4,6 +4,7 @@
 #include <argos3/core/utility/math/rng.h>
 #include <cmath>
 #include <numeric>
+#include <unordered_map>
 
 
 
@@ -91,7 +92,9 @@ void CForaging::Init(TConfigurationNode& t_tree) {
     m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
     // --- Marcha en formación --
     m_unNumberPoints = 1000;
-
+    // --- Toma de decisiones ---
+    consenso = false;
+    tiempo_conseso = 0;
 
     Init(); // inicializa configuraciones de arena y codigo c++ loop
 }
@@ -121,6 +124,8 @@ void CForaging::Init() {
   m_arenaSize = tam;
   m_gridSize = tam; // celdas que dividen la arena segun el tamaño de esta
   m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
+
+  // CONFIGURACIONES SEGUN LA ARENA 
   // ---------Inicializar las posiciones de los círculos
   ComputeCirclePositions(m_unNumCircles);
   // Posicionar elementos y robots en la arena 
@@ -183,6 +188,7 @@ void CForaging::PostStep() {
   {
     //LOGERR << "ID MISION 4" << std::endl;
     //LOG << "Toma de decisión Score = " << m_fObjectiveFunction << std::endl;
+    m_fObjectiveFunction = GetCollectiveDecisionScore();
   }
 }
 
@@ -589,6 +595,65 @@ Real CForaging::GetPatternFormationScore(){
 
   return performance;
 }
+
+// ------------------------------------- TOMA DE DECISIONES ID 4 -------------------------------------
+
+Real CForaging::GetCollectiveDecisionScore() {
+
+    Real color_red = 0;
+    Real color_blue = 0;
+    Real color_green = 0;
+
+    // Obtén la lista de foot-bots
+    CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+    UInt32 totalRobots = tFootBotMap.size();
+  if (!consenso)
+  {
+    for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+        CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
+
+        // Accede al color del LED del foot-bot
+        const CColor& ledColor = pcFootBot->GetLEDEquippedEntity().GetLED(0).GetColor();
+        
+
+      // Realiza el análisis y el conteo de colores 
+      // cuenta cuantos robots estan emitiendo un color
+      if (ledColor == CColor::RED) {
+          color_red++;
+      } else if (ledColor == CColor::GREEN) {
+          color_green++;
+      } else if (ledColor == CColor::BLUE) {
+          color_blue++;
+      }
+
+    }
+
+    if ((color_red/totalRobots) >= 0.9){
+      consenso = true;
+      tiempo_conseso = GetSpace().GetSimulationClock();
+      LOG << "Consenso alcanzado al paso " << tiempo_conseso << std::endl;
+      LOG << "#Robots emiten color " << color_red << std::endl;
+      LOG << "Porcentaje de consenso " << color_red/totalRobots << std::endl;
+    }else if ((color_blue/totalRobots) >= 0.9)
+    {
+      consenso = true;
+      tiempo_conseso = GetSpace().GetSimulationClock();
+      LOG << "Consenso alcanzado al paso " << tiempo_conseso << std::endl;
+      LOG << "#Robots emiten color " << color_blue << std::endl;
+      LOG << "Porcentaje de consenso " << color_blue/totalRobots << std::endl;
+    }else if ((color_green/totalRobots) >= 0.9)
+    {
+      consenso = true;
+      tiempo_conseso = GetSpace().GetSimulationClock();
+      LOG << "Consenso alcanzado al paso " << tiempo_conseso << std::endl;
+      LOG << "#Robots emiten color " << color_green << std::endl;
+      LOG << "Porcentaje de consenso " << color_green/totalRobots << std::endl;
+    }
+  }
+  return tiempo_conseso; // Devuelve el tiempo en el que un porcentaje mayor al 90% de robots ya llego a un consenso
+}
+
+
 /****************************************/
 /****************************************/
 

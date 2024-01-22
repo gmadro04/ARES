@@ -30,6 +30,7 @@ CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/ar
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/configuration/tinyxml/tinystr.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/configuration/tinyxml/tinyxml.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/any.h
+CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/byte_array.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/color.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/datatypes.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/set.h
@@ -52,6 +53,7 @@ CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/ar
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/plugins/vtable.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/string_utilities.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/robots/foot-bot/simulator/footbot_entity.h
+CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/simulator/entities/box_entity.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/simulator/entities/cylinder_entity.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/simulator/entities/led_entity.h

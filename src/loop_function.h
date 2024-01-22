@@ -9,6 +9,15 @@
 #include <argos3/plugins/robots/foot-bot/simulator/footbot_entity.h>
 #include <argos3/core/utility/math/rng.h>
 
+#include <argos3/core/utility/math/rng.h>
+#include <argos3/core/simulator/entity/embodied_entity.h>
+#include <argos3/core/simulator/entity/controllable_entity.h>
+#include <argos3/core/utility/math/vector2.h>
+#include <argos3/core/utility/math/vector3.h>
+#include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h>
+#include <argos3/core/utility/logging/argos_log.h>
+
+
 #include <fstream>
 #include <algorithm>
 #include <cstring>
@@ -101,16 +110,18 @@ public:
    // FUNCION QUE LLAMA A LA METRICA A EVALUAR
    void ScoreControl();
    void UpdateRobotPositions();
-   // --- Función para obtener la puntuación de agregación
+   // *****--- Función para obtener la puntuación de agregación ---*****
    Real GetAggregationScore();
    // Función para verificar si el robot está dentro del círculo de agregación
    bool IsRobotInAggCircle(Real x, Real y);
    // Función para actualizar el tiempo de agregación
    void UpdateAggregationTime();
-   // --- Función para obtener la puntuación de exploración
+   // *****--- Función para obtener la puntuación de exploración ---*****
    Real GetExplorationScore(); 
-   // -- Función para obtener la puntuación de marcha en formación
+   // *****--- Función para obtener la puntuación de marcha en formación ---*****
    Real GetPatternFormationScore();
+   // *****--- Función para obtener la puntuación de toma de decisiones ---*****
+   Real GetCollectiveDecisionScore();
 
 private:
 
@@ -206,7 +217,9 @@ private:
 	 Real maxScore;
     // ----- Marcha en formación
     UInt32 m_unNumberPoints;
-
+    // ----- TOma de decisiones
+    bool consenso;
+    UInt32 tiempo_conseso;
     void RegisterPositions();
 
 

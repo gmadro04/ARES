@@ -14,7 +14,7 @@ def params_arena(A_t,N_a):
     dim_tam = ['pequena','mediana','grande']
 
     arena = arenas[A_t] # Tipo de arena A_t
-    dim_tam = dim_tam[2] # Tamaño de la arena N_a
+    dim_tam = dim_tam[0] # Tamaño de la arena N_a
     # Parametros de configuración segun la arena
 
     if arena == "Cuadrada":

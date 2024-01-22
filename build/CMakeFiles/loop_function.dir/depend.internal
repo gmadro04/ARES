@@ -31,6 +31,7 @@ CMakeFiles/loop_function.dir/loop_function.cpp.o
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/configuration/tinyxml/tinystr.h
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/configuration/tinyxml/tinyxml.h
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/any.h
+ /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/byte_array.h
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/color.h
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/datatypes.h
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/set.h
@@ -53,6 +54,7 @@ CMakeFiles/loop_function.dir/loop_function.cpp.o
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/plugins/vtable.h
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/string_utilities.h
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/robots/foot-bot/simulator/footbot_entity.h
+ /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/simulator/entities/box_entity.h
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/simulator/entities/cylinder_entity.h
  /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/simulator/entities/led_entity.h

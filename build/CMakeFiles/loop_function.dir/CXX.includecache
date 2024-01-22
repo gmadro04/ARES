@@ -17,6 +17,8 @@ cmath
 -
 numeric
 -
+unordered_map
+-
 
 /home/gmadro/swarm_robotics/SWARM_GENERATOR/src/loop_function.h
 argos3/core/simulator/simulator.h
@@ -38,6 +40,20 @@ argos3/plugins/simulator/entities/box_entity.h
 argos3/plugins/robots/foot-bot/simulator/footbot_entity.h
 -
 argos3/core/utility/math/rng.h
+-
+argos3/core/utility/math/rng.h
+-
+argos3/core/simulator/entity/embodied_entity.h
+-
+argos3/core/simulator/entity/controllable_entity.h
+-
+argos3/core/utility/math/vector2.h
+-
+argos3/core/utility/math/vector3.h
+-
+argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h
+-
+argos3/core/utility/logging/argos_log.h
 -
 fstream
 -
@@ -368,6 +384,18 @@ typeinfo
 algorithm
 -
 
+/home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/byte_array.h
+argos3/core/utility/datatypes/datatypes.h
+-
+argos3/core/utility/configuration/argos_exception.h
+-
+vector
+-
+iterator
+-
+unistd.h
+-
+
 /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/datatypes/color.h
 argos3/core/utility/datatypes/datatypes.h
 -
@@ -566,6 +594,16 @@ sstream
 argos3/core/simulator/entity/composable_entity.h
 -
 argos3/plugins/simulator/entities/wheeled_entity.h
+-
+
+/home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h
+argos3/core/control_interface/ci_sensor.h
+-
+argos3/core/utility/datatypes/datatypes.h
+-
+argos3/core/utility/datatypes/byte_array.h
+-
+argos3/core/utility/math/quaternion.h
 -
 
 /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/simulator/entities/box_entity.h

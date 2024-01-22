@@ -4955,3 +4955,30 @@ Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Seed,Time,Performance
 1,4,Color selection,Triangular,pequena,100,158,240 Seg,0
 1,4,Color selection,Triangular,grande,100,131,240 Seg,0
 1,4,Color selection,Triangular,grande,100,126,240 Seg,0
+1,4,Color selection,Triangular,grande,100,111,240 Seg,0
+1,4,Color selection,Triangular,grande,100,197,240 Seg,2400
+1,4,Color selection,Triangular,grande,100,104,240 Seg,2400
+1,4,Color selection,Triangular,grande,100,186,240 Seg,0
+1,4,Color selection,Triangular,grande,100,102,240 Seg,39
+1,4,Color selection,Triangular,grande,100,135,240 Seg,177
+1,4,Color selection,Triangular,grande,100,103,240 Seg,206
+1,4,Color selection,Triangular,grande,100,134,240 Seg,20
+2,4,Color selection,Triangular,grande,10,197,240 Seg,493
+2,4,Color selection,Triangular,grande,10,195,240 Seg,83
+2,4,Color selection,Triangular,grande,10,116,240 Seg,102
+2,4,Color selection,Triangular,grande,10,172,240 Seg,5
+
+
+1,4,Color selection,Triangular,grande,5,163,240 Seg,480
+1,4,Color selection,Triangular,grande,5,119,240 Seg,482
+1,4,Color selection,Triangular,grande,5,124,240 Seg,3
+1,4,Color selection,Triangular,grande,5,152,240 Seg,136
+1,4,Color selection,Triangular,grande,5,184,240 Seg,362
+1,4,Color selection,Triangular,grande,5,197,240 Seg,1245
+1,4,Color selection,Triangular,grande,5,185,240 Seg,700
+1,4,Color selection,Triangular,grande,5,168,240 Seg,695
+1,4,Color selection,Triangular,grande,5,119,240 Seg,482
+1,4,Color selection,Triangular,grande,5,159,240 Seg,624
+2,4,Color selection,Triangular,grande,10,172,240 Seg,5
+1,4,Color selection,Triangular,grande,5,148,240 Seg,0
+1,4,Color selection,Triangular,pequena,5,106,240 Seg,22
