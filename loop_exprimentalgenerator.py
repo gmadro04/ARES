@@ -32,14 +32,6 @@ def params_arena(A_t,N_a):
 
     return conf_params, parametros
 
-def robots_timeDruation():
-    # Genera un número aleatorio entre 5 y 30 utilizando una distribución uniforme
-    robots = random.randrange(5, 40, 5)
-    # Tiempo de suración del experimento
-    time = random.choice([240])
-    #return robots,time
-    return time
-
 def framework_label (file,time,codigos):
     tree = ET.parse(file)
     root = tree.getroot()

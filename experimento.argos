@@ -4,12 +4,12 @@
   
   
   <framework>
-    <experiment length="240" ticks_per_second="10" random_seed="106" />
+    <experiment length="240" ticks_per_second="10" random_seed="136" />
     <system threads="0" />
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function">
-    <params num_experiment="1" arena="Triangular" tam="pequena" num_circles="1" mision="4" obstaculos="False" robots="5" seed="106" />
+    <params num_experiment="1" arena="Triangular" tam="pequena" num_circles="1" mision="2" obstaculos="False" robots="5" seed="136" />
   </loop_functions>
 
   <controllers>
@@ -29,7 +29,7 @@
         <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
         <footbot_light implementation="rot_z_only" show_rays="false" />
       </sensors>
-      <params script="/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/color_selection_det.lua" />
+      <params script="/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_0_rb_taxis.lua" />
     </lua_controller>
 
   </controllers>

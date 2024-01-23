@@ -26,8 +26,8 @@ import pyfiglet
 # Nombre del archivo XML
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/color_selection_det.lua"
-misionID = 4 # Configura el id de la mision a evaluar
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_0_rb_taxis.lua"
+misionID = 2 # Configura el id de la mision a evaluar
 """Path del software de control a evaluar
 Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
 * Mision ID = 1 -> Mision exploración
@@ -53,7 +53,7 @@ def modificar_archivo(file,exp,arenas,tams):
     Obstaculos = False  # Obstaculos en el escenario si o no, según la eleccion tipo de distribución y tipo de obstaculo
     # Numero de robots y tiempo de duración del experimento
     robots =  exp*(incremento_robots + num_robots_inicial) if exp >=1  else num_robots_inicial
-    time = loop.robots_timeDruation()
+    time = 240 # Duración experimento en seg
     """ CONFIGURACION ARCHIVO """
     loop.framework_label(file, time, codigos) #Configuración software de control y tiempo ejecucion
     # Configuración de arena
