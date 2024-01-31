@@ -28,6 +28,14 @@ dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modific
 # Ruta software de control
 codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/aggregation_0_rb_taxis.lua"
 misionID = 2 # Configura el id de la mision a evaluar
+if misionID == 1:
+    mision = 'Exploración'
+elif misionID == 2:
+    mision = 'Agregación'
+elif misionID == 3:
+    mision = 'Marcha en Formación'
+else:
+    mision = 'Decisión Colectiva'
 """Path del software de control a evaluar
 Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
 * Mision ID = 1 -> Mision exploración
@@ -35,10 +43,10 @@ Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
 * Mision ID = 3 -> Mision marcha en formación
 * Mision ID = 4 -> Mision toma de decisiones colectiva
 """
-# obstacleAvoiddance_vec.lua, obstacleAvoidance_Gmadro.lua,obstacleAvoiddance_sta.lua, 
-# aggregation_spots.lua aggregation_0_rb_taxis.lua, aggregation_spots_GMadro.lua
-# pattern_formation.lua, pattern_formation_circle.lua, pattern_formation_flocking.lua
-# color_selection_prob.lua, color_selection_det.lua 
+# obstacleAvoiddance_vec.lua, obstacleAvoiddance_sta.lua
+# aggregation_spots.lua, aggregation_0_rb_taxis.lua
+# pattern_formation.lua, pattern_formation_flocking.lua
+# color_selection_prob.lua, color_selection_det.lua
 
 """ARCHIVO DEL EXPERIMENTO"""
 file = dir+"/"+"experimento.argos" # cargamos el archivo .argos
@@ -64,7 +72,8 @@ def modificar_archivo(file,exp,arenas,tams):
     loop.loops_params(file=file,tipo_arena=parametros["Tipo de arena"],tam_arena=parametros["Tamaño arena"],
                       exp=exp,obstaculos=Obstaculos, robots=robots, m_ID=misionID)
     # Parametros simulación.
-    simulacion = pd.DataFrame([parametros["Tipo de arena"], parametros["Tamaño arena"],robots,time],index=["TIPO DE ARENA:","TAMAÑO:","# ROBOTS:","T_EXPERIMENTO:"])
+    simulacion = pd.DataFrame([parametros["Tipo de arena"], parametros["Tamaño arena"],robots,str(misionID)+"-"+mision,time],
+                              index=["TIPO DE ARENA:","TAMAÑO:","# ROBOTS:","TIPO MISION:","T_EXPERIMENTO:"])
     print(pyfiglet.figlet_format("Arena" + parametros['Tipo de arena']))
     print(simulacion)
 
@@ -77,7 +86,7 @@ for arena in range(5): # Ejecución por tipos de arena T,C,H6,O8,P12 range(5)
     for tam in range(3): # Ejecución por tamaño de arena P,M,G range(3)
         # Ejecuta el experimento múltiples veces
         for exp in range(num_experimentos):
-            for i in range(10):
+            for i in range(10): # 10 ejecuciones por cada tamaño de enjambre
                 # Modifica el archivo antes de cada ejecución
                 modificar_archivo(file,exp,arena,tam)
                 # EJECUCIÓN DEL EXPERIMENTO

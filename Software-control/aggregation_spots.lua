@@ -10,10 +10,11 @@ For this reason a robot "sleeps" for a certain period before deciding whether to
 The values for the number of steps to sleep and the base probability are very important to achieve aggregation.
 The behavior could be correct, but it could not work if these values are not set carefully.
 ]]
+
+
 -- States, see more in step()
 WALK = "WALK"
 AVOID = "AVOID"
-GO_FWD = "GO_FWD"
 STOP = "STOP"
 LEAVE = "LEAVE"
 
@@ -28,14 +29,14 @@ MAX_TURN_STEPS = 20
 current_turn_steps = 0
 
 -- variables for go straight behavior
-FWD_STEPS = 60
 current_fwd_steps = 0
 
 -- sleeping variables
-SLEEP_STEPS = 200 -- we sleep for this number of steps
+SLEEP_STEPS = 40 -- we sleep for this number of steps
 current_sleep_steps = 0
-BASE_LEAVE_PROB = 0.18 -- the basic probability to stay. It should be small enough to avoid splitting the group, but big enough to achieve stability
-LEAVE_STEPS = 50 -- when leaving we go straight for this number of steps
+BASE_LEAVE_PROB = 0.3 -- the basic probability to stay. It should be small enough to avoid splitting the group, but big enough to achieve stability
+STOP_PROB = 0.2 
+LEAVE_STEPS = 20 -- when leaving we go straight for this number of steps
 
 -- function used to copy two tables
 function table.copy(t)
@@ -48,7 +49,6 @@ end
 
 -- the main loop
 function step()
-      
    ProcessProx() -- check for obstacles
 	ProcessGround() -- check for black spots	
 
@@ -58,44 +58,39 @@ function step()
 		robot.wheels.set_velocity(10,10)
 		if is_obstacle_sensed then -- obstacle sensed
 		   current_state = AVOID -- change state to avoidance
-		   current_turn_steps = math.random(MAX_TURN_STEPS) -- set the number of steps to turn on the spot
-		elseif is_black_sensed then -- black area sensed
-			current_state = GO_FWD -- change state
-			current_fwd_steps = FWD_STEPS -- set the number of steps to go straight
+		   current_turn_steps = robot.random.uniform_int(2,MAX_TURN_STEPS) -- set the number of steps to turn on the spot
+		elseif is_black_sensed and robot.random.bernoulli(STOP_PROB) then -- black area sensed, with stop with STOP_PROB probability
+			current_state = STOP -- change state
 		end
 	-- to avoid obstacles, the robot turns on itself for a random number of steps 
-   -- between 0 and MAX_TURN_STEPS
+   -- between 2 and MAX_TURN_STEPS
    elseif current_state == AVOID then
 		robot.wheels.set_velocity(-10,10)
 		current_turn_steps = current_turn_steps - 1
 		if current_turn_steps <= 0 then
 		   current_state = WALK
 		end
-	-- if the robot is on a black area, it tries to go straight for a bit more in order to avoid
-   -- stopping on the border and prevent other robots to enter the spot.
-   -- It stops if i) it has gone far enough, ii) it sensed another robot, iii) it is going out on the white
-	elseif current_state == GO_FWD then
-		current_fwd_steps = current_fwd_steps - 1
-		robot.wheels.set_velocity(10,10)
-		if current_fwd_steps <= 0 or is_obstacle_sensed or not(is_black_sensed) then
-		   current_state = STOP
-		end
 	-- the robot is stopped: sleep, then count the neighbors and decide whether to leave
 	elseif current_state == STOP then
 		robot.wheels.set_velocity(0,0)
 		robot.range_and_bearing.set_data(1,1) -- send something to the other robots
 		current_sleep_steps = current_sleep_steps + 1
-		if current_sleep_steps == SLEEP_STEPS then -- time to decide
+		if current_sleep_steps >= SLEEP_STEPS then -- time to decide
 			current_sleep_steps = 0
 			-- set the probability to leave based on how many robots you see
-			CountRAB() -- count the close robots	
-			prob = BASE_LEAVE_PROB * (number_robot_sensed+1) -- +1 is for this robot
-			if robot.random.uniform() < prob then -- stay
+			CountRAB() -- count the close robots
+			prob = BASE_LEAVE_PROB
+			if number_robot_sensed ~= 0 then 
+				prob = BASE_LEAVE_PROB / math.pow(number_robot_sensed,2) 
+			end
+			
+			if robot.random.uniform() > prob then -- stay
 				current_state = STOP
 			else
 				--Leave, stop sending messages to the others
 				robot.range_and_bearing.set_data(1,0)
 				current_state = LEAVE
+				current_sleep_steps = 0
 			end
 		end
 	elseif current_state == LEAVE then -- just leave without checking for ground, only for obstacles
@@ -103,7 +98,7 @@ function step()
 		current_fwd_steps = current_fwd_steps + 1
 		if is_obstacle_sensed then
 			state = AVOID
-			current_turn_steps = math.random(MAX_TURN_STEPS) -- set the number of steps to turn on the spot
+			current_turn_steps = robot.random.uniform_int(2,MAX_TURN_STEPS) -- set the number of steps to turn on the spot
 		end
 		if current_fwd_steps	> LEAVE_STEPS then
 			current_fwd_steps = 0
