@@ -1,3 +1,11 @@
+--[[ PATTERN FORMATION
+
+The goal of this exercise is to let the robot move in order to form a circle around the center of the arena.
+In order to do this the robots try to position themselves in order to minimize a potential 
+field computed using the Lennard-Jones potential. In addition, we sum a global potential that attracts the robot towards
+the center. The sum of the local and global potentials creates a circular patter around the center, with robots
+that keep a distance among them.
+]]
 ---------------------------------------------------------------------------
 -- global variables
 TARGET_DIST = 80 -- the target distance between robots, in cm

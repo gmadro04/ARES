@@ -89,6 +89,7 @@ public:
    double Asignar_tamano_segun_arena(const std::string& arena_tipo);
    bool Dentro_del_triangulo(const std::pair<double, double>& punto, double tam);
    bool Dentro_del_circulo(const std::pair<double,double>& punto, double tam);
+
    /**
     * Saves the Data .
     */
@@ -132,29 +133,30 @@ private:
      */
     size_t m_unNumCircles;
     /**
-     * Número de ejecución
-     */
+    // * Número de ejecución
+    // */
     size_t m_unExperiment;
-    /**
     // * Tipo de arena
     // */
     std::string m_unArenatype;
-    ///**
     // * Tamaño de arena
     // */
     std::string m_unArenatam;
     // * Semilla aleatorea
     // */
     std::string m_unSeed;
-    // /**
+    // * Fallos en el enjambre
+    // */
+    std::string m_unFaults;
     // * Id mision y comportamiento
     // */
     size_t m_unIDmision;
-    // /**
     // * Numero de robots
+    // */
     size_t m_unRobots;
     // Obstaculos en la arena*/
-    std::string m_unObsbool;
+    //std::string m_unObsbool;
+
     /**
      * Posiciones de los círculos negros y elementos
      */

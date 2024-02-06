@@ -35,10 +35,11 @@ void CSwarmGenerator::Init(TConfigurationNode& t_tree) {
       GetNodeAttributeOrDefault(cParametersNode, "arena", m_unArenatype, m_unArenatype);
       GetNodeAttributeOrDefault(cParametersNode, "tam", m_unArenatam, m_unArenatam);
       GetNodeAttributeOrDefault(cParametersNode, "mision", m_unIDmision, m_unIDmision);
-      GetNodeAttributeOrDefault(cParametersNode, "obstaculos", m_unObsbool, m_unObsbool);
       GetNodeAttributeOrDefault(cParametersNode, "num_circles", m_unNumCircles, m_unNumCircles);
       GetNodeAttributeOrDefault(cParametersNode, "robots", m_unRobots, m_unRobots);
       GetNodeAttributeOrDefault(cParametersNode, "seed", m_unSeed, m_unSeed);
+      GetNodeAttributeOrDefault(cParametersNode, "fallos", m_unFaults, m_unFaults);
+      //GetNodeAttributeOrDefault(cParametersNode, "T_Control", m_unSoftwareType, m_unSoftwareType);
     }
     catch(const std::exception& e)
     {
@@ -143,7 +144,7 @@ void CSwarmGenerator::PostStep() {
   }
   else if (m_unIDmision == 2)
   {
-    m_fObjectiveFunction += GetAggregationScore();
+    m_fObjectiveFunction = GetAggregationScore();
   }
   else if (m_unIDmision == 3)
   {
@@ -187,7 +188,7 @@ void CSwarmGenerator::SaveExperimentData() {
   std::ofstream MyFile("Experimentos/datos.csv", std::ios_base::app);
   // Escribir encabezados si el archivo está vacío
   if (MyFile.tellp() == 0) {
-      MyFile << "Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Seed,Time,Performance" << std::endl;
+      MyFile << "Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Time,Performance" << std::endl;
   }
   std::string Mision;
   if (m_unIDmision == 1)
@@ -214,6 +215,7 @@ void CSwarmGenerator::SaveExperimentData() {
   MyFile << m_unArenatype << ",";
   MyFile << m_unArenatam << ",";
   MyFile << m_unRobots << ",";
+  MyFile << m_unFaults << ",";
   MyFile << m_unSeed << ",";
   MyFile << "240 Seg" << ",";
   MyFile << m_fObjectiveFunction << std::endl;

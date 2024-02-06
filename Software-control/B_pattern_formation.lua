@@ -1,3 +1,23 @@
+--[[ PATTERN FORMATION
+
+     o -- o
+    / \  / \ 
+  o -- o -- o
+   \ /  \ /
+    o -- o
+
+The goal of this exercise is to let the robot move in order to form an hexagonal pattern.
+In order to do this the robots try to position themselves in order to minimize a potential 
+field computed using the Lennard-Jones potential. 
+Simplifying a lot, the Lennard-Jones potential is a model for the interaction between atoms: 
+- if two atoms are too close, they will be subject to a repulsion force, pushing them away one from the other; 
+- if they are too far away, they will be subject to an attraction force, pushing them close one to the other; 
+- if they are at the right distance, they will be subject to no force, leaving them there; 
+This force can be used to let robots move to a position in which the distance between all robots is equal.
+
+The trick is that a robot computes the virtual force "created" by that the other robots seen.
+
+]]
 ---------------------------------------------------------------------------
 -- global variables
 TARGET_DIST = 80 -- the target distance between robots, in cm

@@ -48,7 +48,7 @@ def framework_label (file,time,codigos):
         params.set("script", codigos) # pasamos el script de control
     tree.write(file)
 
-def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID):
+def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID, E_fallos, T_Control):
     tree = ET.parse(file)
     root = tree.getroot()
     # MODIFICAR PARAMETROS LOOP_FUNCTIONS
@@ -65,7 +65,9 @@ def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID):
             Eparams.set("mision", str(m_ID)) # ID del comportamiento que se esta evaluando para ejecutar la mision correspondiente
             Eparams.set("obstaculos",str(obstaculos))
             Eparams.set("robots",str(robots))
-            Eparams.set("seed",str(random_seed_value)) # falso 0, verdadero 1
+            Eparams.set("seed",str(random_seed_value))
+            Eparams.set("fallos",E_fallos)
+            Eparams.set("T_Control",T_Control)
     tree.write(file)
 
 """FUNCIONES CONFIGURACION PARAMETROS SEGUN LA ARENA"""
