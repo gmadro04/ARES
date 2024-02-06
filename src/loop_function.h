@@ -114,91 +114,85 @@ public:
 private:
 
    /**
-    * The path of the output file.
+    * Categoria del Software de Control.
     */
-   std::string m_strOutFile;
-
-   /**
-    * Time step counter
-    */
-   UInt32 m_unTimeStep;
+   std::string m_unSoftware;
 
    /**
     * Random number generator
     */
    CRandom::CRNG* m_pcRNG;
 
-    /**
-     * Número de círculos en la arena
-     */
-    size_t m_unNumCircles;
-    /**
-    // * Número de ejecución
-    // */
-    size_t m_unExperiment;
-    // * Tipo de arena
-    // */
-    std::string m_unArenatype;
-    // * Tamaño de arena
-    // */
-    std::string m_unArenatam;
-    // * Semilla aleatorea
-    // */
-    std::string m_unSeed;
-    // * Fallos en el enjambre
-    // */
-    std::string m_unFaults;
-    // * Id mision y comportamiento
-    // */
-    size_t m_unIDmision;
-    // * Numero de robots
-    // */
-    size_t m_unRobots;
-    // Obstaculos en la arena*/
-    //std::string m_unObsbool;
+   /**
+    * Número de círculos en la arena
+    */
+   size_t m_unNumCircles;
+   /**
+   // * Número de ejecución
+   // */
+   size_t m_unExperiment;
+   // * Tipo de arena
+   // */
+   std::string m_unArenatype;
+   // * Tamaño de arena
+   // */
+   std::string m_unArenatam;
+   // * Semilla aleatorea
+   // */
+   std::string m_unSeed;
+   // * Fallos en el enjambre
+   // */
+   std::string m_unFaults;
+   // * Id mision y comportamiento
+   // */
+   size_t m_unIDmision;
+   // * Numero de robots
+   // */
+   size_t m_unRobots;
+   // Obstaculos en la arena*/
+   //std::string m_unObsbool;
 
-    /**
-     * Posiciones de los círculos negros y elementos
-     */
-    std::vector<CVector2> m_vCirclePositions;
-    std::vector<CVector2> m_vElementsPositions;
+   /**
+    * Posiciones de los círculos negros y elementos
+    */
+   std::vector<CVector2> m_vCirclePositions;
+   std::vector<CVector2> m_vElementsPositions;
 
 
    /**
-     * Method used to create and distribute the Arena.
-     */
-    void PositionArena();
-    void ComputeCirclePositions(UInt32 NumCircles);
-    void InitRobotStates();
-    CVector2 GetRandomPositionInHexagon(double tam);
+   * Method used to create and distribute the Arena.
+   */
+   void PositionArena();
+   void ComputeCirclePositions(UInt32 NumCircles);
+   void InitRobotStates();
 
-    CRadians ComputeOrientation(CVector2 vec_a, CVector2 vec_b);
-    CVector2 ComputeMiddle(CVector2 vec_a, CVector2 vec_b);
-    CVector2 m_cCoordSource;
-    CVector2 m_cCoordNest;
-    // Variables de las misiones
-    Real m_fObjectiveFunction; // funcion objetio para cada mision 
-    // ---------- Variables de Exploración ----------
-    std::vector<std::vector<int>> m_grid;
-    Real m_arenaSize; // Varaiable Exploración
-    UInt32 m_gridSize; // cuadricula Exploración
-    std::vector<bool> grid;
-    CVector2 sizeArena;
-	 Real maxScore;
-    // ----- Marcha en formación
-    UInt32 m_unNumberPoints;
-    // ----- TOma de decisiones
-    bool consenso;
-    UInt32 tiempo_conseso;
-    void RegisterPositions();
+   CRadians ComputeOrientation(CVector2 vec_a, CVector2 vec_b);
+   CVector2 ComputeMiddle(CVector2 vec_a, CVector2 vec_b);
+   CVector2 m_cCoordSource;
+   CVector2 m_cCoordNest;
+   // Variables de las misiones
+   Real m_fObjectiveFunction; // funcion objetio para cada mision 
+   // ---------- Variables de Exploración ----------
+   std::vector<std::vector<int>> m_grid;
+   Real m_arenaSize; // Varaiable Exploración
+   UInt32 m_gridSize; // cuadricula Exploración
+   std::vector<bool> grid;
+   CVector2 sizeArena;
+	Real maxScore;
+   // ----- Marcha en formación
+   UInt32 m_unNumberPoints;
+   // ----- TOma de decisiones
+   bool consenso;
+   UInt32 tiempo_conseso;
+   void RegisterPositions();
 
 
 
    struct RobotStateStruct {
-        CVector2 cLastPosition;
-        CVector2 cPosition;
-        UInt32 unItem;
-        Real FTimeInAgg;
+      CVector2 cLastPosition;
+      CVector2 cPosition;
+      UInt32 unItem;
+      Real FTimeInAgg;
    };
 
    typedef std::map<argos::CFootBotEntity*, RobotStateStruct> TRobotStateMap;

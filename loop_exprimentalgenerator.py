@@ -1,6 +1,5 @@
 """EN ESTE ARCHIVO SE ENCUENTRAN LAS FUNCIONES CON LAS QUE
     SE GENERAN LOS PARAMETROS QUE COMPONEN LOS EXPERIMENTOS"""
-# -- LIBRERIAS A USAR
 import xml.etree.ElementTree as ET
 import numpy as np
 import random
@@ -67,7 +66,7 @@ def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID, E_fallos,
             Eparams.set("robots",str(robots))
             Eparams.set("seed",str(random_seed_value))
             Eparams.set("fallos",E_fallos)
-            Eparams.set("T_Control",T_Control)
+            Eparams.set("T_control",str(T_Control))
     tree.write(file)
 
 """FUNCIONES CONFIGURACION PARAMETROS SEGUN LA ARENA"""
@@ -76,10 +75,10 @@ def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID, E_fallos,
     En el disccionario de configuración "arena_conf_params" el orden es el siguiente
     La etiqueta corresponde al box dentro de arena en el archivo
     Donde:
-     1. la primera columna es el atributo "id" del box
-     2. la segunda columna es el atributo size del box
-     3. la terceera columna es el atributo position del body
-     4. la cuarta columna es el atributo orientation del body
+    1. la primera columna es el atributo "id" del box
+    2. la segunda columna es el atributo size del box
+    3. la terceera columna es el atributo position del body
+    4. la cuarta columna es el atributo orientation del body
 """
 def parametros_arena_cuadrada(tamaño,tipo_arena):
     paredes = 4 # numero de paredes
@@ -142,7 +141,7 @@ def parametros_arena_triangular(tamaño,tipo_arena):
         'Tamaño arena': tamaño,
         'Paredes': 3,
         'T_arena': size,
-        'Pos': pos   
+        'Pos': pos
     }
     # Parametros configuración de la arena
     arena_conf_params = {
@@ -291,7 +290,7 @@ def distribucion(file,arena_params,params):
         pos_max = [params["Pos"],params["Pos"],0]
     elif params["Tipo de arena"] == "Triangular":
         # pos = [params["Pos"],params["T_arena"]/4,0]
-        pos_min = [-params["Pos"],-params["T_arena"]/4,0] 
+        pos_min = [-params["Pos"],-params["T_arena"]/4,0]
         pos_max = [0,params["T_arena"]/4,0]
     elif params['Tipo de arena'] == "Hexagonal":
         pos_min = [-params["Pos"],-params["T_arena"]/4,0]

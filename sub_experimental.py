@@ -20,16 +20,8 @@ import pyfiglet
 / /_/ / /___/ /|  / /___/ _, _/ ___ |/ / / /_/ / _, _/
 \____/_____/_/ |_/_____/_/ |_/_/  |_/_/  \____/_/ |_|
 
-"""
 
-""" RUTAS DE LOS DIRECTORIOS """
-# Ruta del archivo "file".argos del experimento (XML)
-dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
-# Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_color_selection_det.lua"
-tipo_control = "A"
-"""
-Software de control -> Se dividen en dos categorias A y B
+Software de control -> Se dividen en dos categorias  1-> A y 2-> B
 Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 ---------- Comportamiento categoria A ----------
 * A_obstacleAvoiddance_sta.lua
@@ -41,14 +33,21 @@ Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 * B_color_selection_prob.lua
 * B_obstacleAvoiddance_vec.lua
 * B_pattern_formation.lua
-"""
-"""
+
 Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
 * Mision ID = 1 -> Mision exploración
 * Mision ID = 2 -> Mision agregación
 * Mision ID = 3 -> Mision marcha en formación
 * Mision ID = 4 -> Mision toma de decisiones colectiva
 """
+
+""" RUTAS DE LOS DIRECTORIOS """
+# ------------------------- Ruta del archivo "file".argos del experimento (XML)
+dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
+# --------------------------Ruta software de control
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_color_selection_det.lua"
+tipo_control = "A" # Especifica que categoria de comportamiento estas evaluando
+# ------------------------- Mision ID
 misionID = 4 # Configura el id de la mision a evaluar
 if misionID == 1:
     mision = 'Exploración'
@@ -58,9 +57,10 @@ elif misionID == 3:
     mision = 'Marcha en Formación'
 else:
     mision = 'Decisión Colectiva'
-# --- Puedes trabajar con el enjmabre sin fallos o con fallos
+# -------------------------- Puedes trabajar con el enjmabre sin fallos o con fallos
 # EL PORCENTAJE DE FALLOS DEL TOTAL DEL ENJAMBRE ES 30%
 Fallos = "No"
+# ----------------------------------------------------------------------------------
 """ARCHIVO DEL EXPERIMENTO"""
 file = dir+"/"+"experimento.argos" # cargamos el archivo .argos
 #cargamos los datos desde fichero
@@ -83,10 +83,10 @@ def modificar_archivo(file,exp,arenas,tams):
     loop.obstaculos_arena(file=file,obs=Obstaculos,pos_obs=parametros["Pos"],params=parametros)
     # configuración parametros loop_functions
     loop.loops_params(file=file,tipo_arena=parametros["Tipo de arena"],tam_arena=parametros["Tamaño arena"],
-                      exp=exp,obstaculos=Obstaculos, robots=robots, m_ID=misionID, E_fallos=Fallos, T_Control = tipo_control)
+                    exp=exp,obstaculos=Obstaculos, robots=robots, m_ID=misionID, E_fallos=Fallos, T_Control = tipo_control)
     # Parametros simulación.
-    simulacion = pd.DataFrame([parametros["Tipo de arena"], parametros["Tamaño arena"],robots,str(misionID)+"-"+mision,time],
-                              index=["TIPO DE ARENA:","TAMAÑO:","# ROBOTS:","TIPO MISION:","T_EXPERIMENTO:"])
+    simulacion = pd.DataFrame([parametros["Tamaño arena"],robots,str(misionID)+"-"+mision,time],
+                                index=["TAMAÑO:","# ROBOTS:","TIPO MISION:","T_EXPERIMENTO:"])
     print(pyfiglet.figlet_format("Arena" + parametros['Tipo de arena']))
     print(simulacion)
 

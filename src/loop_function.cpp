@@ -25,7 +25,6 @@ CSwarmGenerator::~CSwarmGenerator() {
 
 void CSwarmGenerator::Init(TConfigurationNode& t_tree) {
     /* Get parameters file name from XML tree */
-
     TConfigurationNode cParametersNode;
     try
     {
@@ -39,7 +38,7 @@ void CSwarmGenerator::Init(TConfigurationNode& t_tree) {
       GetNodeAttributeOrDefault(cParametersNode, "robots", m_unRobots, m_unRobots);
       GetNodeAttributeOrDefault(cParametersNode, "seed", m_unSeed, m_unSeed);
       GetNodeAttributeOrDefault(cParametersNode, "fallos", m_unFaults, m_unFaults);
-      //GetNodeAttributeOrDefault(cParametersNode, "T_Control", m_unSoftwareType, m_unSoftwareType);
+      GetNodeAttributeOrDefault(cParametersNode, "T_control", m_unSoftware, m_unSoftware);
     }
     catch(const std::exception& e)
     {
@@ -76,14 +75,14 @@ void CSwarmGenerator::Init() {
 
   CSpace::TMapPerType& m_cLight = GetSpace().GetEntitiesByType("light");
   for(CSpace::TMapPerType::iterator it = m_cLight.begin(); it != m_cLight.end(); ++it) {
-     /* Get handle to foot-bot entity and controller */
-     CLightEntity& cLight = *any_cast<CLightEntity*>(it->second);
-     /* Set the position of the light source over the food source*/
-     CVector3 lightPosition = GetRandomPosition();
-     cLight.SetPosition(CVector3(lightPosition.GetX(),lightPosition.GetY(),0.5));
+    /* Get handle to foot-bot entity and controller */
+    CLightEntity& cLight = *any_cast<CLightEntity*>(it->second);
+    /* Set the position of the light source over the food source*/
+    CVector3 lightPosition = GetRandomPosition();
+    cLight.SetPosition(CVector3(lightPosition.GetX(),lightPosition.GetY(),0.5));
   }
 
-  // ESTABELCER ALGUNAS VARIABLES QUE SE USAN SEGUN LA  MISION 
+  // ESTABELCER ALGUNAS VARIABLES QUE SE USAN SEGUN LA  MISION
   // ---------- Exploracion -----------
   double tam = Asignar_tamano_segun_arena(m_unArenatam);
   sizeArena.Set(tam,tam);
@@ -93,10 +92,10 @@ void CSwarmGenerator::Init() {
   m_gridSize = tam; // celdas que dividen la arena segun el tamaño de esta
   m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
 
-  // CONFIGURACIONES SEGUN LA ARENA 
+  // CONFIGURACIONES SEGUN LA ARENA
   // ---------Inicializar las posiciones de los círculos
   ComputeCirclePositions(m_unNumCircles);
-  // Posicionar elementos y robots en la arena 
+  // Posicionar elementos y robots en la arena
   if (m_unArenatype == "Triangular" || m_unArenatype == "Dodecagono" || m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal")
   {
     MoveRobots();
@@ -188,7 +187,7 @@ void CSwarmGenerator::SaveExperimentData() {
   std::ofstream MyFile("Experimentos/datos.csv", std::ios_base::app);
   // Escribir encabezados si el archivo está vacío
   if (MyFile.tellp() == 0) {
-      MyFile << "Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Time,Performance" << std::endl;
+      MyFile << "Experiment,Class,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Time,Performance" << std::endl;
   }
   std::string Mision;
   if (m_unIDmision == 1)
@@ -209,7 +208,8 @@ void CSwarmGenerator::SaveExperimentData() {
   }
 
   // Escribir datos en formato CSV con cada valor en una celda separada
-  MyFile << m_unExperiment << ",";
+  MyFile << m_unExperiment<< ",";
+  MyFile << m_unSoftware<< ",";
   MyFile << m_unIDmision << ",";
   MyFile << Mision << ",";
   MyFile << m_unArenatype << ",";
@@ -466,7 +466,7 @@ Real CSwarmGenerator::GetAggregationScore() {
     for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
         // Verificar si el robot está dentro del círculo de agregación
         bInAgg = IsRobotInAggCircle(it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                               it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+                              it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
         if (bInAgg) {
             unRobotsInAgg+=1; // contabiliza ell robot  ue esta dentro de la zona negra
             // Si está en la zona, acumular el tiempo que pasa allí
@@ -482,7 +482,7 @@ void CSwarmGenerator::UpdateAggregationTime() {
     // Iterar sobre los estados de los robots y actualizar el tiempo de agregación
     for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
         if (IsRobotInAggCircle(it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                               it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY())) {
+                              it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY())) {
             // Incrementar el tiempo que pasa en la zona
             it->second.FTimeInAgg += GetSpace().GetSimulationClock();
         }
@@ -533,23 +533,22 @@ Real CSwarmGenerator::GetPatternFormationScore(){
   for (UInt32 i = 0 ; i < m_unNumberPoints; i++)
   {
     Real fMinDistanceOnSquare = 0.67;  // Correspond to worst case, only one robot in the corner of the square
-    
+
     cRandomPoint = GetRandomPoint();
     for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
       CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
       cFootbotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                           pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+                          pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
       fDistanceToRandomPoint = (cRandomPoint - cFootbotPosition).Length();
 
       if (fDistanceToRandomPoint < fMinDistanceOnSquare){
           fMinDistanceOnSquare = fDistanceToRandomPoint;
       }
-    
     }
 
     dA += fMinDistanceOnSquare;
   }
-  
+
   dA /= m_unNumberPoints;
 
 
@@ -576,9 +575,8 @@ Real CSwarmGenerator::GetCollectiveDecisionScore() {
 
         // Accede al color del LED del foot-bot
         const CColor& ledColor = pcFootBot->GetLEDEquippedEntity().GetLED(0).GetColor();
-        
 
-      // Realiza el análisis y el conteo de colores 
+      // Realiza el análisis y el conteo de colores
       // cuenta cuantos robots estan emitiendo un color
       if (ledColor == CColor::RED) {
           color_red++;
@@ -637,8 +635,8 @@ void CSwarmGenerator::MoveRobots() {
     // Choose position at random
     unTrials = 0;
     do {
-       ++unTrials;
-       CVector3 cFootBotPosition = GetRandomPosition();
+      ++unTrials;
+      CVector3 cFootBotPosition = GetRandomPosition();
        //cFootBotPosition.GetX();
       bPlaced = MoveEntity(pcFootBot->GetEmbodiedEntity(),
                             cFootBotPosition,
@@ -646,7 +644,7 @@ void CSwarmGenerator::MoveRobots() {
                             CRadians::ZERO,CRadians::ZERO),false);
     } while(!bPlaced && unTrials < 200);
     if(!bPlaced) {
-       THROW_ARGOSEXCEPTION("Can't place robot");
+      THROW_ARGOSEXCEPTION("Can't place robot");
     }
   }
 }
@@ -678,7 +676,7 @@ CVector3 CSwarmGenerator::GetRandomPosition() {
     x = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
     y = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
   }
-  
+
   else {
     double DisRadius = tam / 2;
     if (b < a){
@@ -720,7 +718,7 @@ CVector2 CSwarmGenerator::GetRandomPoint() {
     x = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
     y = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
   }
-  
+
   else {
     double DisRadius = tam / 2;
     if (b < a){

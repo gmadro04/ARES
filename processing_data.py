@@ -10,7 +10,7 @@ FUNCIONES DE PROCESAMIENTO DE DATOS
 """
 
 """ FUNCIONES DE VISUALIZACIÓN (GRAFICAS) """
-def graficar_performance(df, tam_arena,mision_id, tipo_mision):
+def graficar_performance(df, tam_arena,mision_id, tipo_mision, class_software):
     # Configurar el boxplot con notch
     ax = sns.boxplot(x='NumRobots', y='Performance', data=df, notch=True, width=0.35,linecolor='black')
 
@@ -23,14 +23,15 @@ def graficar_performance(df, tam_arena,mision_id, tipo_mision):
     # Añadir etiquetas y título
     plt.xlabel('Número de Robots')
     plt.ylabel('Performance')
-    plt.title(f'Rendimiento - MisionID: {mision_id} ({tipo_mision}) - Arena-Tamaño: {tam_arena}')
+    plt.title(f'Rendimiento - MisionID: {mision_id} - {tipo_mision} - Arena: {tam_arena} - Tipo Software: {class_software}')
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.show()
-#sns.heatmap(m_metrica,annot=True,linewidths=0.5)
+
 def graficar_pruebaBinomial(data_bin):
     fig, ax = plt.subplots()
     sns.barplot(data_bin)
-def graficar_metrica_escalabilidad(subset, metrica, tam_arena, mision_id, tipo_mision):
+
+def graficar_metrica_escalabilidad(subset, metrica, tam_arena, mision_id, tipo_mision, class_software):
     robots = subset['NumRobots'].unique()
     m_metrica = np.zeros((len(robots), len(robots)))
     if mision_id ==3:
@@ -51,7 +52,7 @@ def graficar_metrica_escalabilidad(subset, metrica, tam_arena, mision_id, tipo_m
                 xticklabels=robots, yticklabels=robots[0:10], cbar_kws={'label': 'Valor de la métrica'})
 
     # Títulos y etiquetas
-    ax.set_title(f'Escalabilidad - MisionID: {mision_id} ({tipo_mision}) - Arena- Tamaño: {tam_arena}')
+    ax.set_title(f'Escalabilidad - MisionID: {mision_id}-{tipo_mision} - Arena: {tam_arena} - Tipo Software {class_software}')
     ax.set_xlabel('Tamaño del enjambre (#Robots)')
     ax.set_ylabel('Tamaño del enjambre (#Robots)')
 
@@ -60,7 +61,8 @@ def graficar_metrica_escalabilidad(subset, metrica, tam_arena, mision_id, tipo_m
     # Ajuste de los bordes
     plt.subplots_adjust(left=0.0, right=0.85)
     plt.show()
-def graficar_metrica_flexibilidad1(PM,PG,MG,mision_id, tipo_mision):
+
+def graficar_metrica_flexibilidad1(PM,PG,MG,mision_id, tipo_mision, class_software):
     tams = ['Pequeña','Mediana','Grande'] # Tamaños arenas
     # Medianas de los datos calculados en flexibilidad
     mediana_PM = np.median(np.array(PM))
@@ -81,17 +83,16 @@ def graficar_metrica_flexibilidad1(PM,PG,MG,mision_id, tipo_mision):
                 xticklabels=tams[1:], yticklabels=tams[:2], cbar_kws={'label': 'Valor de la métrica'})
 
     # Títulos y etiquetas
-    ax.set_title(f'Flexibilidad - MisionID: {mision_id} ({tipo_mision})')
+    ax.set_title(f'Flexibilidad - MisionID: {mision_id}-{tipo_mision} - Tipo Software {class_software}')
     ax.set_xlabel('Tamaño Arena')
     ax.set_ylabel('Tamaño Arena')
 
     # Ajuste de diseño
     fig.tight_layout()
     plt.show()
-def graficar_metrica_flexibilidad(P1,P2,P3,P4,P5,mision_id, tipo_mision):
+def graficar_metrica_flexibilidad(P1,P2,P3,P4,P5,mision_id, tipo_mision, class_software):
     tams = ['Pequeña-Mediana','Pequeña-Grande','Mediana-Grande'] # Tamaños arenas
     grupos = ['5-20', '20-40', '40-60', '60-80', '80-100'] # grupos de robots
-     
     datos = [P1, P2, P3, P4, P5]
 
     if np.median(P2[2,:]) == np.median(datos[1][2]):
@@ -104,7 +105,7 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,P5,mision_id, tipo_mision):
             for x in range(len(tams)):
                 metrica[j,i] = np.median(datos[i][j])
                 break
-    
+
     print("calculo original: ",np.median(P1[0,:]),np.median(P1[1,:]),np.median(P1[2,:]))
     print("matriz:", "\n", metrica)
 
@@ -116,7 +117,7 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,P5,mision_id, tipo_mision):
                 xticklabels=grupos, yticklabels=tams, cbar_kws={'label': 'Valor de la métrica'})
 
     # Títulos y etiquetas
-    ax.set_title(f'Flexibilidad - MisionID: {mision_id} ({tipo_mision})')
+    ax.set_title(f'Flexibilidad - MisionID: {mision_id}-{tipo_mision} Tipo Software {class_software}')
     ax.set_xlabel('Robots')
     ax.set_ylabel('Tamaño Arena')
 
@@ -167,6 +168,7 @@ def metrica_escalabilidad(data):
     escalabilidad = np.array(escalabilidad)
 
     return escalabilidad,re_test
+
 def metrica_flexibilidad(data):
     size_robots = data['NumRobots'].unique()  # obtener la lista de tamaños del enjambre #Robots
     tam_arena = data['Arenasize'].unique() # se extraen los tamaños de la arena
@@ -309,6 +311,8 @@ df = pd.read_csv('/home/gmadro/swarm_robotics/SWARM_GENERATOR/Experimentos/datos
 
 # Obtener los IDs únicos de las misiones
 mision_ids = df['MisionID'].unique()
+# Obtener los tipo de comportamiento unicos 
+software_tipo = df['Class'].unique()
 
 # Iterar sobre cada MisionID
 for mision_id in mision_ids:
@@ -318,6 +322,7 @@ for mision_id in mision_ids:
     # Obtener las combinaciones únicas de tamaño de arena
     tamanos_arena = mision_df['Arenasize'].unique()
     tipo_mision = mision_df['Mision'].iloc[0]
+    Tipo_software = mision_df['Class'].iloc[0]
 
     # Filtrar y graficar directamente por tamaño de arena
     for tam_arena in tamanos_arena:
@@ -327,13 +332,13 @@ for mision_id in mision_ids:
             subset['Performance'] = -1*subset['Performance']
 
         """Graficar el boxplot de rendimiento para cada conjunto único de datos"""
-        graficar_performance(subset, tam_arena, mision_id, tipo_mision)
+        graficar_performance(subset, tam_arena, mision_id, tipo_mision,Tipo_software)
         """Calcular escalabilidad"""
         escalabilidad, esc_binomial = metrica_escalabilidad(subset)
         """Graficar resultados de las metricas"""
-        graficar_metrica_escalabilidad(subset, escalabilidad, tam_arena, mision_id, tipo_mision)
+        graficar_metrica_escalabilidad(subset, escalabilidad, tam_arena, mision_id, tipo_mision, Tipo_software)
         #graficar_pruebaBinomial(esc_binomial)
     #flex_PM, flex_PG, flex_MG = metrica_flexibilidad(mision_df)
     F_1, F_2, F3, F4, F5 = metrica_flexibilidad(mision_df)
     #graficar_metrica_flexibilidad(flex_PM,flex_PG,flex_MG,mision_id, tipo_mision)
-    graficar_metrica_flexibilidad(F_1, F_2, F3, F4, F5, mision_id, tipo_mision)
+    graficar_metrica_flexibilidad(F_1, F_2, F3, F4, F5, mision_id, tipo_mision, Tipo_software)
