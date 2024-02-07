@@ -110,6 +110,8 @@ public:
    Real GetPatternFormationScore();
    // *****--- Función para obtener la puntuación de toma de decisiones ---*****
    Real GetCollectiveDecisionScore();
+   // FUNCION DE FALLOS
+   void StopRobots();
 
 private:
 

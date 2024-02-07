@@ -100,7 +100,7 @@ void CSwarmGenerator::Init() {
   {
     MoveRobots();
   }
-  InitRobotStates(); // Estados del robot 
+  InitRobotStates(); // Estados del robot
 }
 
 /****************************************/
@@ -140,6 +140,9 @@ void CSwarmGenerator::PostStep() {
   {
     RegisterPositions();
     m_fObjectiveFunction += GetExplorationScore();
+    if (m_unFaults == "Si"){
+      StopRobots();
+    }
   }
   else if (m_unIDmision == 2)
   {
@@ -613,15 +616,6 @@ Real CSwarmGenerator::GetCollectiveDecisionScore() {
   return tiempo_conseso; // Devuelve el tiempo en el que un porcentaje mayor al 90% de robots ya llego a un consenso
 }
 
-
-/****************************************/
-/****************************************/
-
-
-
-/****************************************/
-/****************************************/
-
 /****************************************/
 /****************************************/
 
@@ -751,6 +745,14 @@ CVector2 CSwarmGenerator::ComputeMiddle(CVector2 vec_a, CVector2 vec_b) {
 
 /****************************************/
 /****************************************/
+
+void CSwarmGenerator::StopRobots(){
+  Real robots; // #robots en fallas
+  float porcentaje_f = 0.3; // Porcentaje de fallos del total del enjambre
+  CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+  robots = round(tFootBotMap.size()*porcentaje_f);
+  LOG << "Robots fallando: " << robots << std::endl;
+}
 
 /* Register this loop functions into the ARGoS plugin system */
 REGISTER_LOOP_FUNCTIONS(CSwarmGenerator, "loop_function");

@@ -8,8 +8,7 @@ import pandas as pd
 import time
 import pyfiglet
 
-"""
-   ______       _____    ____  __  ___
+"""______       _____    ____  __  ___
   / ___/ |     / /   |  / __ \/  |/  /
   \__ \| | /| / / /| | / /_/ / /|_/ /
  ___/ /| |/ |/ / ___ |/ _, _/ /  / /
@@ -48,7 +47,7 @@ dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modific
 codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_color_selection_det.lua"
 tipo_control = "A" # Especifica que categoria de comportamiento estas evaluando
 # ------------------------- Mision ID
-misionID = 4 # Configura el id de la mision a evaluar
+misionID = 1 # Configura el id de la mision a evaluar
 if misionID == 1:
     mision = 'Exploración'
 elif misionID == 2:
@@ -59,7 +58,7 @@ else:
     mision = 'Decisión Colectiva'
 # -------------------------- Puedes trabajar con el enjmabre sin fallos o con fallos
 # EL PORCENTAJE DE FALLOS DEL TOTAL DEL ENJAMBRE ES 30%
-Fallos = "No"
+Fallos = "Si"
 # ----------------------------------------------------------------------------------
 """ARCHIVO DEL EXPERIMENTO"""
 file = dir+"/"+"experimento.argos" # cargamos el archivo .argos
@@ -73,7 +72,7 @@ def modificar_archivo(file,exp,arenas,tams):
     arena_params, parametros = loop.params_arena(arenas,tams)    # Tamaño de la arena grande,mediana,pequeña y configuracion de atributos
     Obstaculos = False  # Obstaculos en el escenario si o no, según la eleccion tipo de distribución y tipo de obstaculo
     # Numero de robots y tiempo de duración del experimento
-    robots =  exp*(incremento_robots + num_robots_inicial) if exp >=1  else num_robots_inicial
+    robots =  exp*(incremento_robots + num_robots_inicial) if exp >=1  else 30#num_robots_inicial
     time = 240 # Duración experimento en seg
     """ CONFIGURACION ARCHIVO """
     loop.framework_label(file, time, codigos) #Configuración software de control y tiempo ejecucion
