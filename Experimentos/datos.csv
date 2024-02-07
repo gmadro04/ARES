@@ -4952,3 +4952,7 @@ Experiment,Class,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Time,
 
 1,A,1,Exploration,Triangular,pequena,5,Si,100,240 Seg,1822.8
 1,A,1,Exploration,Triangular,pequena,30,Si,128,240 Seg,1917.76
+1,A,1,Exploration,Triangular,pequena,30,Si,187,240 Seg,2007.72
+1,A,1,Exploration,Triangular,pequena,30,Si,112,240 Seg,843.28
+1,A,1,Exploration,Triangular,pequena,30,Si,134,240 Seg,1861.48
+1,A,1,Exploration,Triangular,pequena,30,Si,115,240 Seg,88.04

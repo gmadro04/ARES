@@ -746,13 +746,29 @@ CVector2 CSwarmGenerator::ComputeMiddle(CVector2 vec_a, CVector2 vec_b) {
 /****************************************/
 /****************************************/
 
-void CSwarmGenerator::StopRobots(){
-  Real robots; // #robots en fallas
-  float porcentaje_f = 0.3; // Porcentaje de fallos del total del enjambre
+void CSwarmGenerator::StopRobots() {
+  Real robotsFalla; // #robots en fallas
+  // Porcentaje de robots que deben detenerse
+  float porcentaje_f = 0.3;
+  // Obtén la lista de foot-bots
   CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-  robots = round(tFootBotMap.size()*porcentaje_f);
-  LOG << "Robots fallando: " << robots << std::endl;
+  // Calcula el número de robots que deben detenerse
+  size_t totalRobots = tFootBotMap.size();
+  robotsFalla = round(porcentaje_f * totalRobots);
+
+  CFootBotEntity* pcFootBot;
+  for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
+    pcFootBot = any_cast<CFootBotEntity*>(it->second);
+    // Choose position at random
+  }
+
+    LOG << "Robots fallando: " << robotsFalla << std::endl;
 }
+
+
+
+
+
 
 /* Register this loop functions into the ARGoS plugin system */
 REGISTER_LOOP_FUNCTIONS(CSwarmGenerator, "loop_function");
