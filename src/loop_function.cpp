@@ -14,10 +14,10 @@ static const Real RADIUS_SOURCE = 1.0f;
 /****************************************/
 
 CSwarmGenerator::CSwarmGenerator() {
-
 }
 
 CSwarmGenerator::~CSwarmGenerator() {
+
 }
 
 /****************************************/
@@ -44,7 +44,8 @@ void CSwarmGenerator::Init(TConfigurationNode& t_tree) {
     {
       LOGERR << "Problem with Attributes in node params" << std::endl;
     }
-
+    // Variable para SELECCIONAR LOS FALLO 
+    fallos = false;
     // ---------- Variable funcion objetivo
     // Esta variable se trabaja para cada una de las metricas.
     m_fObjectiveFunction = 0; // Función objetivo que mide el rendimiento de la mision
@@ -140,20 +141,29 @@ void CSwarmGenerator::PostStep() {
   {
     RegisterPositions();
     m_fObjectiveFunction += GetExplorationScore();
-    if (m_unFaults == "Si"){
+    if (m_unFaults == "Si"){ // simular fallos en los robots -> Robot stop
       StopRobots();
     }
   }
   else if (m_unIDmision == 2)
   {
+    if (m_unFaults == "Si"){ // simular fallos en los robots -> Robot stop
+      StopRobots();
+    }
     m_fObjectiveFunction = GetAggregationScore();
   }
   else if (m_unIDmision == 3)
   {
+    if (m_unFaults == "Si"){ // simular fallos en los robots -> Robot stop
+      StopRobots();
+    }
     m_fObjectiveFunction = GetPatternFormationScore();
   }
   else if (m_unIDmision == 4)
   {
+    if (m_unFaults == "Si"){ // simular fallos en los robots -> Robot stop
+      StopRobots();
+    }
     m_fObjectiveFunction = GetCollectiveDecisionScore();
   }
 }
@@ -747,21 +757,47 @@ CVector2 CSwarmGenerator::ComputeMiddle(CVector2 vec_a, CVector2 vec_b) {
 /****************************************/
 
 void CSwarmGenerator::StopRobots() {
-  Real robotsFalla; // #robots en fallas
-  // Porcentaje de robots que deben detenerse
-  float porcentaje_f = 0.3;
-  // Obtén la lista de foot-bots
-  CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-  // Calcula el número de robots que deben detenerse
-  size_t totalRobots = tFootBotMap.size();
-  robotsFalla = round(porcentaje_f * totalRobots);
+    // Porcentaje de robots que deben detenerse
+    float porcentaje_f = 0.3;
 
-  CFootBotEntity* pcFootBot;
-  for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
-    pcFootBot = any_cast<CFootBotEntity*>(it->second);
-    // Choose position at random
-  }
+    // Obtén la lista de foot-bots
+    CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
 
+    // Calcula el número de robots que deben detenerse
+    size_t totalRobots = tFootBotMap.size();
+    size_t robotsFalla = round(porcentaje_f * totalRobots);
+
+    // Contenedor para almacenar los robots que fallarán
+    std::vector<CFootBotEntity*> vRobotsEnFalla;
+
+    // Almacena todos los foot-bots en un vector
+    std::vector<CFootBotEntity*> vFootBots;
+    for (const auto& kv : tFootBotMap) {
+      vFootBots.push_back(any_cast<CFootBotEntity*>(kv.second));
+    }
+
+    // Baraja aleatoriamente el vector
+    std::random_shuffle(vFootBots.begin(), vFootBots.end());
+
+    // Selecciona los "robotsFalla" para detenerse y almacénalos
+    if (!fallos)
+    {
+      for (size_t i = 0; i < robotsFalla; ++i) {
+        CFootBotEntity* pcRobot = vFootBots[i];
+        vRobotsEnFalla.push_back(pcRobot);
+
+        // Aquí puedes agregar la lógica para detener los robots si es necesario
+        pcRobot->SetEnabled(false);
+        for (size_t i = 0; i < vRobotsEnFalla.size(); ++i) {
+          LOG << "Robot en falla " << i << ": " << vRobotsEnFalla[i]->GetId() << std::endl;
+        }
+      }
+
+      fallos = true;
+    }
+
+    // Aquí puedes trabajar con vRobotsEnFalla como necesites
+    // Por ejemplo, podrías imprimir información sobre los robots en falla
     LOG << "Robots fallando: " << robotsFalla << std::endl;
 }
 

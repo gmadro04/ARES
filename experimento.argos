@@ -4,12 +4,12 @@
   
   
   <framework>
-    <experiment length="240" ticks_per_second="10" random_seed="115" />
+    <experiment length="240" ticks_per_second="10" random_seed="164" />
     <system threads="0" />
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function">
-    <params num_experiment="1" arena="Triangular" tam="pequena" fallos="Si" T_control="A" num_circles="1" mision="1" obstaculos="False" robots="30" seed="115" T_Control="A" />
+    <params num_experiment="1" arena="Triangular" tam="pequena" fallos="Si" T_control="A" num_circles="1" mision="4" obstaculos="False" robots="5" seed="164" T_Control="A" />
   </loop_functions>
 
   <controllers>
@@ -43,7 +43,7 @@
     <distribute id="robots">
       <position method="uniform" min="-2.5,-1.25,0" max="0,1.25,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
-      <entity quantity="30" max_trials="100">
+      <entity quantity="5" max_trials="100">
         <foot-bot id="fb" rab="1">
           <controller config="lua" />
         </foot-bot>
