@@ -44,10 +44,10 @@ Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
 # ------------------------- Ruta del archivo "file".argos del experimento (XML)
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # --------------------------Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_color_selection_det.lua"
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_obstacleAvoiddance_sta.lua"
 tipo_control = "A" # Especifica que categoria de comportamiento estas evaluando
 # ------------------------- Mision ID
-misionID = 4 # Configura el id de la mision a evaluar 1,2,3,4
+misionID = 1 # Configura el id de la mision a evaluar 1,2,3,4
 if misionID == 1:
     mision = 'Exploración'
 elif misionID == 2:
@@ -67,7 +67,7 @@ tree = ET.parse(file)
 #cargamos el elemento raiz
 root = tree.getroot()
 
-def modificar_archivo(file,exp,arenas,tams):
+def modificar_archivo(file,exp,arenas,tams,semilla):
     """ Configuración parametros básicos """
     arena_params, parametros = loop.params_arena(arenas,tams)    # Tamaño de la arena grande,mediana,pequeña y configuracion de atributos
     Obstaculos = False  # Obstaculos en el escenario si o no, según la eleccion tipo de distribución y tipo de obstaculo
@@ -75,7 +75,7 @@ def modificar_archivo(file,exp,arenas,tams):
     robots =  exp*(incremento_robots + num_robots_inicial) if exp >=1  else num_robots_inicial
     time = 240 # Duración experimento en seg
     """ CONFIGURACION ARCHIVO """
-    loop.framework_label(file, time, codigos) #Configuración software de control y tiempo ejecucion
+    loop.framework_label(file, time, codigos, Fallos, semilla) #Configuración software de control y tiempo ejecucion
     # Configuración de arena
     loop.arena_configuracion(file,arena_params, params=parametros, robots=robots)
     # Configuración obstaculos en la arena
@@ -93,20 +93,52 @@ def modificar_archivo(file,exp,arenas,tams):
 num_robots_inicial = 5
 incremento_robots = 5
 num_experimentos = 11 # Puedes cambiar esto al número deseado de ejecuciones (exp=11, robots= 5...100)
+if Fallos == "No":
+    for arena in range(5): # Ejecución por tipos de arena T,C,H6,O8,P12 range(5)
+        for tam in range(3): # Ejecución por tamaño de arena P,M,G range(3)
+            # Ejecuta el experimento múltiples veces
+            for exp in range(num_experimentos):
+                for i in range(10): # 10 ejecuciones por cada tamaño de enjambre
+                    # Modifica el archivo antes de cada ejecución
+                    modificar_archivo(file,exp,arena,tam,semilla=0)
+                    # EJECUCIÓN DEL EXPERIMENTO
+                    ejecucion = ["argos3" ,"-c", file]
+                    sb.run(ejecucion)
+                    # Esperar un tiempo suficiente para que ARGoS3 cargue antes de simular
+                    time.sleep(1)
+                # Puedes imprimir alguna información después de cada ejecución si lo deseas
+                print(pyfiglet.figlet_format( f"Experimento {exp + 1} ejecutado", font="digital"))
+else:
+    
+    # Leer el archivo CSV
+    df = pd.read_csv('/home/gmadro/swarm_robotics/SWARM_GENERATOR/Experimentos/datos.csv')  # Cambia la ruta según tu ubicación
+    arenas = df['Arenatype'].unique()
+    tams = df['Arenasize'].unique()
 
-for arena in range(5): # Ejecución por tipos de arena T,C,H6,O8,P12 range(5)
-    for tam in range(3): # Ejecución por tamaño de arena P,M,G range(3)
-        # Ejecuta el experimento múltiples veces
-        for exp in range(num_experimentos):
-            for i in range(10): # 10 ejecuciones por cada tamaño de enjambre
-                # Modifica el archivo antes de cada ejecución
-                modificar_archivo(file,exp,arena,tam)
-                # EJECUCIÓN DEL EXPERIMENTO
-                ejecucion = ["argos3" ,"-c", file]
-                sb.run(ejecucion)
-                # Esperar un tiempo suficiente para que ARGoS3 cargue antes de simular
-                time.sleep(1)
-            # Puedes imprimir alguna información después de cada ejecución si lo deseas
-            print(pyfiglet.figlet_format( f"Experimento {exp + 1} ejecutado", font="digital"))
+    for c_arena,arena in enumerate(arenas): # Ejecución por tipos de arena T,C,H6,O8,P12 range(5)
+        contador = 0
+        
+        filtro = df[df["Arenatype"] == arena]
+        for c_tam,tam in enumerate(tams): # Ejecución por tamaño de arena P,M,G range(3)
+            # Ejecuta el experimento múltiples veces con fallos en los robots
+            filtro2 = filtro[filtro["Arenasize"] == tam]
+            semillas = filtro2['Seed']
+            print(len(semillas))
+            for exp in range(num_experimentos):
+                for i in range(10): # 10 ejecuciones por cada tamaño de enjambre
+                    iteración = contador + i
+                    semilla = semillas[iteración]
+                    # Modifica el archivo antes de cada ejecución
+                    modificar_archivo(file,exp,c_arena,c_tam,semilla)
+                    # EJECUCIÓN DEL EXPERIMENTO
+                    ejecucion = ["argos3" ,"-c", file]
+                    sb.run(ejecucion)
+                    # Esperar un tiempo suficiente para que ARGoS3 cargue antes de simular
+                    time.sleep(1)
+                    if i == 9:
+                        contador = iteración + 1
+                # Puedes imprimir alguna información después de cada ejecución si lo deseas
+                print(pyfiglet.figlet_format( f"Experimento {exp + 1} ejecutado", font="digital"))
+
 
 print("Todas las ejecuciones completadas.")

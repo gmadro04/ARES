@@ -4949,37 +4949,19 @@ Experiment,Class,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Time,
 11,A,3,Pattern formation,Dodecagono,grande,100,No,160,240 Seg,2676.72
 11,A,3,Pattern formation,Dodecagono,grande,100,No,121,240 Seg,2562.27
 11,A,3,Pattern formation,Dodecagono,grande,100,No,156,240 Seg,2620.95
-
-1,A,1,Exploration,Triangular,pequena,5,Si,100,240 Seg,1822.8
-1,A,1,Exploration,Triangular,pequena,30,Si,128,240 Seg,1917.76
-1,A,1,Exploration,Triangular,pequena,30,Si,187,240 Seg,2007.72
-1,A,1,Exploration,Triangular,pequena,30,Si,112,240 Seg,843.28
-1,A,1,Exploration,Triangular,pequena,30,Si,134,240 Seg,1861.48
-1,A,1,Exploration,Triangular,pequena,30,Si,115,240 Seg,88.04
-1,A,1,Exploration,Triangular,pequena,30,Si,184,240 Seg,1250.08
-1,A,1,Exploration,Triangular,pequena,30,Si,138,240 Seg,629.72
-1,A,1,Exploration,Triangular,pequena,30,Si,169,240 Seg,2112
-1,A,1,Exploration,Triangular,pequena,30,Si,134,240 Seg,1900.68
-1,A,1,Exploration,Triangular,pequena,5,Si,177,240 Seg,1858.84
-1,A,1,Exploration,Triangular,pequena,5,Si,106,240 Seg,1940.96
-1,A,1,Exploration,Triangular,pequena,5,Si,152,240 Seg,1418.92
-1,A,1,Exploration,Triangular,pequena,5,Si,159,240 Seg,1716.76
-1,A,1,Exploration,Triangular,pequena,5,Si,164,240 Seg,1753.76
-1,A,1,Exploration,Triangular,pequena,100,Si,110,240 Seg,2016
-1,A,1,Exploration,Triangular,pequena,5,Si,165,240 Seg,363.64
-1,A,1,Exploration,Triangular,pequena,5,No,112,240 Seg,144.72
-1,A,2,Aggregation,Triangular,pequena,5,No,147,240 Seg,5
-1,A,2,Aggregation,Triangular,pequena,5,Si,180,240 Seg,4
-1,A,2,Aggregation,Triangular,pequena,5,Si,195,240 Seg,2
-1,A,3,Pattern formation,Triangular,pequena,5,Si,130,240 Seg,3440.86
-1,A,3,Pattern formation,Triangular,pequena,5,No,156,240 Seg,3239.52
-1,A,4,Color selection,Triangular,pequena,5,No,194,240 Seg,36
-1,A,4,Color selection,Triangular,pequena,5,Si,132,240 Seg,3
-1,A,4,Color selection,Triangular,pequena,5,Si,116,240 Seg,0
-1,A,4,Color selection,Triangular,pequena,5,Si,176,240 Seg,0
-1,A,4,Color selection,Triangular,pequena,5,Si,157,240 Seg,0
-1,A,4,Color selection,Triangular,pequena,5,Si,192,240 Seg,0
-1,A,4,Color selection,Triangular,pequena,5,Si,100,240 Seg,0
-1,A,4,Color selection,Triangular,pequena,5,Si,189,240 Seg,3
-1,A,4,Color selection,Triangular,pequena,5,Si,166,240 Seg,3
-1,A,4,Color selection,Triangular,pequena,5,Si,145,240 Seg,0
+1,A,1,Exploration,Triangular,pequena,5,Si,192,240 Seg,1884.88
+1,A,1,Exploration,Triangular,pequena,5,Si,118,240 Seg,1479
+1,A,1,Exploration,Triangular,pequena,5,Si,156,240 Seg,1895.2
+1,A,1,Exploration,Triangular,pequena,5,Si,100,240 Seg,1572.2
+1,A,1,Exploration,Triangular,pequena,5,Si,123,240 Seg,1736.4
+1,A,1,Exploration,Triangular,pequena,5,Si,118,240 Seg,1575
+1,A,1,Exploration,Triangular,pequena,5,Si,131,240 Seg,1531.32
+1,A,1,Exploration,Triangular,pequena,5,Si,129,240 Seg,1599.32
+1,A,1,Exploration,Triangular,pequena,5,Si,174,240 Seg,1796.72
+1,A,1,Exploration,Triangular,pequena,5,Si,195,240 Seg,1606.56
+2,A,1,Exploration,Triangular,pequena,10,Si,116,240 Seg,1909.44
+2,A,1,Exploration,Triangular,pequena,10,Si,182,240 Seg,1669.28
+2,A,1,Exploration,Triangular,pequena,10,Si,158,240 Seg,2059.56
+2,A,1,Exploration,Triangular,pequena,10,Si,183,240 Seg,1841.92
+2,A,1,Exploration,Triangular,pequena,10,Si,164,240 Seg,1805.68
+2,A,1,Exploration,Triangular,pequena,10,Si,108,240 Seg,1742.88

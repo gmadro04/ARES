@@ -31,7 +31,7 @@ def params_arena(A_t,N_a):
 
     return conf_params, parametros
 
-def framework_label (file,time,codigos):
+def framework_label (file,time,codigos, fallos,semilla):
     tree = ET.parse(file)
     root = tree.getroot()
     # Modificar la etiqueta 'framework' y sus contenidos
@@ -42,7 +42,10 @@ def framework_label (file,time,codigos):
         experiment = framework.find("experiment")
         if experiment is not None:
             experiment.set("length", str(time))
-            experiment.set("random_seed",str(random.randrange(100,200,1)))
+            if fallos == "No":
+                experiment.set("random_seed",str(random.randrange(100,200,1)))
+            elif fallos == "Si":
+                experiment.set("random_seed",str(semilla))
     for params in controller.iter("params"):
         params.set("script", codigos) # pasamos el script de control
     tree.write(file)
