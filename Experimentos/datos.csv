@@ -4949,19 +4949,4 @@ Experiment,Class,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Time,
 11,A,3,Pattern formation,Dodecagono,grande,100,No,160,240 Seg,2676.72
 11,A,3,Pattern formation,Dodecagono,grande,100,No,121,240 Seg,2562.27
 11,A,3,Pattern formation,Dodecagono,grande,100,No,156,240 Seg,2620.95
-1,A,1,Exploration,Triangular,pequena,5,Si,192,240 Seg,1884.88
-1,A,1,Exploration,Triangular,pequena,5,Si,118,240 Seg,1479
-1,A,1,Exploration,Triangular,pequena,5,Si,156,240 Seg,1895.2
-1,A,1,Exploration,Triangular,pequena,5,Si,100,240 Seg,1572.2
-1,A,1,Exploration,Triangular,pequena,5,Si,123,240 Seg,1736.4
-1,A,1,Exploration,Triangular,pequena,5,Si,118,240 Seg,1575
-1,A,1,Exploration,Triangular,pequena,5,Si,131,240 Seg,1531.32
-1,A,1,Exploration,Triangular,pequena,5,Si,129,240 Seg,1599.32
-1,A,1,Exploration,Triangular,pequena,5,Si,174,240 Seg,1796.72
-1,A,1,Exploration,Triangular,pequena,5,Si,195,240 Seg,1606.56
-2,A,1,Exploration,Triangular,pequena,10,Si,116,240 Seg,1909.44
-2,A,1,Exploration,Triangular,pequena,10,Si,182,240 Seg,1669.28
-2,A,1,Exploration,Triangular,pequena,10,Si,158,240 Seg,2059.56
-2,A,1,Exploration,Triangular,pequena,10,Si,183,240 Seg,1841.92
-2,A,1,Exploration,Triangular,pequena,10,Si,164,240 Seg,1805.68
-2,A,1,Exploration,Triangular,pequena,10,Si,108,240 Seg,1742.88
+

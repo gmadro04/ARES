@@ -20,7 +20,7 @@ import pyfiglet
 \____/_____/_/ |_/_____/_/ |_/_/  |_/_/  \____/_/ |_|
 
 
-Software de control -> Se dividen en dos categorias  1-> A y 2-> B
+|*| Software de control -> Se dividen en dos categorias  1-> A y 2-> B
 Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 ---------- Comportamiento categoria A ----------
 * A_obstacleAvoiddance_sta.lua
@@ -32,7 +32,10 @@ Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 * B_color_selection_prob.lua
 * B_obstacleAvoiddance_vec.lua
 * B_pattern_formation.lua
-
+|*| Mision a evaluar -> Cada comportamiento se evalua en una misión especifica
+Obstacle_avoid_dance -- Mision exploración
+Agreggation -- Mision agregación
+Pattern_Formation -- Mision formación de patrones
 Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
 * Mision ID = 1 -> Mision exploración
 * Mision ID = 2 -> Mision agregación
@@ -109,7 +112,7 @@ if Fallos == "No":
                 # Puedes imprimir alguna información después de cada ejecución si lo deseas
                 print(pyfiglet.figlet_format( f"Experimento {exp + 1} ejecutado", font="digital"))
 else:
-    
+
     # Leer el archivo CSV
     df = pd.read_csv('/home/gmadro/swarm_robotics/SWARM_GENERATOR/Experimentos/datos.csv')  # Cambia la ruta según tu ubicación
     arenas = df['Arenatype'].unique()
@@ -117,7 +120,7 @@ else:
 
     for c_arena,arena in enumerate(arenas): # Ejecución por tipos de arena T,C,H6,O8,P12 range(5)
         contador = 0
-        
+
         filtro = df[df["Arenatype"] == arena]
         for c_tam,tam in enumerate(tams): # Ejecución por tamaño de arena P,M,G range(3)
             # Ejecuta el experimento múltiples veces con fallos en los robots
