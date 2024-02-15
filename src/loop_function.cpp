@@ -565,7 +565,7 @@ Real CSwarmGenerator::GetPatternFormationScore(){
   dA /= m_unNumberPoints;
 
 
-  Real performance = 100*100*dA*dA; // in cm2
+  Real performance = -(100*100*dA*dA); // in cm2 el signo negativo es porque en esta mision se busca minimizar la distancia.
 
   return performance;
 }

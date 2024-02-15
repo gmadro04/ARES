@@ -47,10 +47,10 @@ Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
 # ------------------------- Ruta del archivo "file".argos del experimento (XML)
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # --------------------------Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_obstacleAvoiddance_sta.lua"
-tipo_control = "A" # Especifica que categoria de comportamiento estas evaluando
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/B_pattern_formation.lua"
+tipo_control = "B" # Especifica que categoria de comportamiento estas evaluando
 # ------------------------- Mision ID
-misionID = 1 # Configura el id de la mision a evaluar 1,2,3,4
+misionID = 3 # Configura el id de la mision a evaluar 1,2,3,4
 if misionID == 1:
     mision = 'Exploración'
 elif misionID == 2:
@@ -61,7 +61,7 @@ else:
     mision = 'Decisión Colectiva'
 # -------------------------- Puedes trabajar con el enjmabre sin fallos o con fallos
 # EL PORCENTAJE DE FALLOS DEL TOTAL DEL ENJAMBRE ES 30%
-Fallos = "Si"
+Fallos = "No" # MOdifica esta variable según tu evaluación
 # ----------------------------------------------------------------------------------
 """ARCHIVO DEL EXPERIMENTO"""
 file = dir+"/"+"experimento.argos" # cargamos el archivo .argos
