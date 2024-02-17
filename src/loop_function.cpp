@@ -87,7 +87,24 @@ void CSwarmGenerator::Init() {
   // ---------- Exploracion -----------
   double tam = Asignar_tamano_segun_arena(m_unArenatam);
   sizeArena.Set(tam,tam);
-  maxScore = ((int)(sizeArena.GetY()*1*sizeArena.GetX()*1))*1.0;
+  if (m_unArenatype == "Triangular")
+  {
+    if (m_unArenatam == "pequena")
+    {
+      maxScore = ((int)(17))*1.0;
+    }
+    else if (m_unArenatam == "mediana")
+    {
+      maxScore = ((int)(40))*1.0;
+    }
+    else{
+      maxScore = ((int)(84))*1.0;
+    }
+  }
+  else{
+    maxScore = ((int)(sizeArena.GetY()*1*sizeArena.GetX()*1))*1.0;
+  }
+  //maxScore = ((int)(sizeArena.GetY()*1*sizeArena.GetX()*1))*1.0;
   grid.reserve((unsigned int)maxScore);
   m_arenaSize = tam;
   m_gridSize = tam; // celdas que dividen la arena segun el tamaño de esta
@@ -443,9 +460,38 @@ Real CSwarmGenerator::GetExplorationScore() {
     //Exploration += Real(total);
     //return Exploration;
   Real temp = 0;
-  for (unsigned int i = 0; i<(unsigned int)(sizeArena.GetX()*1*sizeArena.GetY()*1); i++) {
-    if (grid[i]==true){
-      temp+=1;
+  if (m_unArenatype == "Triangular")
+  {
+    if (m_unArenatam == "pequena")
+    {
+      for (unsigned int i = 0; i<(unsigned int)(17); i++) {
+        if (grid[i]==true){
+          temp+=1;
+        }
+      }
+    }
+    else if (m_unArenatam == "mediana")
+    {
+      for (unsigned int i = 0; i<(unsigned int)(40); i++) {
+        if (grid[i]==true){
+          temp+=1;
+        }
+      }
+    }
+    else{
+      for (unsigned int i = 0; i<(unsigned int)(84); i++) {
+        if (grid[i]==true){
+          temp+=1;
+        }
+      }
+    }
+  }
+  else
+  {
+    for (unsigned int i = 0; i<(unsigned int)(sizeArena.GetX()*1*sizeArena.GetY()*1); i++) {
+      if (grid[i]==true){
+        temp+=1;
+      }
     }
   }
   return temp/maxScore;
