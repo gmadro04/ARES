@@ -12,7 +12,7 @@ def params_arena(A_t,N_a):
     arenas = ["Triangular","Cuadrada","Hexagonal","Octagonal","Dodecagono"]
     dim_tam = ['pequena','mediana','grande']
 
-    arena = arenas[A_t] # Tipo de arena A_t
+    arena = arenas[4] # Tipo de arena A_t
     dim_tam = dim_tam[N_a] # Tamaño de la arena N_a
     # Parametros de configuración segun la arena
 

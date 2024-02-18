@@ -47,6 +47,7 @@ LOS UNICOS PARAMETROS QUE DEBES MODIFICAR MANUALMENTE SON:
 --> variables "Fallos" : Especifica si deseas trabajar con fallos o no
 --> variable "tipo_control" : Especifica la categoria del software de control que estas evaluando
 --> Variable "misionID" : Especifica el tipo de mision que vas a evaluar, debe ser coherente con el software de control correpondiente a la mision
+--> Varaibles "codigos" : Debes especificar el software de control a evaluar seguún la mision y la clase en la ruta de esta vaiarables
 """
 
 """ RUTAS DE LOS DIRECTORIOS Y CONFIGURACIONES"""
@@ -54,9 +55,9 @@ LOS UNICOS PARAMETROS QUE DEBES MODIFICAR MANUALMENTE SON:
 # -------------------------- Puedes trabajar con el enjmabre sin fallos o con fallos
 # EL PORCENTAJE DE FALLOS DEL TOTAL DEL ENJAMBRE ES 30%
 Fallos = "No" # MOdifica esta variable según tu evaluación
-tipo_control = "B" # Especifica que categoria de comportamiento estas evaluando
+tipo_control = "A" # Especifica que categoria de comportamiento estas evaluando
 # ------------------------- Mision ID
-misionID = 1 # Configura el id de la mision a evaluar 1,2,3,4
+misionID = 2 # Configura el id de la mision a evaluar 1,2,3,4
 if misionID == 1:
     mision = 'Exploración'
 elif misionID == 2:
@@ -68,7 +69,7 @@ else:
 # ------------------------- Ruta del archivo "file".argos del experimento (XML)
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # --------------------------Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/B_color_selection_prob.lua"
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_aggregation_0_rb_taxis.lua"
 # ----------------------------------------------------------------------------------
 """LECTURA ARCHIVO DEL EXPERIMENTO"""
 file = dir+"/"+"experimento.argos" # cargamos el archivo .argos

@@ -44,7 +44,7 @@ void CSwarmGenerator::Init(TConfigurationNode& t_tree) {
     {
       LOGERR << "Problem with Attributes in node params" << std::endl;
     }
-    // Variable para SELECCIONAR LOS FALLO 
+    // Variable para SELECCIONAR LOS FALLOS
     fallos = false;
     // ---------- Variable funcion objetivo
     // Esta variable se trabaja para cada una de las metricas.
@@ -106,9 +106,9 @@ void CSwarmGenerator::Init() {
   }
   //maxScore = ((int)(sizeArena.GetY()*1*sizeArena.GetX()*1))*1.0;
   grid.reserve((unsigned int)maxScore);
-  m_arenaSize = tam;
-  m_gridSize = tam; // celdas que dividen la arena segun el tamaño de esta
-  m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
+  //m_arenaSize = tam;
+  //m_gridSize = tam; // celdas que dividen la arena segun el tamaño de esta
+  //m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
 
   // CONFIGURACIONES SEGUN LA ARENA
   // ---------Inicializar las posiciones de los círculos
