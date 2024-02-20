@@ -1439,6 +1439,366 @@ Experiment,Class,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Perfo
 12,A,1,Exploration,Octagonal,grande,100,No,188,2115.67
 12,A,1,Exploration,Octagonal,grande,100,No,103,2130.15
 12,A,1,Exploration,Octagonal,grande,100,No,128,2104.09
+1,A,1,Exploration,Dodecagono,pequena,2,No,125,1873.88
+1,A,1,Exploration,Dodecagono,pequena,2,No,147,1417.68
+1,A,1,Exploration,Dodecagono,pequena,2,No,126,1835
+1,A,1,Exploration,Dodecagono,pequena,2,No,161,1727
+1,A,1,Exploration,Dodecagono,pequena,2,No,187,1578.52
+1,A,1,Exploration,Dodecagono,pequena,2,No,101,1437.8
+1,A,1,Exploration,Dodecagono,pequena,2,No,113,1352.36
+1,A,1,Exploration,Dodecagono,pequena,2,No,138,1257.88
+1,A,1,Exploration,Dodecagono,pequena,2,No,159,1752.24
+1,A,1,Exploration,Dodecagono,pequena,2,No,191,1507.04
+2,A,1,Exploration,Dodecagono,pequena,5,No,140,1942.12
+2,A,1,Exploration,Dodecagono,pequena,5,No,110,1978.52
+2,A,1,Exploration,Dodecagono,pequena,5,No,140,1905.2
+2,A,1,Exploration,Dodecagono,pequena,5,No,155,1886.68
+2,A,1,Exploration,Dodecagono,pequena,5,No,135,1939.04
+2,A,1,Exploration,Dodecagono,pequena,5,No,185,1922.32
+2,A,1,Exploration,Dodecagono,pequena,5,No,108,1743.56
+2,A,1,Exploration,Dodecagono,pequena,5,No,178,1812.6
+2,A,1,Exploration,Dodecagono,pequena,5,No,178,1841.44
+2,A,1,Exploration,Dodecagono,pequena,5,No,183,1917.36
+3,A,1,Exploration,Dodecagono,pequena,10,No,187,2143.8
+3,A,1,Exploration,Dodecagono,pequena,10,No,121,2236.64
+3,A,1,Exploration,Dodecagono,pequena,10,No,105,2147.88
+3,A,1,Exploration,Dodecagono,pequena,10,No,163,2205.76
+3,A,1,Exploration,Dodecagono,pequena,10,No,174,2241.96
+3,A,1,Exploration,Dodecagono,pequena,10,No,168,2070.96
+3,A,1,Exploration,Dodecagono,pequena,10,No,106,2175.08
+3,A,1,Exploration,Dodecagono,pequena,10,No,135,2246.44
+3,A,1,Exploration,Dodecagono,pequena,10,No,186,2231.72
+3,A,1,Exploration,Dodecagono,pequena,10,No,165,2281.04
+4,A,1,Exploration,Dodecagono,pequena,20,No,156,2283.24
+4,A,1,Exploration,Dodecagono,pequena,20,No,166,2236.56
+4,A,1,Exploration,Dodecagono,pequena,20,No,182,2349.8
+4,A,1,Exploration,Dodecagono,pequena,20,No,183,2368.48
+4,A,1,Exploration,Dodecagono,pequena,20,No,143,2284.52
+4,A,1,Exploration,Dodecagono,pequena,20,No,137,2329.12
+4,A,1,Exploration,Dodecagono,pequena,20,No,152,2360.4
+4,A,1,Exploration,Dodecagono,pequena,20,No,151,2290.8
+4,A,1,Exploration,Dodecagono,pequena,20,No,187,2234.36
+4,A,1,Exploration,Dodecagono,pequena,20,No,110,2340.48
+5,A,1,Exploration,Dodecagono,pequena,30,No,117,2362.8
+5,A,1,Exploration,Dodecagono,pequena,30,No,143,2384.96
+5,A,1,Exploration,Dodecagono,pequena,30,No,132,2383.92
+5,A,1,Exploration,Dodecagono,pequena,30,No,116,2357.52
+5,A,1,Exploration,Dodecagono,pequena,30,No,153,2345.52
+5,A,1,Exploration,Dodecagono,pequena,30,No,194,2338.08
+5,A,1,Exploration,Dodecagono,pequena,30,No,166,2350.72
+5,A,1,Exploration,Dodecagono,pequena,30,No,172,2372.48
+5,A,1,Exploration,Dodecagono,pequena,30,No,176,2382.92
+5,A,1,Exploration,Dodecagono,pequena,30,No,134,2301.52
+6,A,1,Exploration,Dodecagono,pequena,40,No,108,2342.12
+6,A,1,Exploration,Dodecagono,pequena,40,No,185,2368.8
+6,A,1,Exploration,Dodecagono,pequena,40,No,178,2361.24
+6,A,1,Exploration,Dodecagono,pequena,40,No,195,2381.28
+6,A,1,Exploration,Dodecagono,pequena,40,No,103,2304.08
+6,A,1,Exploration,Dodecagono,pequena,40,No,163,2380
+6,A,1,Exploration,Dodecagono,pequena,40,No,123,2279.92
+6,A,1,Exploration,Dodecagono,pequena,40,No,160,2371.48
+6,A,1,Exploration,Dodecagono,pequena,40,No,169,2379.68
+6,A,1,Exploration,Dodecagono,pequena,40,No,131,2383.44
+7,A,1,Exploration,Dodecagono,pequena,50,No,165,2373.24
+7,A,1,Exploration,Dodecagono,pequena,50,No,127,2372.96
+7,A,1,Exploration,Dodecagono,pequena,50,No,195,2386.2
+7,A,1,Exploration,Dodecagono,pequena,50,No,142,2373.68
+7,A,1,Exploration,Dodecagono,pequena,50,No,128,2387.52
+7,A,1,Exploration,Dodecagono,pequena,50,No,175,2383.08
+7,A,1,Exploration,Dodecagono,pequena,50,No,190,2393.28
+7,A,1,Exploration,Dodecagono,pequena,50,No,198,2369.24
+7,A,1,Exploration,Dodecagono,pequena,50,No,113,2382.16
+7,A,1,Exploration,Dodecagono,pequena,50,No,140,2378.32
+8,A,1,Exploration,Dodecagono,pequena,60,No,160,2368.08
+8,A,1,Exploration,Dodecagono,pequena,60,No,140,2393.56
+8,A,1,Exploration,Dodecagono,pequena,60,No,175,2398.72
+8,A,1,Exploration,Dodecagono,pequena,60,No,134,2363.52
+8,A,1,Exploration,Dodecagono,pequena,60,No,172,2392.88
+8,A,1,Exploration,Dodecagono,pequena,60,No,182,2361.04
+8,A,1,Exploration,Dodecagono,pequena,60,No,189,2396.32
+8,A,1,Exploration,Dodecagono,pequena,60,No,103,2388.36
+8,A,1,Exploration,Dodecagono,pequena,60,No,177,2373.48
+8,A,1,Exploration,Dodecagono,pequena,60,No,127,2352.28
+9,A,1,Exploration,Dodecagono,pequena,70,No,121,2375.32
+9,A,1,Exploration,Dodecagono,pequena,70,No,145,2383.2
+9,A,1,Exploration,Dodecagono,pequena,70,No,106,2396.52
+9,A,1,Exploration,Dodecagono,pequena,70,No,115,2400
+9,A,1,Exploration,Dodecagono,pequena,70,No,156,2385.88
+9,A,1,Exploration,Dodecagono,pequena,70,No,179,2374.4
+9,A,1,Exploration,Dodecagono,pequena,70,No,149,2397.44
+9,A,1,Exploration,Dodecagono,pequena,70,No,149,2397.44
+9,A,1,Exploration,Dodecagono,pequena,70,No,137,2383.36
+9,A,1,Exploration,Dodecagono,pequena,70,No,120,2387
+10,A,1,Exploration,Dodecagono,pequena,80,No,132,2400
+10,A,1,Exploration,Dodecagono,pequena,80,No,156,2396.44
+10,A,1,Exploration,Dodecagono,pequena,80,No,132,2400
+10,A,1,Exploration,Dodecagono,pequena,80,No,192,2390.48
+10,A,1,Exploration,Dodecagono,pequena,80,No,163,2399.4
+10,A,1,Exploration,Dodecagono,pequena,80,No,185,2386.88
+10,A,1,Exploration,Dodecagono,pequena,80,No,144,2385.32
+10,A,1,Exploration,Dodecagono,pequena,80,No,117,2392.88
+10,A,1,Exploration,Dodecagono,pequena,80,No,122,2397.88
+10,A,1,Exploration,Dodecagono,pequena,80,No,153,2393.48
+11,A,1,Exploration,Dodecagono,pequena,90,No,146,2396
+11,A,1,Exploration,Dodecagono,pequena,90,No,183,2396.6
+11,A,1,Exploration,Dodecagono,pequena,90,No,140,2400
+11,A,1,Exploration,Dodecagono,pequena,90,No,195,2370.36
+11,A,1,Exploration,Dodecagono,pequena,90,No,173,2396.92
+11,A,1,Exploration,Dodecagono,pequena,90,No,185,2400
+11,A,1,Exploration,Dodecagono,pequena,90,No,137,2395.4
+11,A,1,Exploration,Dodecagono,pequena,90,No,159,2389.36
+11,A,1,Exploration,Dodecagono,pequena,90,No,143,2400
+11,A,1,Exploration,Dodecagono,pequena,90,No,147,2372.52
+12,A,1,Exploration,Dodecagono,pequena,100,No,172,2372.56
+12,A,1,Exploration,Dodecagono,pequena,100,No,177,2398.04
+12,A,1,Exploration,Dodecagono,pequena,100,No,135,2389.48
+12,A,1,Exploration,Dodecagono,pequena,100,No,153,2400
+12,A,1,Exploration,Dodecagono,pequena,100,No,177,2398.04
+12,A,1,Exploration,Dodecagono,pequena,100,No,123,2398.48
+12,A,1,Exploration,Dodecagono,pequena,100,No,167,2399.08
+12,A,1,Exploration,Dodecagono,pequena,100,No,114,2397.4
+12,A,1,Exploration,Dodecagono,pequena,100,No,170,2387.88
+12,A,1,Exploration,Dodecagono,pequena,100,No,109,2399.36
+1,A,1,Exploration,Dodecagono,mediana,2,No,117,1292.58
+1,A,1,Exploration,Dodecagono,mediana,2,No,165,1289.09
+1,A,1,Exploration,Dodecagono,mediana,2,No,186,1187.11
+1,A,1,Exploration,Dodecagono,mediana,2,No,160,1137.02
+1,A,1,Exploration,Dodecagono,mediana,2,No,185,1242.25
+1,A,1,Exploration,Dodecagono,mediana,2,No,116,1400.61
+1,A,1,Exploration,Dodecagono,mediana,2,No,103,1178.03
+1,A,1,Exploration,Dodecagono,mediana,2,No,180,1178.52
+1,A,1,Exploration,Dodecagono,mediana,2,No,163,1187.78
+1,A,1,Exploration,Dodecagono,mediana,2,No,147,1494.84
+2,A,1,Exploration,Dodecagono,mediana,5,No,143,1532.56
+2,A,1,Exploration,Dodecagono,mediana,5,No,135,1299.08
+2,A,1,Exploration,Dodecagono,mediana,5,No,116,1351.38
+2,A,1,Exploration,Dodecagono,mediana,5,No,173,1565.39
+2,A,1,Exploration,Dodecagono,mediana,5,No,125,1480.95
+2,A,1,Exploration,Dodecagono,mediana,5,No,138,1414.88
+2,A,1,Exploration,Dodecagono,mediana,5,No,175,1622.78
+2,A,1,Exploration,Dodecagono,mediana,5,No,116,1344.86
+2,A,1,Exploration,Dodecagono,mediana,5,No,191,1534.38
+2,A,1,Exploration,Dodecagono,mediana,5,No,107,1343.47
+3,A,1,Exploration,Dodecagono,mediana,10,No,152,1823.12
+3,A,1,Exploration,Dodecagono,mediana,10,No,151,1779.12
+3,A,1,Exploration,Dodecagono,mediana,10,No,180,1769.91
+3,A,1,Exploration,Dodecagono,mediana,10,No,164,1770.58
+3,A,1,Exploration,Dodecagono,mediana,10,No,104,1751.25
+3,A,1,Exploration,Dodecagono,mediana,10,No,137,1633.36
+3,A,1,Exploration,Dodecagono,mediana,10,No,137,1695.84
+3,A,1,Exploration,Dodecagono,mediana,10,No,188,1660.47
+3,A,1,Exploration,Dodecagono,mediana,10,No,142,1599.11
+3,A,1,Exploration,Dodecagono,mediana,10,No,190,1862.86
+4,A,1,Exploration,Dodecagono,mediana,20,No,158,1898.69
+4,A,1,Exploration,Dodecagono,mediana,20,No,144,2063.8
+4,A,1,Exploration,Dodecagono,mediana,20,No,109,2011.48
+4,A,1,Exploration,Dodecagono,mediana,20,No,199,1958.34
+4,A,1,Exploration,Dodecagono,mediana,20,No,180,2102.77
+4,A,1,Exploration,Dodecagono,mediana,20,No,117,2054.64
+4,A,1,Exploration,Dodecagono,mediana,20,No,185,2028
+4,A,1,Exploration,Dodecagono,mediana,20,No,148,2096.78
+4,A,1,Exploration,Dodecagono,mediana,20,No,179,1968.52
+4,A,1,Exploration,Dodecagono,mediana,20,No,165,2025.16
+5,A,1,Exploration,Dodecagono,mediana,30,No,119,2070.53
+5,A,1,Exploration,Dodecagono,mediana,30,No,111,2139.84
+5,A,1,Exploration,Dodecagono,mediana,30,No,140,2063.42
+5,A,1,Exploration,Dodecagono,mediana,30,No,130,2094.39
+5,A,1,Exploration,Dodecagono,mediana,30,No,198,2089.03
+5,A,1,Exploration,Dodecagono,mediana,30,No,132,2093.06
+5,A,1,Exploration,Dodecagono,mediana,30,No,132,2098.78
+5,A,1,Exploration,Dodecagono,mediana,30,No,126,2133.91
+5,A,1,Exploration,Dodecagono,mediana,30,No,123,2153.19
+5,A,1,Exploration,Dodecagono,mediana,30,No,174,2103.39
+6,A,1,Exploration,Dodecagono,mediana,40,No,171,2174.5
+6,A,1,Exploration,Dodecagono,mediana,40,No,155,2171.81
+6,A,1,Exploration,Dodecagono,mediana,40,No,136,2169.52
+6,A,1,Exploration,Dodecagono,mediana,40,No,163,2072.67
+6,A,1,Exploration,Dodecagono,mediana,40,No,192,2151.47
+6,A,1,Exploration,Dodecagono,mediana,40,No,148,2183.3
+6,A,1,Exploration,Dodecagono,mediana,40,No,153,2181.42
+6,A,1,Exploration,Dodecagono,mediana,40,No,187,2175.97
+6,A,1,Exploration,Dodecagono,mediana,40,No,194,2153.94
+6,A,1,Exploration,Dodecagono,mediana,40,No,168,2162.84
+7,A,1,Exploration,Dodecagono,mediana,50,No,128,2195.81
+7,A,1,Exploration,Dodecagono,mediana,50,No,153,2173.64
+7,A,1,Exploration,Dodecagono,mediana,50,No,135,2180.14
+7,A,1,Exploration,Dodecagono,mediana,50,No,123,2212.39
+7,A,1,Exploration,Dodecagono,mediana,50,No,185,2135.28
+7,A,1,Exploration,Dodecagono,mediana,50,No,199,2116.64
+7,A,1,Exploration,Dodecagono,mediana,50,No,175,2168.52
+7,A,1,Exploration,Dodecagono,mediana,50,No,111,2221.73
+7,A,1,Exploration,Dodecagono,mediana,50,No,183,2162.69
+7,A,1,Exploration,Dodecagono,mediana,50,No,154,2207.14
+8,A,1,Exploration,Dodecagono,mediana,60,No,106,2175.75
+8,A,1,Exploration,Dodecagono,mediana,60,No,164,2250.75
+8,A,1,Exploration,Dodecagono,mediana,60,No,173,2200.14
+8,A,1,Exploration,Dodecagono,mediana,60,No,151,2149.53
+8,A,1,Exploration,Dodecagono,mediana,60,No,119,2179.31
+8,A,1,Exploration,Dodecagono,mediana,60,No,118,2182.23
+8,A,1,Exploration,Dodecagono,mediana,60,No,187,2170.14
+8,A,1,Exploration,Dodecagono,mediana,60,No,100,2187.14
+8,A,1,Exploration,Dodecagono,mediana,60,No,106,2179.12
+8,A,1,Exploration,Dodecagono,mediana,60,No,182,2213.47
+9,A,1,Exploration,Dodecagono,mediana,70,No,169,2175.58
+9,A,1,Exploration,Dodecagono,mediana,70,No,124,2204.31
+9,A,1,Exploration,Dodecagono,mediana,70,No,161,2236.25
+9,A,1,Exploration,Dodecagono,mediana,70,No,180,2228.62
+9,A,1,Exploration,Dodecagono,mediana,70,No,184,2224.69
+9,A,1,Exploration,Dodecagono,mediana,70,No,167,2242
+9,A,1,Exploration,Dodecagono,mediana,70,No,135,2150.88
+9,A,1,Exploration,Dodecagono,mediana,70,No,147,2200.41
+9,A,1,Exploration,Dodecagono,mediana,70,No,173,2188.91
+9,A,1,Exploration,Dodecagono,mediana,70,No,109,2216.69
+10,A,1,Exploration,Dodecagono,mediana,80,No,190,2242.23
+10,A,1,Exploration,Dodecagono,mediana,80,No,167,2201.66
+10,A,1,Exploration,Dodecagono,mediana,80,No,138,2209.34
+10,A,1,Exploration,Dodecagono,mediana,80,No,100,2202.58
+10,A,1,Exploration,Dodecagono,mediana,80,No,108,2237.64
+10,A,1,Exploration,Dodecagono,mediana,80,No,183,2259.84
+10,A,1,Exploration,Dodecagono,mediana,80,No,102,2182.36
+10,A,1,Exploration,Dodecagono,mediana,80,No,165,2234.48
+10,A,1,Exploration,Dodecagono,mediana,80,No,180,2216.3
+10,A,1,Exploration,Dodecagono,mediana,80,No,192,2235.23
+11,A,1,Exploration,Dodecagono,mediana,90,No,134,2215.86
+11,A,1,Exploration,Dodecagono,mediana,90,No,161,2221.22
+11,A,1,Exploration,Dodecagono,mediana,90,No,190,2259.58
+11,A,1,Exploration,Dodecagono,mediana,90,No,108,2242.22
+11,A,1,Exploration,Dodecagono,mediana,90,No,154,2255.33
+11,A,1,Exploration,Dodecagono,mediana,90,No,144,2225.84
+11,A,1,Exploration,Dodecagono,mediana,90,No,170,2184
+11,A,1,Exploration,Dodecagono,mediana,90,No,112,2261.08
+11,A,1,Exploration,Dodecagono,mediana,90,No,163,2173.86
+11,A,1,Exploration,Dodecagono,mediana,90,No,106,2240.25
+12,A,1,Exploration,Dodecagono,mediana,100,No,171,2238.16
+12,A,1,Exploration,Dodecagono,mediana,100,No,129,2215.55
+12,A,1,Exploration,Dodecagono,mediana,100,No,198,2193.23
+12,A,1,Exploration,Dodecagono,mediana,100,No,114,2202.03
+12,A,1,Exploration,Dodecagono,mediana,100,No,122,2208.7
+12,A,1,Exploration,Dodecagono,mediana,100,No,182,2250.5
+12,A,1,Exploration,Dodecagono,mediana,100,No,100,2265.86
+12,A,1,Exploration,Dodecagono,mediana,100,No,143,2216.28
+12,A,1,Exploration,Dodecagono,mediana,100,No,176,2201.92
+12,A,1,Exploration,Dodecagono,mediana,100,No,168,2240.91
+1,A,1,Exploration,Dodecagono,grande,2,No,120,500.875
+1,A,1,Exploration,Dodecagono,grande,2,No,182,554.451
+1,A,1,Exploration,Dodecagono,grande,2,No,160,546.313
+1,A,1,Exploration,Dodecagono,grande,2,No,195,628.236
+1,A,1,Exploration,Dodecagono,grande,2,No,119,604.292
+1,A,1,Exploration,Dodecagono,grande,2,No,188,544.16
+1,A,1,Exploration,Dodecagono,grande,2,No,163,523.729
+1,A,1,Exploration,Dodecagono,grande,2,No,126,549.903
+1,A,1,Exploration,Dodecagono,grande,2,No,147,549.222
+1,A,1,Exploration,Dodecagono,grande,2,No,177,510.368
+2,A,1,Exploration,Dodecagono,grande,5,No,117,755.84
+2,A,1,Exploration,Dodecagono,grande,5,No,137,859.403
+2,A,1,Exploration,Dodecagono,grande,5,No,113,860.771
+2,A,1,Exploration,Dodecagono,grande,5,No,149,931.771
+2,A,1,Exploration,Dodecagono,grande,5,No,134,747.458
+2,A,1,Exploration,Dodecagono,grande,5,No,176,936.285
+2,A,1,Exploration,Dodecagono,grande,5,No,169,844.688
+2,A,1,Exploration,Dodecagono,grande,5,No,197,809.111
+2,A,1,Exploration,Dodecagono,grande,5,No,113,912.694
+2,A,1,Exploration,Dodecagono,grande,5,No,176,1011.14
+3,A,1,Exploration,Dodecagono,grande,10,No,155,1162.44
+3,A,1,Exploration,Dodecagono,grande,10,No,166,1050.69
+3,A,1,Exploration,Dodecagono,grande,10,No,177,1093.21
+3,A,1,Exploration,Dodecagono,grande,10,No,111,1132.48
+3,A,1,Exploration,Dodecagono,grande,10,No,160,1160.42
+3,A,1,Exploration,Dodecagono,grande,10,No,154,1201.12
+3,A,1,Exploration,Dodecagono,grande,10,No,136,1188.21
+3,A,1,Exploration,Dodecagono,grande,10,No,174,1255.28
+3,A,1,Exploration,Dodecagono,grande,10,No,183,1170.29
+3,A,1,Exploration,Dodecagono,grande,10,No,135,1196.16
+4,A,1,Exploration,Dodecagono,grande,20,No,114,1558.14
+4,A,1,Exploration,Dodecagono,grande,20,No,169,1452.63
+4,A,1,Exploration,Dodecagono,grande,20,No,190,1526.16
+4,A,1,Exploration,Dodecagono,grande,20,No,199,1507.38
+4,A,1,Exploration,Dodecagono,grande,20,No,113,1568.47
+4,A,1,Exploration,Dodecagono,grande,20,No,170,1570
+4,A,1,Exploration,Dodecagono,grande,20,No,178,1534.12
+4,A,1,Exploration,Dodecagono,grande,20,No,107,1566.86
+4,A,1,Exploration,Dodecagono,grande,20,No,170,1580.79
+4,A,1,Exploration,Dodecagono,grande,20,No,142,1605.62
+5,A,1,Exploration,Dodecagono,grande,30,No,152,1737.74
+5,A,1,Exploration,Dodecagono,grande,30,No,119,1680.05
+5,A,1,Exploration,Dodecagono,grande,30,No,136,1734.62
+5,A,1,Exploration,Dodecagono,grande,30,No,131,1767.75
+5,A,1,Exploration,Dodecagono,grande,30,No,139,1755.78
+5,A,1,Exploration,Dodecagono,grande,30,No,188,1786.94
+5,A,1,Exploration,Dodecagono,grande,30,No,158,1725.6
+5,A,1,Exploration,Dodecagono,grande,30,No,157,1646.58
+5,A,1,Exploration,Dodecagono,grande,30,No,183,1776.29
+5,A,1,Exploration,Dodecagono,grande,30,No,157,1607.89
+6,A,1,Exploration,Dodecagono,grande,40,No,115,1811.82
+6,A,1,Exploration,Dodecagono,grande,40,No,100,1847.94
+6,A,1,Exploration,Dodecagono,grande,40,No,110,1846.23
+6,A,1,Exploration,Dodecagono,grande,40,No,150,1874.92
+6,A,1,Exploration,Dodecagono,grande,40,No,121,1836.61
+6,A,1,Exploration,Dodecagono,grande,40,No,100,1874.56
+6,A,1,Exploration,Dodecagono,grande,40,No,115,1842.56
+6,A,1,Exploration,Dodecagono,grande,40,No,198,1856.6
+6,A,1,Exploration,Dodecagono,grande,40,No,173,1855.78
+6,A,1,Exploration,Dodecagono,grande,40,No,145,1850.92
+7,A,1,Exploration,Dodecagono,grande,50,No,142,1923.57
+7,A,1,Exploration,Dodecagono,grande,50,No,124,1934.02
+7,A,1,Exploration,Dodecagono,grande,50,No,129,1952.98
+7,A,1,Exploration,Dodecagono,grande,50,No,197,1949.01
+7,A,1,Exploration,Dodecagono,grande,50,No,162,1886.16
+7,A,1,Exploration,Dodecagono,grande,50,No,100,1895.51
+7,A,1,Exploration,Dodecagono,grande,50,No,117,1902.01
+7,A,1,Exploration,Dodecagono,grande,50,No,178,2001.58
+7,A,1,Exploration,Dodecagono,grande,50,No,129,1927.9
+7,A,1,Exploration,Dodecagono,grande,50,No,149,1942.66
+8,A,1,Exploration,Dodecagono,grande,60,No,160,1935.87
+8,A,1,Exploration,Dodecagono,grande,60,No,138,1897.3
+8,A,1,Exploration,Dodecagono,grande,60,No,127,2005.47
+8,A,1,Exploration,Dodecagono,grande,60,No,122,1988.07
+8,A,1,Exploration,Dodecagono,grande,60,No,187,2008
+8,A,1,Exploration,Dodecagono,grande,60,No,112,1947.71
+8,A,1,Exploration,Dodecagono,grande,60,No,176,1983.2
+8,A,1,Exploration,Dodecagono,grande,60,No,188,1961.71
+8,A,1,Exploration,Dodecagono,grande,60,No,190,1926.19
+8,A,1,Exploration,Dodecagono,grande,60,No,157,2007.17
+9,A,1,Exploration,Dodecagono,grande,70,No,177,1931.62
+9,A,1,Exploration,Dodecagono,grande,70,No,189,2071.42
+9,A,1,Exploration,Dodecagono,grande,70,No,129,2029.62
+9,A,1,Exploration,Dodecagono,grande,70,No,195,2084.28
+9,A,1,Exploration,Dodecagono,grande,70,No,131,2016.03
+9,A,1,Exploration,Dodecagono,grande,70,No,114,2022.01
+9,A,1,Exploration,Dodecagono,grande,70,No,196,2040.02
+9,A,1,Exploration,Dodecagono,grande,70,No,120,2039.38
+9,A,1,Exploration,Dodecagono,grande,70,No,123,2006.74
+9,A,1,Exploration,Dodecagono,grande,70,No,122,2021.37
+10,A,1,Exploration,Dodecagono,grande,80,No,183,2052.4
+10,A,1,Exploration,Dodecagono,grande,80,No,116,2012.97
+10,A,1,Exploration,Dodecagono,grande,80,No,179,2006.94
+10,A,1,Exploration,Dodecagono,grande,80,No,123,1983.51
+10,A,1,Exploration,Dodecagono,grande,80,No,144,2017.99
+10,A,1,Exploration,Dodecagono,grande,80,No,180,2026.93
+10,A,1,Exploration,Dodecagono,grande,80,No,181,2019.87
+10,A,1,Exploration,Dodecagono,grande,80,No,100,2001.59
+10,A,1,Exploration,Dodecagono,grande,80,No,101,2080.17
+10,A,1,Exploration,Dodecagono,grande,80,No,177,2041.56
+11,A,1,Exploration,Dodecagono,grande,90,No,174,2126.92
+11,A,1,Exploration,Dodecagono,grande,90,No,170,2014.79
+11,A,1,Exploration,Dodecagono,grande,90,No,146,2037.42
+11,A,1,Exploration,Dodecagono,grande,90,No,185,2078.58
+11,A,1,Exploration,Dodecagono,grande,90,No,195,2073.88
+11,A,1,Exploration,Dodecagono,grande,90,No,194,2081.29
+11,A,1,Exploration,Dodecagono,grande,90,No,195,2006.69
+11,A,1,Exploration,Dodecagono,grande,90,No,108,2081.17
+11,A,1,Exploration,Dodecagono,grande,90,No,108,2064.48
+11,A,1,Exploration,Dodecagono,grande,90,No,150,2000.68
+12,A,1,Exploration,Dodecagono,grande,100,No,114,2074.96
+12,A,1,Exploration,Dodecagono,grande,100,No,174,2090.93
+12,A,1,Exploration,Dodecagono,grande,100,No,179,1979.47
+12,A,1,Exploration,Dodecagono,grande,100,No,157,2048.54
+12,A,1,Exploration,Dodecagono,grande,100,No,108,2094.67
+12,A,1,Exploration,Dodecagono,grande,100,No,114,2049.53
+12,A,1,Exploration,Dodecagono,grande,100,No,189,2036.69
+12,A,1,Exploration,Dodecagono,grande,100,No,123,2040.12
+12,A,1,Exploration,Dodecagono,grande,100,No,171,2087.76
+12,A,1,Exploration,Dodecagono,grande,100,No,135,2088.53
 1,A,2,Aggregation,Triangular,pequena,2,No,100,1
 1,A,2,Aggregation,Triangular,pequena,2,No,168,1
 1,A,2,Aggregation,Triangular,pequena,2,No,187,2
@@ -2879,6 +3239,366 @@ Experiment,Class,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Perfo
 12,A,2,Aggregation,Octagonal,grande,100,No,154,25
 12,A,2,Aggregation,Octagonal,grande,100,No,189,25
 12,A,2,Aggregation,Octagonal,grande,100,No,137,24
+1,A,2,Aggregation,Dodecagono,pequena,2,No,133,1
+1,A,2,Aggregation,Dodecagono,pequena,2,No,186,1
+1,A,2,Aggregation,Dodecagono,pequena,2,No,198,0
+1,A,2,Aggregation,Dodecagono,pequena,2,No,103,1
+1,A,2,Aggregation,Dodecagono,pequena,2,No,152,1
+1,A,2,Aggregation,Dodecagono,pequena,2,No,108,1
+1,A,2,Aggregation,Dodecagono,pequena,2,No,194,1
+1,A,2,Aggregation,Dodecagono,pequena,2,No,199,2
+1,A,2,Aggregation,Dodecagono,pequena,2,No,128,0
+1,A,2,Aggregation,Dodecagono,pequena,2,No,160,2
+2,A,2,Aggregation,Dodecagono,pequena,5,No,155,3
+2,A,2,Aggregation,Dodecagono,pequena,5,No,127,5
+2,A,2,Aggregation,Dodecagono,pequena,5,No,186,5
+2,A,2,Aggregation,Dodecagono,pequena,5,No,124,5
+2,A,2,Aggregation,Dodecagono,pequena,5,No,156,5
+2,A,2,Aggregation,Dodecagono,pequena,5,No,105,3
+2,A,2,Aggregation,Dodecagono,pequena,5,No,196,0
+2,A,2,Aggregation,Dodecagono,pequena,5,No,162,5
+2,A,2,Aggregation,Dodecagono,pequena,5,No,178,5
+2,A,2,Aggregation,Dodecagono,pequena,5,No,128,5
+3,A,2,Aggregation,Dodecagono,pequena,10,No,141,8
+3,A,2,Aggregation,Dodecagono,pequena,10,No,174,9
+3,A,2,Aggregation,Dodecagono,pequena,10,No,187,10
+3,A,2,Aggregation,Dodecagono,pequena,10,No,137,10
+3,A,2,Aggregation,Dodecagono,pequena,10,No,161,10
+3,A,2,Aggregation,Dodecagono,pequena,10,No,183,9
+3,A,2,Aggregation,Dodecagono,pequena,10,No,181,9
+3,A,2,Aggregation,Dodecagono,pequena,10,No,115,10
+3,A,2,Aggregation,Dodecagono,pequena,10,No,155,8
+3,A,2,Aggregation,Dodecagono,pequena,10,No,122,10
+4,A,2,Aggregation,Dodecagono,pequena,20,No,192,16
+4,A,2,Aggregation,Dodecagono,pequena,20,No,192,16
+4,A,2,Aggregation,Dodecagono,pequena,20,No,128,13
+4,A,2,Aggregation,Dodecagono,pequena,20,No,100,15
+4,A,2,Aggregation,Dodecagono,pequena,20,No,130,12
+4,A,2,Aggregation,Dodecagono,pequena,20,No,187,15
+4,A,2,Aggregation,Dodecagono,pequena,20,No,155,16
+4,A,2,Aggregation,Dodecagono,pequena,20,No,155,16
+4,A,2,Aggregation,Dodecagono,pequena,20,No,165,16
+4,A,2,Aggregation,Dodecagono,pequena,20,No,127,16
+5,A,2,Aggregation,Dodecagono,pequena,30,No,135,20
+5,A,2,Aggregation,Dodecagono,pequena,30,No,171,16
+5,A,2,Aggregation,Dodecagono,pequena,30,No,198,21
+5,A,2,Aggregation,Dodecagono,pequena,30,No,144,21
+5,A,2,Aggregation,Dodecagono,pequena,30,No,124,20
+5,A,2,Aggregation,Dodecagono,pequena,30,No,122,23
+5,A,2,Aggregation,Dodecagono,pequena,30,No,138,20
+5,A,2,Aggregation,Dodecagono,pequena,30,No,160,23
+5,A,2,Aggregation,Dodecagono,pequena,30,No,169,17
+5,A,2,Aggregation,Dodecagono,pequena,30,No,188,21
+6,A,2,Aggregation,Dodecagono,pequena,40,No,122,24
+6,A,2,Aggregation,Dodecagono,pequena,40,No,128,21
+6,A,2,Aggregation,Dodecagono,pequena,40,No,168,22
+6,A,2,Aggregation,Dodecagono,pequena,40,No,115,24
+6,A,2,Aggregation,Dodecagono,pequena,40,No,192,24
+6,A,2,Aggregation,Dodecagono,pequena,40,No,189,22
+6,A,2,Aggregation,Dodecagono,pequena,40,No,198,25
+6,A,2,Aggregation,Dodecagono,pequena,40,No,142,17
+6,A,2,Aggregation,Dodecagono,pequena,40,No,127,25
+6,A,2,Aggregation,Dodecagono,pequena,40,No,191,25
+7,A,2,Aggregation,Dodecagono,pequena,50,No,124,27
+7,A,2,Aggregation,Dodecagono,pequena,50,No,142,26
+7,A,2,Aggregation,Dodecagono,pequena,50,No,183,25
+7,A,2,Aggregation,Dodecagono,pequena,50,No,176,26
+7,A,2,Aggregation,Dodecagono,pequena,50,No,148,25
+7,A,2,Aggregation,Dodecagono,pequena,50,No,129,26
+7,A,2,Aggregation,Dodecagono,pequena,50,No,149,28
+7,A,2,Aggregation,Dodecagono,pequena,50,No,149,28
+7,A,2,Aggregation,Dodecagono,pequena,50,No,186,26
+7,A,2,Aggregation,Dodecagono,pequena,50,No,153,21
+8,A,2,Aggregation,Dodecagono,pequena,60,No,152,28
+8,A,2,Aggregation,Dodecagono,pequena,60,No,184,27
+8,A,2,Aggregation,Dodecagono,pequena,60,No,167,27
+8,A,2,Aggregation,Dodecagono,pequena,60,No,109,30
+8,A,2,Aggregation,Dodecagono,pequena,60,No,102,23
+8,A,2,Aggregation,Dodecagono,pequena,60,No,119,32
+8,A,2,Aggregation,Dodecagono,pequena,60,No,164,32
+8,A,2,Aggregation,Dodecagono,pequena,60,No,165,31
+8,A,2,Aggregation,Dodecagono,pequena,60,No,180,29
+8,A,2,Aggregation,Dodecagono,pequena,60,No,154,26
+9,A,2,Aggregation,Dodecagono,pequena,70,No,166,25
+9,A,2,Aggregation,Dodecagono,pequena,70,No,190,29
+9,A,2,Aggregation,Dodecagono,pequena,70,No,110,32
+9,A,2,Aggregation,Dodecagono,pequena,70,No,115,28
+9,A,2,Aggregation,Dodecagono,pequena,70,No,155,30
+9,A,2,Aggregation,Dodecagono,pequena,70,No,130,26
+9,A,2,Aggregation,Dodecagono,pequena,70,No,183,31
+9,A,2,Aggregation,Dodecagono,pequena,70,No,148,27
+9,A,2,Aggregation,Dodecagono,pequena,70,No,174,33
+9,A,2,Aggregation,Dodecagono,pequena,70,No,152,31
+10,A,2,Aggregation,Dodecagono,pequena,80,No,128,29
+10,A,2,Aggregation,Dodecagono,pequena,80,No,109,32
+10,A,2,Aggregation,Dodecagono,pequena,80,No,191,29
+10,A,2,Aggregation,Dodecagono,pequena,80,No,148,27
+10,A,2,Aggregation,Dodecagono,pequena,80,No,137,35
+10,A,2,Aggregation,Dodecagono,pequena,80,No,197,29
+10,A,2,Aggregation,Dodecagono,pequena,80,No,151,29
+10,A,2,Aggregation,Dodecagono,pequena,80,No,102,30
+10,A,2,Aggregation,Dodecagono,pequena,80,No,191,29
+10,A,2,Aggregation,Dodecagono,pequena,80,No,136,29
+11,A,2,Aggregation,Dodecagono,pequena,90,No,166,31
+11,A,2,Aggregation,Dodecagono,pequena,90,No,155,35
+11,A,2,Aggregation,Dodecagono,pequena,90,No,178,31
+11,A,2,Aggregation,Dodecagono,pequena,90,No,115,32
+11,A,2,Aggregation,Dodecagono,pequena,90,No,127,37
+11,A,2,Aggregation,Dodecagono,pequena,90,No,123,33
+11,A,2,Aggregation,Dodecagono,pequena,90,No,107,37
+11,A,2,Aggregation,Dodecagono,pequena,90,No,100,35
+11,A,2,Aggregation,Dodecagono,pequena,90,No,166,31
+11,A,2,Aggregation,Dodecagono,pequena,90,No,106,36
+12,A,2,Aggregation,Dodecagono,pequena,100,No,108,35
+12,A,2,Aggregation,Dodecagono,pequena,100,No,127,34
+12,A,2,Aggregation,Dodecagono,pequena,100,No,168,33
+12,A,2,Aggregation,Dodecagono,pequena,100,No,142,27
+12,A,2,Aggregation,Dodecagono,pequena,100,No,140,32
+12,A,2,Aggregation,Dodecagono,pequena,100,No,174,30
+12,A,2,Aggregation,Dodecagono,pequena,100,No,142,27
+12,A,2,Aggregation,Dodecagono,pequena,100,No,102,28
+12,A,2,Aggregation,Dodecagono,pequena,100,No,141,31
+12,A,2,Aggregation,Dodecagono,pequena,100,No,111,32
+1,A,2,Aggregation,Dodecagono,mediana,2,No,114,0
+1,A,2,Aggregation,Dodecagono,mediana,2,No,114,0
+1,A,2,Aggregation,Dodecagono,mediana,2,No,184,1
+1,A,2,Aggregation,Dodecagono,mediana,2,No,148,1
+1,A,2,Aggregation,Dodecagono,mediana,2,No,166,1
+1,A,2,Aggregation,Dodecagono,mediana,2,No,123,0
+1,A,2,Aggregation,Dodecagono,mediana,2,No,190,0
+1,A,2,Aggregation,Dodecagono,mediana,2,No,116,0
+1,A,2,Aggregation,Dodecagono,mediana,2,No,182,1
+1,A,2,Aggregation,Dodecagono,mediana,2,No,124,1
+2,A,2,Aggregation,Dodecagono,mediana,5,No,194,1
+2,A,2,Aggregation,Dodecagono,mediana,5,No,109,1
+2,A,2,Aggregation,Dodecagono,mediana,5,No,149,1
+2,A,2,Aggregation,Dodecagono,mediana,5,No,138,4
+2,A,2,Aggregation,Dodecagono,mediana,5,No,171,3
+2,A,2,Aggregation,Dodecagono,mediana,5,No,140,2
+2,A,2,Aggregation,Dodecagono,mediana,5,No,109,1
+2,A,2,Aggregation,Dodecagono,mediana,5,No,105,4
+2,A,2,Aggregation,Dodecagono,mediana,5,No,172,4
+2,A,2,Aggregation,Dodecagono,mediana,5,No,145,0
+3,A,2,Aggregation,Dodecagono,mediana,10,No,153,6
+3,A,2,Aggregation,Dodecagono,mediana,10,No,196,6
+3,A,2,Aggregation,Dodecagono,mediana,10,No,120,7
+3,A,2,Aggregation,Dodecagono,mediana,10,No,144,8
+3,A,2,Aggregation,Dodecagono,mediana,10,No,163,7
+3,A,2,Aggregation,Dodecagono,mediana,10,No,125,6
+3,A,2,Aggregation,Dodecagono,mediana,10,No,146,4
+3,A,2,Aggregation,Dodecagono,mediana,10,No,198,7
+3,A,2,Aggregation,Dodecagono,mediana,10,No,184,8
+3,A,2,Aggregation,Dodecagono,mediana,10,No,123,2
+4,A,2,Aggregation,Dodecagono,mediana,20,No,117,8
+4,A,2,Aggregation,Dodecagono,mediana,20,No,158,16
+4,A,2,Aggregation,Dodecagono,mediana,20,No,135,9
+4,A,2,Aggregation,Dodecagono,mediana,20,No,129,11
+4,A,2,Aggregation,Dodecagono,mediana,20,No,150,12
+4,A,2,Aggregation,Dodecagono,mediana,20,No,157,10
+4,A,2,Aggregation,Dodecagono,mediana,20,No,105,13
+4,A,2,Aggregation,Dodecagono,mediana,20,No,121,15
+4,A,2,Aggregation,Dodecagono,mediana,20,No,155,11
+4,A,2,Aggregation,Dodecagono,mediana,20,No,158,16
+5,A,2,Aggregation,Dodecagono,mediana,30,No,154,17
+5,A,2,Aggregation,Dodecagono,mediana,30,No,176,19
+5,A,2,Aggregation,Dodecagono,mediana,30,No,123,16
+5,A,2,Aggregation,Dodecagono,mediana,30,No,185,16
+5,A,2,Aggregation,Dodecagono,mediana,30,No,152,19
+5,A,2,Aggregation,Dodecagono,mediana,30,No,124,19
+5,A,2,Aggregation,Dodecagono,mediana,30,No,154,17
+5,A,2,Aggregation,Dodecagono,mediana,30,No,184,14
+5,A,2,Aggregation,Dodecagono,mediana,30,No,169,12
+5,A,2,Aggregation,Dodecagono,mediana,30,No,159,19
+6,A,2,Aggregation,Dodecagono,mediana,40,No,166,22
+6,A,2,Aggregation,Dodecagono,mediana,40,No,129,19
+6,A,2,Aggregation,Dodecagono,mediana,40,No,119,17
+6,A,2,Aggregation,Dodecagono,mediana,40,No,197,18
+6,A,2,Aggregation,Dodecagono,mediana,40,No,122,18
+6,A,2,Aggregation,Dodecagono,mediana,40,No,103,20
+6,A,2,Aggregation,Dodecagono,mediana,40,No,121,19
+6,A,2,Aggregation,Dodecagono,mediana,40,No,120,16
+6,A,2,Aggregation,Dodecagono,mediana,40,No,100,20
+6,A,2,Aggregation,Dodecagono,mediana,40,No,170,23
+7,A,2,Aggregation,Dodecagono,mediana,50,No,133,18
+7,A,2,Aggregation,Dodecagono,mediana,50,No,141,21
+7,A,2,Aggregation,Dodecagono,mediana,50,No,101,22
+7,A,2,Aggregation,Dodecagono,mediana,50,No,158,21
+7,A,2,Aggregation,Dodecagono,mediana,50,No,183,19
+7,A,2,Aggregation,Dodecagono,mediana,50,No,179,18
+7,A,2,Aggregation,Dodecagono,mediana,50,No,108,21
+7,A,2,Aggregation,Dodecagono,mediana,50,No,168,19
+7,A,2,Aggregation,Dodecagono,mediana,50,No,134,15
+7,A,2,Aggregation,Dodecagono,mediana,50,No,193,16
+8,A,2,Aggregation,Dodecagono,mediana,60,No,198,26
+8,A,2,Aggregation,Dodecagono,mediana,60,No,188,24
+8,A,2,Aggregation,Dodecagono,mediana,60,No,114,26
+8,A,2,Aggregation,Dodecagono,mediana,60,No,187,21
+8,A,2,Aggregation,Dodecagono,mediana,60,No,124,22
+8,A,2,Aggregation,Dodecagono,mediana,60,No,185,19
+8,A,2,Aggregation,Dodecagono,mediana,60,No,130,24
+8,A,2,Aggregation,Dodecagono,mediana,60,No,136,22
+8,A,2,Aggregation,Dodecagono,mediana,60,No,125,22
+8,A,2,Aggregation,Dodecagono,mediana,60,No,186,24
+9,A,2,Aggregation,Dodecagono,mediana,70,No,124,23
+9,A,2,Aggregation,Dodecagono,mediana,70,No,138,25
+9,A,2,Aggregation,Dodecagono,mediana,70,No,194,24
+9,A,2,Aggregation,Dodecagono,mediana,70,No,178,25
+9,A,2,Aggregation,Dodecagono,mediana,70,No,181,27
+9,A,2,Aggregation,Dodecagono,mediana,70,No,160,23
+9,A,2,Aggregation,Dodecagono,mediana,70,No,128,26
+9,A,2,Aggregation,Dodecagono,mediana,70,No,130,18
+9,A,2,Aggregation,Dodecagono,mediana,70,No,177,25
+9,A,2,Aggregation,Dodecagono,mediana,70,No,160,23
+10,A,2,Aggregation,Dodecagono,mediana,80,No,107,24
+10,A,2,Aggregation,Dodecagono,mediana,80,No,132,24
+10,A,2,Aggregation,Dodecagono,mediana,80,No,145,25
+10,A,2,Aggregation,Dodecagono,mediana,80,No,127,21
+10,A,2,Aggregation,Dodecagono,mediana,80,No,142,23
+10,A,2,Aggregation,Dodecagono,mediana,80,No,100,23
+10,A,2,Aggregation,Dodecagono,mediana,80,No,126,20
+10,A,2,Aggregation,Dodecagono,mediana,80,No,113,22
+10,A,2,Aggregation,Dodecagono,mediana,80,No,121,26
+10,A,2,Aggregation,Dodecagono,mediana,80,No,127,21
+11,A,2,Aggregation,Dodecagono,mediana,90,No,134,22
+11,A,2,Aggregation,Dodecagono,mediana,90,No,143,23
+11,A,2,Aggregation,Dodecagono,mediana,90,No,139,21
+11,A,2,Aggregation,Dodecagono,mediana,90,No,189,26
+11,A,2,Aggregation,Dodecagono,mediana,90,No,130,23
+11,A,2,Aggregation,Dodecagono,mediana,90,No,190,22
+11,A,2,Aggregation,Dodecagono,mediana,90,No,151,24
+11,A,2,Aggregation,Dodecagono,mediana,90,No,194,25
+11,A,2,Aggregation,Dodecagono,mediana,90,No,117,25
+11,A,2,Aggregation,Dodecagono,mediana,90,No,165,26
+12,A,2,Aggregation,Dodecagono,mediana,100,No,147,27
+12,A,2,Aggregation,Dodecagono,mediana,100,No,126,24
+12,A,2,Aggregation,Dodecagono,mediana,100,No,102,22
+12,A,2,Aggregation,Dodecagono,mediana,100,No,191,26
+12,A,2,Aggregation,Dodecagono,mediana,100,No,199,27
+12,A,2,Aggregation,Dodecagono,mediana,100,No,124,23
+12,A,2,Aggregation,Dodecagono,mediana,100,No,121,24
+12,A,2,Aggregation,Dodecagono,mediana,100,No,136,26
+12,A,2,Aggregation,Dodecagono,mediana,100,No,172,26
+12,A,2,Aggregation,Dodecagono,mediana,100,No,126,24
+1,A,2,Aggregation,Dodecagono,grande,2,No,118,1
+1,A,2,Aggregation,Dodecagono,grande,2,No,116,0
+1,A,2,Aggregation,Dodecagono,grande,2,No,107,0
+1,A,2,Aggregation,Dodecagono,grande,2,No,147,1
+1,A,2,Aggregation,Dodecagono,grande,2,No,198,0
+1,A,2,Aggregation,Dodecagono,grande,2,No,196,0
+1,A,2,Aggregation,Dodecagono,grande,2,No,156,0
+1,A,2,Aggregation,Dodecagono,grande,2,No,118,1
+1,A,2,Aggregation,Dodecagono,grande,2,No,120,0
+1,A,2,Aggregation,Dodecagono,grande,2,No,140,1
+2,A,2,Aggregation,Dodecagono,grande,5,No,105,1
+2,A,2,Aggregation,Dodecagono,grande,5,No,142,1
+2,A,2,Aggregation,Dodecagono,grande,5,No,196,1
+2,A,2,Aggregation,Dodecagono,grande,5,No,188,1
+2,A,2,Aggregation,Dodecagono,grande,5,No,189,1
+2,A,2,Aggregation,Dodecagono,grande,5,No,174,2
+2,A,2,Aggregation,Dodecagono,grande,5,No,121,0
+2,A,2,Aggregation,Dodecagono,grande,5,No,113,2
+2,A,2,Aggregation,Dodecagono,grande,5,No,166,2
+2,A,2,Aggregation,Dodecagono,grande,5,No,199,1
+3,A,2,Aggregation,Dodecagono,grande,10,No,127,1
+3,A,2,Aggregation,Dodecagono,grande,10,No,156,3
+3,A,2,Aggregation,Dodecagono,grande,10,No,114,5
+3,A,2,Aggregation,Dodecagono,grande,10,No,129,2
+3,A,2,Aggregation,Dodecagono,grande,10,No,199,0
+3,A,2,Aggregation,Dodecagono,grande,10,No,168,2
+3,A,2,Aggregation,Dodecagono,grande,10,No,158,8
+3,A,2,Aggregation,Dodecagono,grande,10,No,161,4
+3,A,2,Aggregation,Dodecagono,grande,10,No,140,1
+3,A,2,Aggregation,Dodecagono,grande,10,No,160,1
+4,A,2,Aggregation,Dodecagono,grande,20,No,109,6
+4,A,2,Aggregation,Dodecagono,grande,20,No,100,7
+4,A,2,Aggregation,Dodecagono,grande,20,No,111,6
+4,A,2,Aggregation,Dodecagono,grande,20,No,136,2
+4,A,2,Aggregation,Dodecagono,grande,20,No,102,4
+4,A,2,Aggregation,Dodecagono,grande,20,No,124,4
+4,A,2,Aggregation,Dodecagono,grande,20,No,112,11
+4,A,2,Aggregation,Dodecagono,grande,20,No,171,8
+4,A,2,Aggregation,Dodecagono,grande,20,No,150,10
+4,A,2,Aggregation,Dodecagono,grande,20,No,113,9
+5,A,2,Aggregation,Dodecagono,grande,30,No,194,12
+5,A,2,Aggregation,Dodecagono,grande,30,No,166,10
+5,A,2,Aggregation,Dodecagono,grande,30,No,120,10
+5,A,2,Aggregation,Dodecagono,grande,30,No,119,6
+5,A,2,Aggregation,Dodecagono,grande,30,No,152,10
+5,A,2,Aggregation,Dodecagono,grande,30,No,159,16
+5,A,2,Aggregation,Dodecagono,grande,30,No,108,12
+5,A,2,Aggregation,Dodecagono,grande,30,No,142,14
+5,A,2,Aggregation,Dodecagono,grande,30,No,134,7
+5,A,2,Aggregation,Dodecagono,grande,30,No,137,12
+6,A,2,Aggregation,Dodecagono,grande,40,No,193,12
+6,A,2,Aggregation,Dodecagono,grande,40,No,109,8
+6,A,2,Aggregation,Dodecagono,grande,40,No,181,10
+6,A,2,Aggregation,Dodecagono,grande,40,No,127,8
+6,A,2,Aggregation,Dodecagono,grande,40,No,171,16
+6,A,2,Aggregation,Dodecagono,grande,40,No,117,18
+6,A,2,Aggregation,Dodecagono,grande,40,No,106,14
+6,A,2,Aggregation,Dodecagono,grande,40,No,185,16
+6,A,2,Aggregation,Dodecagono,grande,40,No,163,20
+6,A,2,Aggregation,Dodecagono,grande,40,No,135,14
+7,A,2,Aggregation,Dodecagono,grande,50,No,133,16
+7,A,2,Aggregation,Dodecagono,grande,50,No,137,18
+7,A,2,Aggregation,Dodecagono,grande,50,No,167,18
+7,A,2,Aggregation,Dodecagono,grande,50,No,142,10
+7,A,2,Aggregation,Dodecagono,grande,50,No,134,18
+7,A,2,Aggregation,Dodecagono,grande,50,No,158,20
+7,A,2,Aggregation,Dodecagono,grande,50,No,197,19
+7,A,2,Aggregation,Dodecagono,grande,50,No,119,17
+7,A,2,Aggregation,Dodecagono,grande,50,No,156,16
+7,A,2,Aggregation,Dodecagono,grande,50,No,183,14
+8,A,2,Aggregation,Dodecagono,grande,60,No,185,18
+8,A,2,Aggregation,Dodecagono,grande,60,No,185,18
+8,A,2,Aggregation,Dodecagono,grande,60,No,191,21
+8,A,2,Aggregation,Dodecagono,grande,60,No,194,22
+8,A,2,Aggregation,Dodecagono,grande,60,No,184,20
+8,A,2,Aggregation,Dodecagono,grande,60,No,189,22
+8,A,2,Aggregation,Dodecagono,grande,60,No,196,18
+8,A,2,Aggregation,Dodecagono,grande,60,No,126,16
+8,A,2,Aggregation,Dodecagono,grande,60,No,199,23
+8,A,2,Aggregation,Dodecagono,grande,60,No,158,19
+9,A,2,Aggregation,Dodecagono,grande,70,No,162,21
+9,A,2,Aggregation,Dodecagono,grande,70,No,184,22
+9,A,2,Aggregation,Dodecagono,grande,70,No,170,25
+9,A,2,Aggregation,Dodecagono,grande,70,No,134,26
+9,A,2,Aggregation,Dodecagono,grande,70,No,121,24
+9,A,2,Aggregation,Dodecagono,grande,70,No,107,23
+9,A,2,Aggregation,Dodecagono,grande,70,No,119,25
+9,A,2,Aggregation,Dodecagono,grande,70,No,112,24
+9,A,2,Aggregation,Dodecagono,grande,70,No,157,21
+9,A,2,Aggregation,Dodecagono,grande,70,No,173,21
+10,A,2,Aggregation,Dodecagono,grande,80,No,134,21
+10,A,2,Aggregation,Dodecagono,grande,80,No,194,24
+10,A,2,Aggregation,Dodecagono,grande,80,No,133,24
+10,A,2,Aggregation,Dodecagono,grande,80,No,143,20
+10,A,2,Aggregation,Dodecagono,grande,80,No,108,19
+10,A,2,Aggregation,Dodecagono,grande,80,No,181,24
+10,A,2,Aggregation,Dodecagono,grande,80,No,110,21
+10,A,2,Aggregation,Dodecagono,grande,80,No,145,24
+10,A,2,Aggregation,Dodecagono,grande,80,No,197,23
+10,A,2,Aggregation,Dodecagono,grande,80,No,118,22
+11,A,2,Aggregation,Dodecagono,grande,90,No,152,20
+11,A,2,Aggregation,Dodecagono,grande,90,No,150,22
+11,A,2,Aggregation,Dodecagono,grande,90,No,171,24
+11,A,2,Aggregation,Dodecagono,grande,90,No,120,23
+11,A,2,Aggregation,Dodecagono,grande,90,No,181,23
+11,A,2,Aggregation,Dodecagono,grande,90,No,138,23
+11,A,2,Aggregation,Dodecagono,grande,90,No,178,28
+11,A,2,Aggregation,Dodecagono,grande,90,No,193,24
+11,A,2,Aggregation,Dodecagono,grande,90,No,131,23
+11,A,2,Aggregation,Dodecagono,grande,90,No,120,23
+12,A,2,Aggregation,Dodecagono,grande,100,No,165,24
+12,A,2,Aggregation,Dodecagono,grande,100,No,131,24
+12,A,2,Aggregation,Dodecagono,grande,100,No,186,23
+12,A,2,Aggregation,Dodecagono,grande,100,No,191,27
+12,A,2,Aggregation,Dodecagono,grande,100,No,160,25
+12,A,2,Aggregation,Dodecagono,grande,100,No,127,23
+12,A,2,Aggregation,Dodecagono,grande,100,No,147,25
+12,A,2,Aggregation,Dodecagono,grande,100,No,125,26
+12,A,2,Aggregation,Dodecagono,grande,100,No,140,26
+12,A,2,Aggregation,Dodecagono,grande,100,No,139,23
 1,A,3,Pattern formation,Triangular,pequena,2,No,152,-3903.63
 1,A,3,Pattern formation,Triangular,pequena,2,No,108,-3907.49
 1,A,3,Pattern formation,Triangular,pequena,2,No,190,-3864.43
@@ -4319,4 +5039,363 @@ Experiment,Class,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Perfo
 12,A,3,Pattern formation,Octagonal,grande,100,No,167,-2930.9
 12,A,3,Pattern formation,Octagonal,grande,100,No,102,-2822.13
 12,A,3,Pattern formation,Octagonal,grande,100,No,166,-2784.21
-1,A,3,Pattern formation,Dodecagono,pequena,2,No,117,-4074.69
+1,A,3,Pattern formation,Dodecagono,pequena,2,No,140,-4068.27
+1,A,3,Pattern formation,Dodecagono,pequena,2,No,148,-4237.27
+1,A,3,Pattern formation,Dodecagono,pequena,2,No,151,-4109.53
+1,A,3,Pattern formation,Dodecagono,pequena,2,No,137,-4059.86
+1,A,3,Pattern formation,Dodecagono,pequena,2,No,108,-4042.56
+1,A,3,Pattern formation,Dodecagono,pequena,2,No,109,-4057.41
+1,A,3,Pattern formation,Dodecagono,pequena,2,No,144,-4171.25
+1,A,3,Pattern formation,Dodecagono,pequena,2,No,136,-4164.01
+1,A,3,Pattern formation,Dodecagono,pequena,2,No,193,-4072.66
+1,A,3,Pattern formation,Dodecagono,pequena,2,No,157,-4030.47
+2,A,3,Pattern formation,Dodecagono,pequena,5,No,100,-3744.74
+2,A,3,Pattern formation,Dodecagono,pequena,5,No,197,-3940.91
+2,A,3,Pattern formation,Dodecagono,pequena,5,No,159,-3660.3
+2,A,3,Pattern formation,Dodecagono,pequena,5,No,166,-3920.43
+2,A,3,Pattern formation,Dodecagono,pequena,5,No,129,-3778.95
+2,A,3,Pattern formation,Dodecagono,pequena,5,No,123,-3771.44
+2,A,3,Pattern formation,Dodecagono,pequena,5,No,100,-3744.74
+2,A,3,Pattern formation,Dodecagono,pequena,5,No,109,-3808.41
+2,A,3,Pattern formation,Dodecagono,pequena,5,No,132,-3705.01
+2,A,3,Pattern formation,Dodecagono,pequena,5,No,124,-3687.86
+3,A,3,Pattern formation,Dodecagono,pequena,10,No,153,-3172.39
+3,A,3,Pattern formation,Dodecagono,pequena,10,No,100,-3290.12
+3,A,3,Pattern formation,Dodecagono,pequena,10,No,165,-3260.85
+3,A,3,Pattern formation,Dodecagono,pequena,10,No,152,-3032.22
+3,A,3,Pattern formation,Dodecagono,pequena,10,No,184,-3229.97
+3,A,3,Pattern formation,Dodecagono,pequena,10,No,195,-3234.72
+3,A,3,Pattern formation,Dodecagono,pequena,10,No,107,-3148.74
+3,A,3,Pattern formation,Dodecagono,pequena,10,No,148,-3257.19
+3,A,3,Pattern formation,Dodecagono,pequena,10,No,184,-3229.97
+3,A,3,Pattern formation,Dodecagono,pequena,10,No,174,-3041.61
+4,A,3,Pattern formation,Dodecagono,pequena,20,No,145,-2439.36
+4,A,3,Pattern formation,Dodecagono,pequena,20,No,154,-2465.53
+4,A,3,Pattern formation,Dodecagono,pequena,20,No,146,-2357.16
+4,A,3,Pattern formation,Dodecagono,pequena,20,No,194,-2464.82
+4,A,3,Pattern formation,Dodecagono,pequena,20,No,148,-2327.06
+4,A,3,Pattern formation,Dodecagono,pequena,20,No,133,-2411.66
+4,A,3,Pattern formation,Dodecagono,pequena,20,No,104,-2263.33
+4,A,3,Pattern formation,Dodecagono,pequena,20,No,111,-2457.12
+4,A,3,Pattern formation,Dodecagono,pequena,20,No,123,-2295.09
+4,A,3,Pattern formation,Dodecagono,pequena,20,No,129,-2347.55
+5,A,3,Pattern formation,Dodecagono,pequena,30,No,176,-1498.98
+5,A,3,Pattern formation,Dodecagono,pequena,30,No,102,-1351.1
+5,A,3,Pattern formation,Dodecagono,pequena,30,No,182,-1478.42
+5,A,3,Pattern formation,Dodecagono,pequena,30,No,191,-1404.9
+5,A,3,Pattern formation,Dodecagono,pequena,30,No,158,-1504.4
+5,A,3,Pattern formation,Dodecagono,pequena,30,No,166,-1693.55
+5,A,3,Pattern formation,Dodecagono,pequena,30,No,128,-1384.51
+5,A,3,Pattern formation,Dodecagono,pequena,30,No,122,-1567.08
+5,A,3,Pattern formation,Dodecagono,pequena,30,No,146,-1568.35
+5,A,3,Pattern formation,Dodecagono,pequena,30,No,111,-1625.67
+6,A,3,Pattern formation,Dodecagono,pequena,40,No,138,-1052.02
+6,A,3,Pattern formation,Dodecagono,pequena,40,No,151,-1118.18
+6,A,3,Pattern formation,Dodecagono,pequena,40,No,104,-974.951
+6,A,3,Pattern formation,Dodecagono,pequena,40,No,174,-1021.56
+6,A,3,Pattern formation,Dodecagono,pequena,40,No,166,-987.17
+6,A,3,Pattern formation,Dodecagono,pequena,40,No,125,-1103.74
+6,A,3,Pattern formation,Dodecagono,pequena,40,No,196,-1017.46
+6,A,3,Pattern formation,Dodecagono,pequena,40,No,110,-975.416
+6,A,3,Pattern formation,Dodecagono,pequena,40,No,142,-1016.23
+6,A,3,Pattern formation,Dodecagono,pequena,40,No,151,-1118.18
+7,A,3,Pattern formation,Dodecagono,pequena,50,No,159,-686.514
+7,A,3,Pattern formation,Dodecagono,pequena,50,No,113,-634.91
+7,A,3,Pattern formation,Dodecagono,pequena,50,No,110,-612.185
+7,A,3,Pattern formation,Dodecagono,pequena,50,No,161,-595.768
+7,A,3,Pattern formation,Dodecagono,pequena,50,No,155,-670.582
+7,A,3,Pattern formation,Dodecagono,pequena,50,No,125,-661.177
+7,A,3,Pattern formation,Dodecagono,pequena,50,No,130,-611.652
+7,A,3,Pattern formation,Dodecagono,pequena,50,No,100,-671.729
+7,A,3,Pattern formation,Dodecagono,pequena,50,No,106,-648.894
+7,A,3,Pattern formation,Dodecagono,pequena,50,No,177,-647.734
+8,A,3,Pattern formation,Dodecagono,pequena,60,No,176,-521.52
+8,A,3,Pattern formation,Dodecagono,pequena,60,No,165,-543.044
+8,A,3,Pattern formation,Dodecagono,pequena,60,No,152,-530.329
+8,A,3,Pattern formation,Dodecagono,pequena,60,No,119,-508.259
+8,A,3,Pattern formation,Dodecagono,pequena,60,No,152,-530.329
+8,A,3,Pattern formation,Dodecagono,pequena,60,No,142,-508.403
+8,A,3,Pattern formation,Dodecagono,pequena,60,No,120,-522.113
+8,A,3,Pattern formation,Dodecagono,pequena,60,No,178,-522.218
+8,A,3,Pattern formation,Dodecagono,pequena,60,No,193,-520.139
+8,A,3,Pattern formation,Dodecagono,pequena,60,No,146,-512.522
+9,A,3,Pattern formation,Dodecagono,pequena,70,No,186,-451.473
+9,A,3,Pattern formation,Dodecagono,pequena,70,No,199,-463.908
+9,A,3,Pattern formation,Dodecagono,pequena,70,No,195,-457.022
+9,A,3,Pattern formation,Dodecagono,pequena,70,No,113,-455.64
+9,A,3,Pattern formation,Dodecagono,pequena,70,No,105,-455.954
+9,A,3,Pattern formation,Dodecagono,pequena,70,No,154,-459.06
+9,A,3,Pattern formation,Dodecagono,pequena,70,No,194,-453.006
+9,A,3,Pattern formation,Dodecagono,pequena,70,No,168,-445.479
+9,A,3,Pattern formation,Dodecagono,pequena,70,No,171,-447.542
+9,A,3,Pattern formation,Dodecagono,pequena,70,No,165,-469.397
+10,A,3,Pattern formation,Dodecagono,pequena,80,No,139,-387.871
+10,A,3,Pattern formation,Dodecagono,pequena,80,No,132,-378.277
+10,A,3,Pattern formation,Dodecagono,pequena,80,No,195,-367.294
+10,A,3,Pattern formation,Dodecagono,pequena,80,No,180,-392.544
+10,A,3,Pattern formation,Dodecagono,pequena,80,No,145,-386.283
+10,A,3,Pattern formation,Dodecagono,pequena,80,No,145,-386.283
+10,A,3,Pattern formation,Dodecagono,pequena,80,No,106,-386.111
+10,A,3,Pattern formation,Dodecagono,pequena,80,No,147,-378.305
+10,A,3,Pattern formation,Dodecagono,pequena,80,No,108,-381.297
+10,A,3,Pattern formation,Dodecagono,pequena,80,No,192,-385.736
+11,A,3,Pattern formation,Dodecagono,pequena,90,No,134,-339.954
+11,A,3,Pattern formation,Dodecagono,pequena,90,No,109,-337.561
+11,A,3,Pattern formation,Dodecagono,pequena,90,No,189,-351.605
+11,A,3,Pattern formation,Dodecagono,pequena,90,No,196,-335.316
+11,A,3,Pattern formation,Dodecagono,pequena,90,No,156,-341.678
+11,A,3,Pattern formation,Dodecagono,pequena,90,No,146,-348.596
+11,A,3,Pattern formation,Dodecagono,pequena,90,No,194,-348.164
+11,A,3,Pattern formation,Dodecagono,pequena,90,No,196,-335.316
+11,A,3,Pattern formation,Dodecagono,pequena,90,No,197,-339.261
+11,A,3,Pattern formation,Dodecagono,pequena,90,No,197,-339.261
+12,A,3,Pattern formation,Dodecagono,pequena,100,No,184,-303.718
+12,A,3,Pattern formation,Dodecagono,pequena,100,No,105,-304.605
+12,A,3,Pattern formation,Dodecagono,pequena,100,No,102,-306.499
+12,A,3,Pattern formation,Dodecagono,pequena,100,No,105,-304.605
+12,A,3,Pattern formation,Dodecagono,pequena,100,No,122,-309.761
+12,A,3,Pattern formation,Dodecagono,pequena,100,No,151,-291.244
+12,A,3,Pattern formation,Dodecagono,pequena,100,No,125,-308.849
+12,A,3,Pattern formation,Dodecagono,pequena,100,No,174,-302.684
+12,A,3,Pattern formation,Dodecagono,pequena,100,No,106,-303.627
+12,A,3,Pattern formation,Dodecagono,pequena,100,No,129,-299.076
+1,A,3,Pattern formation,Dodecagono,mediana,2,No,103,-4448.17
+1,A,3,Pattern formation,Dodecagono,mediana,2,No,175,-4403.04
+1,A,3,Pattern formation,Dodecagono,mediana,2,No,167,-4336.83
+1,A,3,Pattern formation,Dodecagono,mediana,2,No,180,-4373.76
+1,A,3,Pattern formation,Dodecagono,mediana,2,No,161,-4336.45
+1,A,3,Pattern formation,Dodecagono,mediana,2,No,106,-4435.31
+1,A,3,Pattern formation,Dodecagono,mediana,2,No,176,-4329.05
+1,A,3,Pattern formation,Dodecagono,mediana,2,No,152,-4403.58
+1,A,3,Pattern formation,Dodecagono,mediana,2,No,163,-4362
+1,A,3,Pattern formation,Dodecagono,mediana,2,No,148,-4364.51
+2,A,3,Pattern formation,Dodecagono,mediana,5,No,131,-4132.54
+2,A,3,Pattern formation,Dodecagono,mediana,5,No,119,-4149.21
+2,A,3,Pattern formation,Dodecagono,mediana,5,No,167,-4084.19
+2,A,3,Pattern formation,Dodecagono,mediana,5,No,157,-4080.55
+2,A,3,Pattern formation,Dodecagono,mediana,5,No,136,-4251.65
+2,A,3,Pattern formation,Dodecagono,mediana,5,No,191,-4205.78
+2,A,3,Pattern formation,Dodecagono,mediana,5,No,118,-4155.06
+2,A,3,Pattern formation,Dodecagono,mediana,5,No,171,-4175.36
+2,A,3,Pattern formation,Dodecagono,mediana,5,No,153,-4148.33
+2,A,3,Pattern formation,Dodecagono,mediana,5,No,150,-4217.35
+3,A,3,Pattern formation,Dodecagono,mediana,10,No,120,-3812.71
+3,A,3,Pattern formation,Dodecagono,mediana,10,No,103,-3845.45
+3,A,3,Pattern formation,Dodecagono,mediana,10,No,154,-3798.73
+3,A,3,Pattern formation,Dodecagono,mediana,10,No,197,-3889.73
+3,A,3,Pattern formation,Dodecagono,mediana,10,No,107,-4030.37
+3,A,3,Pattern formation,Dodecagono,mediana,10,No,178,-3928.65
+3,A,3,Pattern formation,Dodecagono,mediana,10,No,136,-3895.44
+3,A,3,Pattern formation,Dodecagono,mediana,10,No,101,-3869.84
+3,A,3,Pattern formation,Dodecagono,mediana,10,No,138,-4000.62
+3,A,3,Pattern formation,Dodecagono,mediana,10,No,152,-3885.7
+4,A,3,Pattern formation,Dodecagono,mediana,20,No,162,-3735.85
+4,A,3,Pattern formation,Dodecagono,mediana,20,No,158,-3487
+4,A,3,Pattern formation,Dodecagono,mediana,20,No,150,-3623.84
+4,A,3,Pattern formation,Dodecagono,mediana,20,No,144,-3452.35
+4,A,3,Pattern formation,Dodecagono,mediana,20,No,102,-3469.03
+4,A,3,Pattern formation,Dodecagono,mediana,20,No,194,-3591.87
+4,A,3,Pattern formation,Dodecagono,mediana,20,No,147,-3502.13
+4,A,3,Pattern formation,Dodecagono,mediana,20,No,123,-3579.32
+4,A,3,Pattern formation,Dodecagono,mediana,20,No,193,-3508.89
+4,A,3,Pattern formation,Dodecagono,mediana,20,No,110,-3640.41
+5,A,3,Pattern formation,Dodecagono,mediana,30,No,169,-2976.66
+5,A,3,Pattern formation,Dodecagono,mediana,30,No,143,-3172.05
+5,A,3,Pattern formation,Dodecagono,mediana,30,No,169,-2976.66
+5,A,3,Pattern formation,Dodecagono,mediana,30,No,121,-3184.63
+5,A,3,Pattern formation,Dodecagono,mediana,30,No,159,-3026.3
+5,A,3,Pattern formation,Dodecagono,mediana,30,No,189,-3173.66
+5,A,3,Pattern formation,Dodecagono,mediana,30,No,138,-3246.01
+5,A,3,Pattern formation,Dodecagono,mediana,30,No,148,-3079.53
+5,A,3,Pattern formation,Dodecagono,mediana,30,No,164,-3122.09
+5,A,3,Pattern formation,Dodecagono,mediana,30,No,141,-3007.44
+6,A,3,Pattern formation,Dodecagono,mediana,40,No,134,-2490.34
+6,A,3,Pattern formation,Dodecagono,mediana,40,No,178,-2879.7
+6,A,3,Pattern formation,Dodecagono,mediana,40,No,196,-2902.5
+6,A,3,Pattern formation,Dodecagono,mediana,40,No,171,-2724.46
+6,A,3,Pattern formation,Dodecagono,mediana,40,No,108,-2729.2
+6,A,3,Pattern formation,Dodecagono,mediana,40,No,143,-2628.2
+6,A,3,Pattern formation,Dodecagono,mediana,40,No,159,-2666.32
+6,A,3,Pattern formation,Dodecagono,mediana,40,No,169,-2703.56
+6,A,3,Pattern formation,Dodecagono,mediana,40,No,135,-2792.87
+6,A,3,Pattern formation,Dodecagono,mediana,40,No,120,-2793.79
+7,A,3,Pattern formation,Dodecagono,mediana,50,No,100,-2503.04
+7,A,3,Pattern formation,Dodecagono,mediana,50,No,131,-2241.9
+7,A,3,Pattern formation,Dodecagono,mediana,50,No,195,-2475.53
+7,A,3,Pattern formation,Dodecagono,mediana,50,No,180,-2286.89
+7,A,3,Pattern formation,Dodecagono,mediana,50,No,160,-2556.92
+7,A,3,Pattern formation,Dodecagono,mediana,50,No,184,-2370.78
+7,A,3,Pattern formation,Dodecagono,mediana,50,No,112,-2555.93
+7,A,3,Pattern formation,Dodecagono,mediana,50,No,110,-2632.47
+7,A,3,Pattern formation,Dodecagono,mediana,50,No,198,-2511.59
+7,A,3,Pattern formation,Dodecagono,mediana,50,No,106,-2298.74
+8,A,3,Pattern formation,Dodecagono,mediana,60,No,176,-2195
+8,A,3,Pattern formation,Dodecagono,mediana,60,No,137,-2017.84
+8,A,3,Pattern formation,Dodecagono,mediana,60,No,184,-2175.88
+8,A,3,Pattern formation,Dodecagono,mediana,60,No,140,-2007.46
+8,A,3,Pattern formation,Dodecagono,mediana,60,No,178,-2087.13
+8,A,3,Pattern formation,Dodecagono,mediana,60,No,155,-2078.13
+8,A,3,Pattern formation,Dodecagono,mediana,60,No,177,-1919.44
+8,A,3,Pattern formation,Dodecagono,mediana,60,No,124,-2005.81
+8,A,3,Pattern formation,Dodecagono,mediana,60,No,133,-2183.15
+8,A,3,Pattern formation,Dodecagono,mediana,60,No,142,-2029.17
+9,A,3,Pattern formation,Dodecagono,mediana,70,No,199,-1927.98
+9,A,3,Pattern formation,Dodecagono,mediana,70,No,172,-1754.23
+9,A,3,Pattern formation,Dodecagono,mediana,70,No,104,-1838.59
+9,A,3,Pattern formation,Dodecagono,mediana,70,No,192,-1759.85
+9,A,3,Pattern formation,Dodecagono,mediana,70,No,195,-1850.36
+9,A,3,Pattern formation,Dodecagono,mediana,70,No,129,-1845.47
+9,A,3,Pattern formation,Dodecagono,mediana,70,No,185,-1900.14
+9,A,3,Pattern formation,Dodecagono,mediana,70,No,124,-1988.66
+9,A,3,Pattern formation,Dodecagono,mediana,70,No,144,-1632.22
+9,A,3,Pattern formation,Dodecagono,mediana,70,No,181,-1816.42
+10,A,3,Pattern formation,Dodecagono,mediana,80,No,106,-1685.19
+10,A,3,Pattern formation,Dodecagono,mediana,80,No,179,-1686.88
+10,A,3,Pattern formation,Dodecagono,mediana,80,No,185,-1629.41
+10,A,3,Pattern formation,Dodecagono,mediana,80,No,185,-1629.41
+10,A,3,Pattern formation,Dodecagono,mediana,80,No,149,-1498.23
+10,A,3,Pattern formation,Dodecagono,mediana,80,No,192,-1574.95
+10,A,3,Pattern formation,Dodecagono,mediana,80,No,180,-1698.59
+10,A,3,Pattern formation,Dodecagono,mediana,80,No,195,-1450.23
+10,A,3,Pattern formation,Dodecagono,mediana,80,No,115,-1762.84
+10,A,3,Pattern formation,Dodecagono,mediana,80,No,150,-1588.68
+11,A,3,Pattern formation,Dodecagono,mediana,90,No,138,-1312.19
+11,A,3,Pattern formation,Dodecagono,mediana,90,No,141,-1219.45
+11,A,3,Pattern formation,Dodecagono,mediana,90,No,172,-1247.34
+11,A,3,Pattern formation,Dodecagono,mediana,90,No,115,-1434.03
+11,A,3,Pattern formation,Dodecagono,mediana,90,No,117,-1404.36
+11,A,3,Pattern formation,Dodecagono,mediana,90,No,144,-1297.31
+11,A,3,Pattern formation,Dodecagono,mediana,90,No,108,-1425.21
+11,A,3,Pattern formation,Dodecagono,mediana,90,No,161,-1350.49
+11,A,3,Pattern formation,Dodecagono,mediana,90,No,110,-1519.17
+11,A,3,Pattern formation,Dodecagono,mediana,90,No,155,-1420.99
+12,A,3,Pattern formation,Dodecagono,mediana,100,No,173,-1220.47
+12,A,3,Pattern formation,Dodecagono,mediana,100,No,129,-1197.31
+12,A,3,Pattern formation,Dodecagono,mediana,100,No,139,-1105.85
+12,A,3,Pattern formation,Dodecagono,mediana,100,No,147,-1114.96
+12,A,3,Pattern formation,Dodecagono,mediana,100,No,161,-1094.41
+12,A,3,Pattern formation,Dodecagono,mediana,100,No,196,-1062.31
+12,A,3,Pattern formation,Dodecagono,mediana,100,No,168,-1326.62
+12,A,3,Pattern formation,Dodecagono,mediana,100,No,155,-1102.67
+12,A,3,Pattern formation,Dodecagono,mediana,100,No,174,-1154.15
+12,A,3,Pattern formation,Dodecagono,mediana,100,No,187,-1164.92
+1,A,3,Pattern formation,Dodecagono,grande,2,No,167,-4415.9
+1,A,3,Pattern formation,Dodecagono,grande,2,No,114,-4447.59
+1,A,3,Pattern formation,Dodecagono,grande,2,No,107,-4467.73
+1,A,3,Pattern formation,Dodecagono,grande,2,No,112,-4466.69
+1,A,3,Pattern formation,Dodecagono,grande,2,No,118,-4418.82
+1,A,3,Pattern formation,Dodecagono,grande,2,No,131,-4444.26
+1,A,3,Pattern formation,Dodecagono,grande,2,No,199,-4414.39
+1,A,3,Pattern formation,Dodecagono,grande,2,No,199,-4414.39
+1,A,3,Pattern formation,Dodecagono,grande,2,No,134,-4400.44
+1,A,3,Pattern formation,Dodecagono,grande,2,No,114,-4447.59
+2,A,3,Pattern formation,Dodecagono,grande,5,No,173,-4335.46
+2,A,3,Pattern formation,Dodecagono,grande,5,No,132,-4325.46
+2,A,3,Pattern formation,Dodecagono,grande,5,No,165,-4386.68
+2,A,3,Pattern formation,Dodecagono,grande,5,No,142,-4356.69
+2,A,3,Pattern formation,Dodecagono,grande,5,No,180,-4363.68
+2,A,3,Pattern formation,Dodecagono,grande,5,No,163,-4339.16
+2,A,3,Pattern formation,Dodecagono,grande,5,No,192,-4377.24
+2,A,3,Pattern formation,Dodecagono,grande,5,No,156,-4345.25
+2,A,3,Pattern formation,Dodecagono,grande,5,No,138,-4314.94
+2,A,3,Pattern formation,Dodecagono,grande,5,No,190,-4340.87
+3,A,3,Pattern formation,Dodecagono,grande,10,No,195,-4171.97
+3,A,3,Pattern formation,Dodecagono,grande,10,No,167,-4191.94
+3,A,3,Pattern formation,Dodecagono,grande,10,No,124,-4115.47
+3,A,3,Pattern formation,Dodecagono,grande,10,No,181,-4166.98
+3,A,3,Pattern formation,Dodecagono,grande,10,No,122,-4294.21
+3,A,3,Pattern formation,Dodecagono,grande,10,No,165,-4233.3
+3,A,3,Pattern formation,Dodecagono,grande,10,No,198,-4171.48
+3,A,3,Pattern formation,Dodecagono,grande,10,No,118,-4208.48
+3,A,3,Pattern formation,Dodecagono,grande,10,No,173,-4172.15
+3,A,3,Pattern formation,Dodecagono,grande,10,No,111,-4186.02
+4,A,3,Pattern formation,Dodecagono,grande,20,No,105,-4013.97
+4,A,3,Pattern formation,Dodecagono,grande,20,No,110,-3987.85
+4,A,3,Pattern formation,Dodecagono,grande,20,No,182,-4087.37
+4,A,3,Pattern formation,Dodecagono,grande,20,No,126,-3920.68
+4,A,3,Pattern formation,Dodecagono,grande,20,No,166,-3935.8
+4,A,3,Pattern formation,Dodecagono,grande,20,No,124,-3917.32
+4,A,3,Pattern formation,Dodecagono,grande,20,No,134,-4028.73
+4,A,3,Pattern formation,Dodecagono,grande,20,No,104,-4010.25
+4,A,3,Pattern formation,Dodecagono,grande,20,No,120,-4037.85
+4,A,3,Pattern formation,Dodecagono,grande,20,No,142,-3949.7
+5,A,3,Pattern formation,Dodecagono,grande,30,No,116,-3803.63
+5,A,3,Pattern formation,Dodecagono,grande,30,No,198,-3723.92
+5,A,3,Pattern formation,Dodecagono,grande,30,No,130,-3848.39
+5,A,3,Pattern formation,Dodecagono,grande,30,No,146,-3734.54
+5,A,3,Pattern formation,Dodecagono,grande,30,No,130,-3848.39
+5,A,3,Pattern formation,Dodecagono,grande,30,No,140,-3807.93
+5,A,3,Pattern formation,Dodecagono,grande,30,No,155,-3868.02
+5,A,3,Pattern formation,Dodecagono,grande,30,No,152,-3794.22
+5,A,3,Pattern formation,Dodecagono,grande,30,No,129,-3913.43
+5,A,3,Pattern formation,Dodecagono,grande,30,No,104,-3851.79
+6,A,3,Pattern formation,Dodecagono,grande,40,No,105,-3699.93
+6,A,3,Pattern formation,Dodecagono,grande,40,No,136,-3832.11
+6,A,3,Pattern formation,Dodecagono,grande,40,No,175,-3610.04
+6,A,3,Pattern formation,Dodecagono,grande,40,No,135,-3783.77
+6,A,3,Pattern formation,Dodecagono,grande,40,No,194,-3685.62
+6,A,3,Pattern formation,Dodecagono,grande,40,No,177,-3478.6
+6,A,3,Pattern formation,Dodecagono,grande,40,No,153,-3714.8
+6,A,3,Pattern formation,Dodecagono,grande,40,No,109,-3783.44
+6,A,3,Pattern formation,Dodecagono,grande,40,No,170,-3769.26
+6,A,3,Pattern formation,Dodecagono,grande,40,No,131,-3726.69
+7,A,3,Pattern formation,Dodecagono,grande,50,No,148,-3419.98
+7,A,3,Pattern formation,Dodecagono,grande,50,No,143,-3531.7
+7,A,3,Pattern formation,Dodecagono,grande,50,No,101,-3510.29
+7,A,3,Pattern formation,Dodecagono,grande,50,No,173,-3520.4
+7,A,3,Pattern formation,Dodecagono,grande,50,No,166,-3528.37
+7,A,3,Pattern formation,Dodecagono,grande,50,No,167,-3622.18
+7,A,3,Pattern formation,Dodecagono,grande,50,No,199,-3498.93
+7,A,3,Pattern formation,Dodecagono,grande,50,No,102,-3541.05
+7,A,3,Pattern formation,Dodecagono,grande,50,No,109,-3542.78
+7,A,3,Pattern formation,Dodecagono,grande,50,No,188,-3542.72
+8,A,3,Pattern formation,Dodecagono,grande,60,No,154,-3327.19
+8,A,3,Pattern formation,Dodecagono,grande,60,No,134,-3402.84
+8,A,3,Pattern formation,Dodecagono,grande,60,No,167,-3404.88
+8,A,3,Pattern formation,Dodecagono,grande,60,No,177,-3401.48
+8,A,3,Pattern formation,Dodecagono,grande,60,No,176,-3391.65
+8,A,3,Pattern formation,Dodecagono,grande,60,No,142,-3208.13
+8,A,3,Pattern formation,Dodecagono,grande,60,No,141,-3403.01
+8,A,3,Pattern formation,Dodecagono,grande,60,No,181,-3388.98
+8,A,3,Pattern formation,Dodecagono,grande,60,No,132,-3243.16
+8,A,3,Pattern formation,Dodecagono,grande,60,No,124,-3350.18
+9,A,3,Pattern formation,Dodecagono,grande,70,No,185,-3070.53
+9,A,3,Pattern formation,Dodecagono,grande,70,No,113,-3192.78
+9,A,3,Pattern formation,Dodecagono,grande,70,No,121,-3047.14
+9,A,3,Pattern formation,Dodecagono,grande,70,No,156,-3097.68
+9,A,3,Pattern formation,Dodecagono,grande,70,No,134,-3061.81
+9,A,3,Pattern formation,Dodecagono,grande,70,No,112,-3199.69
+9,A,3,Pattern formation,Dodecagono,grande,70,No,140,-3200.01
+9,A,3,Pattern formation,Dodecagono,grande,70,No,137,-3084.42
+9,A,3,Pattern formation,Dodecagono,grande,70,No,104,-3140.48
+9,A,3,Pattern formation,Dodecagono,grande,70,No,113,-3192.78
+10,A,3,Pattern formation,Dodecagono,grande,80,No,160,-3131.11
+10,A,3,Pattern formation,Dodecagono,grande,80,No,135,-3081.3
+10,A,3,Pattern formation,Dodecagono,grande,80,No,150,-2957.49
+10,A,3,Pattern formation,Dodecagono,grande,80,No,185,-3100.68
+10,A,3,Pattern formation,Dodecagono,grande,80,No,159,-3011.44
+10,A,3,Pattern formation,Dodecagono,grande,80,No,154,-3047.31
+10,A,3,Pattern formation,Dodecagono,grande,80,No,139,-3060.48
+10,A,3,Pattern formation,Dodecagono,grande,80,No,151,-2905.59
+10,A,3,Pattern formation,Dodecagono,grande,80,No,148,-3159.5
+10,A,3,Pattern formation,Dodecagono,grande,80,No,148,-3159.5
+11,A,3,Pattern formation,Dodecagono,grande,90,No,190,-2897.27
+11,A,3,Pattern formation,Dodecagono,grande,90,No,191,-2840.77
+11,A,3,Pattern formation,Dodecagono,grande,90,No,180,-2929.44
+11,A,3,Pattern formation,Dodecagono,grande,90,No,179,-2922.78
+11,A,3,Pattern formation,Dodecagono,grande,90,No,116,-2838.01
+11,A,3,Pattern formation,Dodecagono,grande,90,No,119,-2828.34
+11,A,3,Pattern formation,Dodecagono,grande,90,No,145,-2693.65
+11,A,3,Pattern formation,Dodecagono,grande,90,No,107,-2843.96
+11,A,3,Pattern formation,Dodecagono,grande,90,No,103,-2978.04
+11,A,3,Pattern formation,Dodecagono,grande,90,No,199,-2861.01
+12,A,3,Pattern formation,Dodecagono,grande,100,No,193,-2791.32
+12,A,3,Pattern formation,Dodecagono,grande,100,No,147,-2804.39
+12,A,3,Pattern formation,Dodecagono,grande,100,No,171,-2779.36
+12,A,3,Pattern formation,Dodecagono,grande,100,No,180,-2733.39
+12,A,3,Pattern formation,Dodecagono,grande,100,No,117,-2779.37
+12,A,3,Pattern formation,Dodecagono,grande,100,No,182,-2784.65
+12,A,3,Pattern formation,Dodecagono,grande,100,No,159,-2942.29
+12,A,3,Pattern formation,Dodecagono,grande,100,No,103,-2664.94
+12,A,3,Pattern formation,Dodecagono,grande,100,No,123,-2703.01
+12,A,3,Pattern formation,Dodecagono,grande,100,No,108,-2751.42
