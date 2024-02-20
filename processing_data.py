@@ -33,8 +33,6 @@ def graficar_pruebaBinomial(data_bin):
 def graficar_metrica_escalabilidad(subset, metrica, tam_arena, mision_id, tipo_mision):
     robots = subset['NumRobots'].unique()
     m_metrica = np.zeros(((len(robots)-1), (len(robots)-1))) # matrix con las medianas de los datos procesados mxn
-    #if mision_id ==3:
-    #    metrica = -1*metrica
 
     ## Calcula la mediana del set de datos de la métrica y se lamacena en la matriz
     for i, lista in enumerate(metrica): # iterar en las listas de metrica filas
@@ -43,13 +41,15 @@ def graficar_metrica_escalabilidad(subset, metrica, tam_arena, mision_id, tipo_m
             mediana = np.median(sublista)  # Calcula la mediana
             m_metrica[i, j] = mediana  # Almacena la mediana en la matriz
     m_metrica = np.flipud(m_metrica)
+    if mision_id ==3:
+        m_metrica = -1.0*m_metrica
     print(m_metrica)
     # Configuración de la visualización
     fig, ax = plt.subplots()
 
     # Crear un heatmap con Seaborn
     sns.heatmap(m_metrica, annot=True, cmap='viridis', linewidths=0.5, square=True, ax=ax,
-                xticklabels=robots[1:11], yticklabels=robots[0:10][::-1], cbar_kws={'label': 'Valor de la métrica'})
+                xticklabels=robots[1:12], yticklabels=robots[0:11][::-1], cbar_kws={'label': 'Valor de la métrica'})
 
     # Títulos y etiquetas
     ax.set_title(f'Escalabilidad - MisionID: {mision_id} ({tipo_mision}) - Arena- Tamaño: {tam_arena}')
@@ -59,7 +59,7 @@ def graficar_metrica_escalabilidad(subset, metrica, tam_arena, mision_id, tipo_m
     # Ajuste de diseño
     fig.tight_layout()
     # Ajuste de los bordes
-    plt.subplots_adjust(left=0.0, right=0.85)
+    #plt.subplots_adjust(left=0.0, right=0.85)
     plt.show()
 def graficar_metrica_flexibilidad1(PM,PG,MG,mision_id, tipo_mision):
     tams = ['Pequeña','Mediana','Grande'] # Tamaños arenas
@@ -89,11 +89,11 @@ def graficar_metrica_flexibilidad1(PM,PG,MG,mision_id, tipo_mision):
     # Ajuste de diseño
     fig.tight_layout()
     plt.show()
-def graficar_metrica_flexibilidad(P1,P2,P3,P4,P5,mision_id, tipo_mision):
+def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision):
     tams = ['Pequeña-Mediana','Pequeña-Grande','Mediana-Grande'] # Tamaños arenas
-    grupos = ['5,20 %', '20,40 %', '40,60 %', '60,80 %', '80,100 %'] # grupos de robots
+    grupos = ['2,10 %', '20,40 %', '50,70 %', '80,100 %'] # grupos de robots
      
-    datos = [P1, P2, P3, P4, P5]
+    datos = [P1, P2, P3, P4]
 
     #print("------", len(datos),"\n", datos[0][0])
     #print(P1[0,:])
@@ -172,10 +172,8 @@ def metrica_escalabilidad(data):
         La lista final contiene 10 listas, que van en orden descendente es decir
         la pos 0  contiene 10 listas, la pos 1 contiene 9 listas ... pos 9 1 lista
         esto debido a la forma en como operamos los grupos de robots"""
-    #print(len(escalabilidad), len(escalabilidad[0][0]))
-    #print(escalabilidad)
 
-    return escalabilidad#,re_test
+    return escalabilidad #,re_test
 def metrica_flexibilidad(data):
     size_robots = data['NumRobots'].unique()  # obtener la lista de tamaños del enjambre #Robots
     tam_arena = data['Arenasize'].unique() # se extraen los tamaños de la arena
@@ -242,18 +240,18 @@ def metrica_flexibilidad(data):
     # Retornar las listas con los calculos
     #print(len(fle_PM),"\n",len(fle_PG),"\n",len(fle_MG))
     """Extraemos los datos respecto a un numero especifico de robots
-    G1: 5-20, G2: 20-40, G3: 40-60, G4: 60-80, G5: 80-100
+    G1: 2-10, G2: 20-40, G3: 50-70, G4: 80-100
     """
-    _5, _20, _40, _60, _80, _100 = data[data['NumRobots']==5],data[data['NumRobots']==20],data[data['NumRobots']==40],data[data['NumRobots']==60],data[data['NumRobots']==80], data[data['NumRobots']==100]
+    _2, _10, _20, _40, _50, _70, _80, _100 = data[data['NumRobots']==2],data[data['NumRobots']==10],data[data['NumRobots']==20],data[data['NumRobots']==40],data[data['NumRobots']==50], data[data['NumRobots']==70], data[data['NumRobots']==80], data[data['NumRobots']==100]
 
-    Per5, Per20, Per40 = _5['Performance'].tolist(), _20['Performance'].tolist(), _40['Performance'].tolist()
-    Per60, Per80, Per100 = _60['Performance'].tolist(), _80['Performance'].tolist(), _100['Performance'].tolist()
-    G1, G2, G3, G4, G5= np.zeros((3,len(Per5))), np.zeros((3,len(Per5))), np.zeros((3,len(Per5))), np.zeros((3,len(Per5))), np.zeros((3,len(Per5)))
+    Per2, Per10, Per20, Per40 = _2['Performance'].tolist(), _10['Performance'].tolist(), _20['Performance'].tolist(), _40['Performance'].tolist()
+    Per50, Per70, Per80, Per100 = _50['Performance'].tolist(), _70['Performance'].tolist(), _80['Performance'].tolist(), _100['Performance'].tolist()
+    G1, G2, G3, G4 = np.zeros((3,len(Per2))), np.zeros((3,len(Per2))), np.zeros((3,len(Per2))), np.zeros((3,len(Per2)))
 
-    for i in range(len(Per5)):
-        if Per5[i] != 0: # Calculo para el G1 5-20 en los tres tamaños
-            d_G1P1 = (Per20[i]-Per5[i]) / Per5[i]
-        elif Per20[i] > Per5[i]:
+    for i in range(len(Per2)):
+        if Per2[i] != 0: # Calculo para el G1 2-10 en los tres tamaños
+            d_G1P1 = (Per10[i]-Per2[i]) / Per2[i]
+        elif Per10[i] > Per2[i]:
             d_G1P1 = 1
         else:
             d_G1P1 = 0
@@ -265,26 +263,19 @@ def metrica_flexibilidad(data):
         else:
             d_G2P1 = 0
         
-        if Per40[i] != 0: # Calculo para el G3 40-60 en los tres tamaños
-            d_G3P1 = (Per60[i]-Per40[i]) / Per40[i]
-        elif Per60[i] > Per40[i]:
+        if Per50[i] != 0: # Calculo para el G3 50-70 en los tres tamaños
+            d_G3P1 = (Per70[i]-Per50[i]) / Per50[i]
+        elif Per70[i] > Per40[i]:
             d_G3P1 = 1
         else:
             d_G3P1 = 0
 
-        if Per60[i] != 0: # Calculo para el G4 60-80 en los tres tamaños
-            d_G4P1 = (Per80[i]-Per60[i]) / Per60[i]
-        elif Per80[i] > Per60[i]:
+        if Per80[i] != 0: # Calculo para el G4 80-100 en los tres tamaños
+            d_G4P1 = (Per100[i]-Per80[i]) / Per80[i]
+        elif Per100[i] > Per80[i]:
             d_G4P1 = 1
         else:
             d_G4P1 = 0
-
-        if Per80[i] != 0: # Calculo para el G5 80-100 en los tres tamaños
-            d_G5P1 = (Per100[i]-Per80[i]) / Per80[i]
-        elif Per100[i] > Per80[i]:
-            d_G5P1 = 1
-        else:
-            d_G5P1 = 0
         
         # Almacenamiento de los datos en las matrices
         G1[0,i]=(d_G1P1/deltaX1) +1
@@ -303,12 +294,8 @@ def metrica_flexibilidad(data):
         G4[1,i] = (d_G4P1/deltaX2) +1
         G4[2,i] = (d_G4P1/deltaX3) +1
 
-        G5[0,i]=(d_G5P1/deltaX1) +1
-        G5[1,i] = (d_G5P1/deltaX2) +1
-        G5[2,i] = (d_G5P1/deltaX3) +1
-
     #return fle_PM, fle_PG, fle_MG
-    return G1, G2, G3, G4, G5
+    return G1, G2, G3, G4 
 
 """
 EJECUCIÓN DEL PROCESAMIENTO DE DATOS
@@ -335,11 +322,11 @@ for clas_sof in tipo_sof:
         for tam_arena in tamanos_arena:
             subset = mision_df[mision_df['Arenasize'] == tam_arena]
             # Invertir los valores de rendimiento si es MisionID 3
-            if mision_id == 3:
-                subset['Performance'] = -1*subset['Performance']
+            #if mision_id == 3:
+            #    subset['Performance'] = -1*subset['Performance']
 
             """Graficar el boxplot de rendimiento para cada conjunto único de datos"""
-            graficar_performance(subset, tam_arena, mision_id, tipo_mision)
+            #graficar_performance(subset, tam_arena, mision_id, tipo_mision)
             """Calcular escalabilidad"""
             #escalabilidad, esc_binomial = metrica_escalabilidad(subset)
             escalabilidad = metrica_escalabilidad(subset)
@@ -347,6 +334,6 @@ for clas_sof in tipo_sof:
             graficar_metrica_escalabilidad(subset, escalabilidad, tam_arena, mision_id, tipo_mision)
             #graficar_pruebaBinomial(esc_binomial)
         #flex_PM, flex_PG, flex_MG = metrica_flexibilidad(mision_df)
-        F_1, F_2, F3, F4, F5 = metrica_flexibilidad(mision_df)
+        F_1, F_2, F3, F4  = metrica_flexibilidad(mision_df)
         #graficar_metrica_flexibilidad(flex_PM,flex_PG,flex_MG,mision_id, tipo_mision)
-        graficar_metrica_flexibilidad(F_1, F_2, F3, F4, F5, mision_id, tipo_mision)
+        graficar_metrica_flexibilidad(F_1, F_2, F3, F4, mision_id, tipo_mision)

@@ -16,12 +16,7 @@
 #include <argos3/core/utility/math/vector3.h>
 #include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h>
 #include <argos3/core/utility/logging/argos_log.h>
-/* Definition of the CCI_Controller class. */
-#include <argos3/core/control_interface/ci_controller.h>
-/* Definition of the differential steering actuator */
-#include <argos3/plugins/robots/generic/control_interface/ci_differential_steering_actuator.h>
-/* Definition of proximity sensor */
-#include <argos3/plugins/robots/generic/control_interface/ci_proximity_sensor.h>
+
 
 #include <fstream>
 #include <algorithm>
@@ -156,8 +151,6 @@ private:
    // * Numero de robots
    // */
    size_t m_unRobots;
-   // Obstaculos en la arena*/
-   //std::string m_unObsbool;
 
    /**
     * Posiciones de los círculos negros y elementos
@@ -181,8 +174,6 @@ private:
    CVector2 m_cCoordNest;
    // Variables de las misiones
    Real m_fObjectiveFunction; // funcion objetio para cada mision
-   // variable para acceder a los motores del robot
-   CCI_DifferentialSteeringActuator* m_pcWheels;
    // ---------- Variables de Exploración ----------
    std::vector<std::vector<int>> m_grid;
    Real m_arenaSize; // Varaiable Exploración
@@ -196,8 +187,6 @@ private:
    bool consenso;
    UInt32 tiempo_conseso;
    void RegisterPositions();
-
-
 
    struct RobotStateStruct {
       CVector2 cLastPosition;

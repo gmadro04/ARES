@@ -44,7 +44,7 @@ void CSwarmGenerator::Init(TConfigurationNode& t_tree) {
     {
       LOGERR << "Problem with Attributes in node params" << std::endl;
     }
-    // Variable para SELECCIONAR LOS FALLOS
+    // Variable para SELECCIONAR LOS FALLO 
     fallos = false;
     // ---------- Variable funcion objetivo
     // Esta variable se trabaja para cada una de las metricas.
@@ -54,10 +54,6 @@ void CSwarmGenerator::Init(TConfigurationNode& t_tree) {
     // --- Exploración ---
     maxScore = 1.0;
     sizeArena.Set(1,1);
-    m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
-    m_arenaSize = 0.0; // se ajusta segun la arena
-    m_gridSize = 10; // celdas que dividen la arena segun el tamaño de esta
-
     // --- Marcha en formación --
     m_unNumberPoints = 1000;
 
@@ -106,9 +102,7 @@ void CSwarmGenerator::Init() {
   }
   //maxScore = ((int)(sizeArena.GetY()*1*sizeArena.GetX()*1))*1.0;
   grid.reserve((unsigned int)maxScore);
-  //m_arenaSize = tam;
-  //m_gridSize = tam; // celdas que dividen la arena segun el tamaño de esta
-  //m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
+
 
   // CONFIGURACIONES SEGUN LA ARENA
   // ---------Inicializar las posiciones de los círculos
@@ -217,7 +211,7 @@ void CSwarmGenerator::SaveExperimentData() {
   std::ofstream MyFile("Experimentos/datos.csv", std::ios_base::app);
   // Escribir encabezados si el archivo está vacío
   if (MyFile.tellp() == 0) {
-      MyFile << "Experiment,Class,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Time,Performance" << std::endl;
+      MyFile << "Experiment,Class,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Performance" << std::endl;
   }
   std::string Mision;
   if (m_unIDmision == 1)
@@ -247,7 +241,6 @@ void CSwarmGenerator::SaveExperimentData() {
   MyFile << m_unRobots << ",";
   MyFile << m_unFaults << ",";
   MyFile << m_unSeed << ",";
-  MyFile << "240 Seg" << ",";
   MyFile << m_fObjectiveFunction << std::endl;
   // Cerrar el archivo
   MyFile.close();
@@ -431,34 +424,6 @@ void CSwarmGenerator::RegisterPositions(){
 
 }
 Real CSwarmGenerator::GetExplorationScore() {
-    //CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-    //CVector2 cFootBotPosition(0, 0);
-    ////m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
-    //Real Exploration;
-    //// Actualiza el contador de tiempo para las baldosas cruzadas por robots
-    //for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
-    //    CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
-    //    cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-    //        pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-//
-    //    UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
-    //    UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
-//
-    //    if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0) {
-    //        m_grid[X][Y] = 0;
-    //    }
-    //}
-//
-    //// Calcula la métrica de exploración
-    //UInt32 total = 0;
-    //for (UInt32 i = 0; i < m_gridSize; i++) {
-    //    for (UInt32 j = 0; j < m_gridSize; j++) {
-    //        total += m_grid[i][j];
-    //        m_grid[i][j] += 1;
-    //    }
-    //}
-    //Exploration += Real(total);
-    //return Exploration;
   Real temp = 0;
   if (m_unArenatype == "Triangular")
   {
@@ -611,7 +576,7 @@ Real CSwarmGenerator::GetPatternFormationScore(){
   dA /= m_unNumberPoints;
 
 
-  Real performance = -(100*100*dA*dA); // in cm2 el signo negativo es porque en esta mision se busca minimizar la distancia.
+  Real performance = -100*100*dA*dA; // in cm2 el signo negativo es porque en esta mision se busca minimizar la distancia.
 
   return performance;
 }
@@ -846,11 +811,6 @@ void CSwarmGenerator::StopRobots() {
     // Por ejemplo, podrías imprimir información sobre los robots en falla
     LOG << "Robots fallando: " << robotsFalla << std::endl;
 }
-
-
-
-
-
 
 /* Register this loop functions into the ARGoS plugin system */
 REGISTER_LOOP_FUNCTIONS(CSwarmGenerator, "loop_function");

@@ -53,8 +53,6 @@ CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/ar
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/plugins/vtable.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/core/utility/string_utilities.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/robots/foot-bot/simulator/footbot_entity.h
-CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/robots/generic/control_interface/ci_differential_steering_actuator.h
-CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/robots/generic/control_interface/ci_proximity_sensor.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/simulator/entities/box_entity.h
 CMakeFiles/loop_function.dir/loop_function.cpp.o: /home/gmadro/swarm_robotics/argos3-dist/include/argos3/plugins/simulator/entities/cylinder_entity.h
