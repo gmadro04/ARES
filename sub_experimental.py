@@ -20,6 +20,23 @@ import pyfiglet
 \____/_____/_/ |_/_____/_/ |_/_/  |_/_/  \____/_/ |_|
 
 
+! IMPORTANTE !
+LOS UNICOS PARAMETROS QUE DEBES MODIFICAR MANUALMENTE SON:
+--> variables "Fallos" : Especifica si deseas trabajar con fallos o no
+--> variable "tipo_control" : Especifica la categoria del software de control que estas evaluando
+--> Variable "misionID" : Especifica el tipo de mision que vas a evaluar, debe ser coherente con el software de control correpondiente a la mision
+--> Varaibles "codigos" : Debes especificar el software de control a evaluar seguún la mision y la clase en la ruta de esta vaiarables
+---------------------------------------------------------------------------------------------------------------------------------------------------
+|*| Mision a evaluar ---> Cada comportamiento colectivo (software de control) se evalua en una misión especifica
+°° Obstacle_avoid_dance -- Mision exploración
+°° Agreggation -- Mision agregación
+°° Pattern_Formation -- Mision formación de patrones
+Mision ID ---> Toma un valor para poder evaluar la mision a ejecutar
+* Mision ID = 1 -> Mision exploración
+* Mision ID = 2 -> Mision agregación
+* Mision ID = 3 -> Mision marcha en formación
+* Mision ID = 4 -> Mision toma de decisiones colectiva
+
 |*| Software de control -> Se dividen en dos categorias  1-> A y 2-> B
 Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 ---------- Comportamiento categoria A ----------
@@ -28,26 +45,10 @@ Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 * A_pattern_formation_flocking.lua
 * A_color_selection_det.lua
 ---------- Comportamiento categoria B ----------
-* B_aggregation_spots.lua
-* B_color_selection_prob.lua
 * B_obstacleAvoiddance_vec.lua
+* B_aggregation_spots.lua
 * B_pattern_formation.lua
-|*| Mision a evaluar -> Cada comportamiento se evalua en una misión especifica
-Obstacle_avoid_dance -- Mision exploración
-Agreggation -- Mision agregación
-Pattern_Formation -- Mision formación de patrones
-Mision ID --> Toma un valor para poder evaluar la mision a ejecutar
-* Mision ID = 1 -> Mision exploración
-* Mision ID = 2 -> Mision agregación
-* Mision ID = 3 -> Mision marcha en formación
-* Mision ID = 4 -> Mision toma de decisiones colectiva
-
-! IMPORTANTE !
-LOS UNICOS PARAMETROS QUE DEBES MODIFICAR MANUALMENTE SON:
---> variables "Fallos" : Especifica si deseas trabajar con fallos o no
---> variable "tipo_control" : Especifica la categoria del software de control que estas evaluando
---> Variable "misionID" : Especifica el tipo de mision que vas a evaluar, debe ser coherente con el software de control correpondiente a la mision
---> Varaibles "codigos" : Debes especificar el software de control a evaluar seguún la mision y la clase en la ruta de esta vaiarables
+* B_color_selection_prob.lua
 """
 
 """ RUTAS DE LOS DIRECTORIOS Y CONFIGURACIONES"""
@@ -57,7 +58,7 @@ LOS UNICOS PARAMETROS QUE DEBES MODIFICAR MANUALMENTE SON:
 Fallos = "No" # MOdifica esta variable según tu evaluación
 tipo_control = "A" # Especifica que categoria de comportamiento estas evaluando
 # ------------------------- Mision ID
-misionID = 1 # Configura el id de la mision a evaluar 1,2,3,4
+misionID = 4 # Configura el id de la mision a evaluar 1,2,3,4
 if misionID == 1:
     mision = 'Exploración'
 elif misionID == 2:
@@ -66,10 +67,12 @@ elif misionID == 3:
     mision = 'Marcha en Formación'
 else:
     mision = 'Decisión Colectiva'
+# ----------------------------------------------------------------------------------
+# --------------------------Ruta software de control
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_color_selection_det.lua"
+# ----------------------------------------------------------------------------------
 # ------------------------- Ruta del archivo "file".argos del experimento (XML)
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
-# --------------------------Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_obstacleAvoiddance_sta.lua"
 # ----------------------------------------------------------------------------------
 """LECTURA ARCHIVO DEL EXPERIMENTO"""
 file = dir+"/"+"experimento.argos" # cargamos el archivo .argos
@@ -77,7 +80,8 @@ file = dir+"/"+"experimento.argos" # cargamos el archivo .argos
 tree = ET.parse(file)
 #cargamos el elemento raiz
 root = tree.getroot()
-
+# ----------------------------------------------------------------------------------
+"""FUNCION CONFIGURACION PARAMETROS EXPERIMENTO"""
 def modificar_archivo(file,exp,arenas,tams,semilla):
     """ Configuración parametros básicos """
     arena_params, parametros = loop.params_arena(arenas,tams)    # Tamaño de la arena grande,mediana,pequeña y configuracion de atributos
@@ -100,12 +104,14 @@ def modificar_archivo(file,exp,arenas,tams,semilla):
                                 index=["TAMAÑO:","# ROBOTS:","TIPO MISION:","T_EXPERIMENTO:","FALLOS:"])
     print(pyfiglet.figlet_format("Arena" + parametros['Tipo de arena']))
     print(simulacion)
-
+# ----------------------------------------------------------------------------------
+"""EJECUCIÓN SWARM GENERATOR"""
 # Configuración de la cantidad de ejecuciones
 num_robots_inicial = 2
 incremento_robots = 5
 num_experimentos = 12 # Puedes cambiar esto al número deseado de ejecuciones (exp=12, robots= 2,5...100)
 t_robots = [2,5,10,20,30,40,50,60,70,80,90,100] # Tamaño del enjambre con el que se trabajn los experimentos
+# ----------------------------------------------------------------------------------
 if Fallos == "No":
     for arena in range(5): # Ejecución por tipos de arena T,C,H6,O8,P12 range(5)
         for tam in range(3): # Ejecución por tamaño de arena P,M,G range(3)

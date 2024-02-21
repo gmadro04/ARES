@@ -612,29 +612,29 @@ Real CSwarmGenerator::GetCollectiveDecisionScore() {
 
     }
 
-    if ((color_red/totalRobots) >= 0.9){
+    if ((color_red/totalRobots) >= 0.85){
       consenso = true;
       tiempo_conseso = GetSpace().GetSimulationClock();
       LOG << "Consenso alcanzado al paso " << tiempo_conseso << std::endl;
       LOG << "#Robots emiten color " << color_red << std::endl;
-      LOG << "Porcentaje de consenso " << color_red/totalRobots << std::endl;
-    }else if ((color_blue/totalRobots) >= 0.9)
+      LOG << "Porcentaje de consenso " << (color_red/totalRobots)*100 << std::endl;
+    }else if ((color_blue/totalRobots) >= 0.85)
     {
       consenso = true;
       tiempo_conseso = GetSpace().GetSimulationClock();
       LOG << "Consenso alcanzado al paso " << tiempo_conseso << std::endl;
       LOG << "#Robots emiten color " << color_blue << std::endl;
-      LOG << "Porcentaje de consenso " << color_blue/totalRobots << std::endl;
-    }else if ((color_green/totalRobots) >= 0.9)
+      LOG << "Porcentaje de consenso " << (color_blue/totalRobots)*100 << std::endl;
+    }else if ((color_green/totalRobots) >= 0.85)
     {
       consenso = true;
       tiempo_conseso = GetSpace().GetSimulationClock();
       LOG << "Consenso alcanzado al paso " << tiempo_conseso << std::endl;
       LOG << "#Robots emiten color " << color_green << std::endl;
-      LOG << "Porcentaje de consenso " << color_green/totalRobots << std::endl;
+      LOG << "Porcentaje de consenso " << (color_green/totalRobots)*100 << std::endl;
     }
   }
-  return tiempo_conseso; // Devuelve el tiempo en el que un porcentaje mayor al 90% de robots ya llego a un consenso
+  return tiempo_conseso; // Devuelve el tiempo en el que un porcentaje mayor al 85% de robots ya llego a un consenso
 }
 
 /****************************************/
