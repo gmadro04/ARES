@@ -5,12 +5,24 @@ from matplotlib.colors import Normalize
 from matplotlib.colorbar import Colorbar
 import numpy as np
 import scipy.stats as stats
+import statsmodels.api as sm
 """
 FUNCIONES DE PROCESAMIENTO DE DATOS
 """
 
 """ FUNCIONES DE VISUALIZACIÓN (GRAFICAS) """
+
 def graficar_performance(df, tam_arena,mision_id, tipo_mision, clase_soft):
+    # Extraer la unidades de medida del performance según la misión
+    u_medida = " "
+    if mision_id == 1:
+        u_medida = "# V/visitadas"
+    elif mision_id == 2:
+        u_medida = "# Robots-Agregados"
+    elif mision_id == 3:
+        u_medida == "Min Distancia-Cm2"
+    elif mision_id == 4:
+        u_medida = "Time step consenso"
     # Configurar el boxplot con notch
     ax = sns.boxplot(x='NumRobots', y='Performance', data=df, notch=True, width=0.35,linecolor='black')
 
@@ -19,14 +31,12 @@ def graficar_performance(df, tam_arena,mision_id, tipo_mision, clase_soft):
     x_vals = range(len(medians))
     for i, value in enumerate(medians):
         ax.text(x_vals[i], value, f'{value:.2f}', ha='right', va='bottom', color='black')
-
     # Añadir etiquetas y título
     plt.xlabel('Número de Robots')
-    plt.ylabel('Performance')
-    plt.title(f'Rendimiento - MisionID: {mision_id} {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clas_sof}')
+    plt.ylabel(f'Performance ({u_medida})')
+    plt.title(f'Rendimiento - MisionID: {mision_id} {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clase_soft}')
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.show()
-#sns.heatmap(m_metrica,annot=True,linewidths=0.5)
 def graficar_pruebaBinomial(data_bin):
     fig, ax = plt.subplots()
     sns.barplot(data_bin)
@@ -44,6 +54,7 @@ def graficar_metrica_escalabilidad(subset, metrica, tam_arena, mision_id, tipo_m
     if mision_id ==3:
         m_metrica = -1.0*m_metrica
     #print(m_metrica)
+    
     # Configuración de la visualización
     fig, ax = plt.subplots()
 
@@ -136,17 +147,17 @@ def metrica_escalabilidad(data):
         subset = data[data['NumRobots'] == n_robots]
         # Obtener los datos del performance según la cantidad de robots actual, se almacenan de una lista
         performance_robots.append(subset['Performance'].tolist())
-
+        
     performance_robots = np.array(performance_robots) # convertimos la lista en una matriz (mxn)
     escalabilidad = [] # lista para almacenar el calculo de la metrica
     re_test = []
     for i in range(len(size_robots)-1):
-        test_bin = 0 # contador casos exito en test binomial
         listas = []
         test_list = []
         # Iteramos para comparar cada grupo de robots 2-5,2-10....90-100
         for k in range(i+1,len(size_robots)):
             f_es = [] # auxilar calculo de escalabilidad
+            test_bin = 0 # contador casos exito en test binomial
             # Iteramos la matriz de datos del performance, filas corresponden a la cantidad de robots y las columnas al peroformace
             for j in range(len(performance_robots[i,:])-1):
                 if performance_robots[i,j] != 0: # evitar la division por 0
@@ -163,82 +174,30 @@ def metrica_escalabilidad(data):
                     test_bin = test_bin + 1 # contabilizar casos exitosos 
                     # se cumple la condición 1 de la maetrica, sistema escalable
             # Se calcula el test binomial con los datos
-            #test_binomial = stats.binom_test(test_bin,len(performance_robots[i,:]),alternative='two-sided')
-            #test_list.append(test_binomial) # alamacenamiento resultado prueba binomial
+            test_binomial = sm.stats.proportions_ztest(test_bin,len(performance_robots[i,:]),0.5)
+            test_list.append(test_binomial) # alamacenamiento resultado prueba binomial
             listas.append(f_es)
         escalabilidad.append(listas) # alamcenamiento calculo de la metrica
-        #re_test.append(test_list) # almacenamiento teste binomial 
+        re_test.append(test_list) # almacenamiento teste binomial 
         """Se gurada un arreglo de listas que contienen listas
         La lista final contiene 10 listas, que van en orden descendente es decir
         la pos 0  contiene 10 listas, la pos 1 contiene 9 listas ... pos 9 1 lista
         esto debido a la forma en como operamos los grupos de robots"""
-
+    print(re_test)
     return escalabilidad #,re_test
 def metrica_flexibilidad(data):
     size_robots = data['NumRobots'].unique()  # obtener la lista de tamaños del enjambre #Robots
     tam_arena = data['Arenasize'].unique() # se extraen los tamaños de la arena
-
-    # lista para alamecenar el performance
-    per_small = []
-    per_med = []
-    per_big = []
     # --- calculo de los deltX
     """
     Se toman en cuenta los perimetros del plano donde se encierra la arena
     según su tamaño, entonces:
     pequeña = 20 m - mediana = 32 m - grande =  48 m
     """
-    deltaX1 = (32-20)/20 #Relación pequeña mediana
-    deltaX2 = (48-20)/20 #Relación pequeña grande
-    deltaX3 = (48-32)/32 #Relación mediana grande
-    # extraer los datos por el tamaño de arena
-    small = data[data['Arenasize'] == 'pequena']
-    med = data[data['Arenasize'] == 'mediana']
-    big = data[data['Arenasize'] == 'grande']
-    for num in size_robots: # filtrar el performance por el numero de robots
-        subset =  small[small['NumRobots'] == num] # datos arena pequeña
-        subset1 = med[med['NumRobots'] == num] # datos arena mediana
-        subset2 = big[big['NumRobots'] == num] # datos arena pequena
-        per_small.append(subset['Performance'].tolist())
-        per_med.append(subset1['Performance'].tolist())
-        per_big.append(subset2['Performance'].tolist())
-    # convertir las listas en matriz nxm
-    per_small = np.array(per_small)
-    per_med = np.array(per_med)
-    per_big = np.array(per_med)
-    #print(per_small.shape,per_med.shape,per_big.shape)
-    #print(len(per_small[0,:]))
-    # calculo de la metrica
-    fle_PM, fle_PG, fle_MG = [], [], [] # Definir listas que guradan los datos
-    for i in range(len(size_robots)): # iteración para comparar la flexibilidad
-        for j in range(len(per_small[0,:])):
-            # Se trabajan las tres relaciones PM, PG, MG en el mismo for
-            if per_small[i,j] != 0: # -----Arena Pequeñan-Mediana
-                deltaP1 = (per_med[i,j] - per_small[i,j]) / per_small[i,j]
-            elif per_med[i,j] > per_small[i,j]:
-                deltaP1 = 1 # el performance es mayor, se asigna un valor de 1
-            else:
-                deltaP1 = 0 # el performance no mejoró delta=0
-            if per_small[i,j] != 0: # -----Arena Pequeña-Grande
-                deltaP2 = (per_big[i,j] - per_small[i,j]) / per_small[i,j]
-            elif per_big[i,j] > per_small[i,j]:
-                deltaP2 = 1 # el performance es mayor, se asigna un valor de 1
-            else:
-                deltaP2 = 0 # el performance no mejoró delta=0
-            if per_small[i,j] != 0: # -----Mediana-Grande
-                deltaP3 = (per_big[i,j] - per_med[i,j]) / per_med[i,j]
-            elif per_big[i,j] > per_med[i,j]:
-                deltaP3 = 1 # el performance es mayor, se asigna un valor de 1
-            else:
-                deltaP3 = 0 # el performance no mejoró delta=0
+    deltaX1 = abs((32-20)/20) #Relación pequeña mediana
+    deltaX2 = abs((48-20)/20) #Relación pequeña grande
+    deltaX3 = abs((48-32)/32) #Relación mediana grande
 
-            # Se proceden a llenar la lista de los datos con el calculo
-            # F = (DeltaP / DeltaX) +1
-            fle_PM.append((deltaP1/deltaX1)+1) # Pequeña-Mediana
-            fle_PG.append((deltaP2/deltaX2)+1) # Pequeña-Grande
-            fle_MG.append((deltaP3/deltaX3)+1) # Mediana-Grande
-    # Retornar las listas con los calculos
-    #print(len(fle_PM),"\n",len(fle_PG),"\n",len(fle_MG))
     """Extraemos los datos respecto a un numero especifico de robots
     G1: 2-10, G2: 20-40, G3: 50-70, G4: 80-100
     """

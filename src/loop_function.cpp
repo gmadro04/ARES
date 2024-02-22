@@ -556,7 +556,7 @@ Real CSwarmGenerator::GetPatternFormationScore(){
 
   for (UInt32 i = 0 ; i < m_unNumberPoints; i++)
   {
-    Real fMinDistanceOnSquare = 0.67;  // Correspond to worst case, only one robot in the corner of the square
+    Real fMinDistanceOnSquare = 0.67;  // Correspond to worst case, only one robot in the corner of the arena
 
     cRandomPoint = GetRandomPoint();
     for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
