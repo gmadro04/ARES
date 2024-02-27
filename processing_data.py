@@ -268,10 +268,12 @@ mision_ids = df['MisionID'].unique()
 tipo_sof = df['Class'].unique()
 # Iteración por la clase de software 
 for clas_sof in tipo_sof:
+    # Filtrar datos por clase de software
+    data_class = df[df['Class'] == clas_sof]
     # Iterar sobre cada MisionID
     for mision_id in mision_ids:
         # Filtrar los datos por MisionID
-        mision_df = df[df['MisionID'] == mision_id]
+        mision_df = data_class[data_class['MisionID'] == mision_id]
 
         # Obtener las combinaciones únicas de tamaño de arena
         tamanos_arena = mision_df['Arenasize'].unique()

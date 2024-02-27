@@ -152,27 +152,27 @@ void CSwarmGenerator::PostStep() {
   {
     RegisterPositions();
     m_fObjectiveFunction += GetExplorationScore();
-    if (m_unFaults == "Si"){ // simular fallos en los robots -> Robot stop
+    if (m_unFaults != "No"){ // simular fallos en los robots -> Robot stop
       StopRobots();
     }
   }
   else if (m_unIDmision == 2)
   {
-    if (m_unFaults == "Si"){ // simular fallos en los robots -> Robot stop
+    if (m_unFaults != "No"){ // simular fallos en los robots -> Robot stop
       StopRobots();
     }
     m_fObjectiveFunction = GetAggregationScore();
   }
   else if (m_unIDmision == 3)
   {
-    if (m_unFaults == "Si"){ // simular fallos en los robots -> Robot stop
+    if (m_unFaults != "No"){ // simular fallos en los robots -> Robot stop
       StopRobots();
     }
     m_fObjectiveFunction = GetPatternFormationScore();
   }
   else if (m_unIDmision == 4)
   {
-    if (m_unFaults == "Si"){ // simular fallos en los robots -> Robot stop
+    if (m_unFaults != "No"){ // simular fallos en los robots -> Robot stop
       StopRobots();
     }
     m_fObjectiveFunction = GetCollectiveDecisionScore();
@@ -768,8 +768,14 @@ CVector2 CSwarmGenerator::ComputeMiddle(CVector2 vec_a, CVector2 vec_b) {
 /****************************************/
 
 void CSwarmGenerator::StopRobots() {
-    // Porcentaje de robots que deben detenerse
-    float porcentaje_f = 0.3;
+    // Porcentaje de robots que deben detenerse según el modo de fallo
+    float porcentaje_f = 0.0;
+    if (m_unFaults == "Si_1"){
+      porcentaje_f = 0.2; // 20% de fallos
+    }
+    else{
+      porcentaje_f = 0.3; // 30 porciento de fallos
+    }
 
     // Obtén la lista de foot-bots
     CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
@@ -777,7 +783,10 @@ void CSwarmGenerator::StopRobots() {
     // Calcula el número de robots que deben detenerse
     size_t totalRobots = tFootBotMap.size();
     size_t robotsFalla = round(porcentaje_f * totalRobots);
-
+    if (totalRobots == 2){ 
+      // cuando el total de robots es 2, un robot debe fallar 
+      robotsFalla = 1;
+    }
     // Contenedor para almacenar los robots que fallarán
     std::vector<CFootBotEntity*> vRobotsEnFalla;
 
@@ -797,19 +806,20 @@ void CSwarmGenerator::StopRobots() {
         CFootBotEntity* pcRobot = vFootBots[i];
         vRobotsEnFalla.push_back(pcRobot);
 
-        // Aquí puedes agregar la lógica para detener los robots si es necesario
+        // Se apaga el robot con el metodo false
         pcRobot->SetEnabled(false);
-        for (size_t i = 0; i < vRobotsEnFalla.size(); ++i) {
-          LOG << "Robot en falla " << i << ": " << vRobotsEnFalla[i]->GetId() << std::endl;
-        }
+
+        //LOG << "Robot en falla " << i << ": " << vRobotsEnFalla[i]->GetId() << std::endl;
+
       }
 
       fallos = true;
+      LOG << " Porcentaje Fallos: " << porcentaje_f*100 << " -- # Robots fallando: " << robotsFalla << std::endl;
     }
 
     // Aquí puedes trabajar con vRobotsEnFalla como necesites
     // Por ejemplo, podrías imprimir información sobre los robots en falla
-    LOG << "Robots fallando: " << robotsFalla << std::endl;
+    //LOG << "Robots fallando: " << robotsFalla << std::endl;
 }
 
 /* Register this loop functions into the ARGoS plugin system */

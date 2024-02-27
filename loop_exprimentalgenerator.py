@@ -44,7 +44,7 @@ def framework_label (file,time,codigos, fallos,semilla):
             experiment.set("length", str(time))
             if fallos == "No":
                 experiment.set("random_seed",str(random.randrange(100,200,1)))
-            elif fallos == "Si":
+            else:
                 experiment.set("random_seed",str(semilla))
     for params in controller.iter("params"):
         params.set("script", codigos) # pasamos el script de control
