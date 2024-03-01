@@ -40,16 +40,18 @@ def graficar_performance(df, tam_arena,mision_id, tipo_mision, clase_soft):
 def graficar_pruebaBinomial(data_bin):
     fig, ax = plt.subplots()
     sns.barplot(data_bin)
-def graficar_metrica_escalabilidad(subset, metrica, tam_arena, mision_id, tipo_mision, clas_sof):
+def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, tipo_mision, clas_sof):
     robots = subset['NumRobots'].unique()
-    m_metrica = np.zeros(((len(robots)-1), (len(robots)-1))) # matrix con las medianas de los datos procesados mxn
-
+    m_metrica, m_binomial = np.zeros(((len(robots)-1), (len(robots)-1))), np.zeros(((len(robots)-1), (len(robots)-1)))# matrix con las medianas de los datos procesados mxn
+    print(type(test[0][0][0]))
     ## Calcula la mediana del set de datos de la métrica y se lamacena en la matriz
     for i, lista in enumerate(metrica): # iterar en las listas de metrica filas
         for j in range(i,m_metrica.shape[1]): #iteración por columnas de la matriz
             sublista = metrica[i][j - i]  # Obtiene la sublista actual
             mediana = np.median(sublista)  # Calcula la mediana
             m_metrica[i, j] = mediana  # Almacena la mediana en la matriz
+            m_binomial[i,j] = test[i][j-i][0]
+    print("Matriz del test-----\n", m_binomial)
     m_metrica = np.flipud(m_metrica) # Función cambio de filas de la matriz la fila 1 ahora es la ultima y así sucesivamente
     if mision_id ==3:
         m_metrica = -1.0*m_metrica
@@ -183,8 +185,8 @@ def metrica_escalabilidad(data):
         La lista final contiene 10 listas, que van en orden descendente es decir
         la pos 0  contiene 10 listas, la pos 1 contiene 9 listas ... pos 9 1 lista
         esto debido a la forma en como operamos los grupos de robots"""
-    print(re_test)
-    return escalabilidad #,re_test
+    print("Tamaño arreglo test:",len(re_test),"\n",re_test)
+    return escalabilidad ,re_test
 def metrica_flexibilidad(data):
     size_robots = data['NumRobots'].unique()  # obtener la lista de tamaños del enjambre #Robots
     tam_arena = data['Arenasize'].unique() # se extraen los tamaños de la arena
@@ -283,15 +285,14 @@ for clas_sof in tipo_sof:
         for tam_arena in tamanos_arena:
             subset = mision_df[mision_df['Arenasize'] == tam_arena]
 
-            """Graficar el boxplot de rendimiento para cada conjunto único de datos"""
-            graficar_performance(subset, tam_arena, mision_id, tipo_mision, clas_sof)
-            """Calcular escalabilidad"""
-            #escalabilidad, esc_binomial = metrica_escalabilidad(subset)
-            escalabilidad = metrica_escalabilidad(subset)
-            """Graficar resultados de las metricas"""
-            graficar_metrica_escalabilidad(subset, escalabilidad, tam_arena, mision_id, tipo_mision, clas_sof)
+            """----- Graficar el boxplot de rendimiento para cada conjunto único de datos -----"""
+            #graficar_performance(subset, tam_arena, mision_id, tipo_mision, clas_sof)
+            """----- Calcular escalabilidad -----"""
+            escalabilidad, esc_binomial = metrica_escalabilidad(subset)
+            #escalabilidad = metrica_escalabilidad(subset)
+            """ /*/*/*/ Graficar resultados de las metricas /*/*/*/ """
+            graficar_metrica_escalabilidad(subset, escalabilidad, esc_binomial,tam_arena, mision_id, tipo_mision, clas_sof)
             #graficar_pruebaBinomial(esc_binomial)
-        #flex_PM, flex_PG, flex_MG = metrica_flexibilidad(mision_df)
+        """----- Calcular Flexibilidad -----"""
         F_1, F_2, F3, F4  = metrica_flexibilidad(mision_df)
-        #graficar_metrica_flexibilidad(flex_PM,flex_PG,flex_MG,mision_id, tipo_mision)
-        graficar_metrica_flexibilidad(F_1, F_2, F3, F4, mision_id, tipo_mision, clas_sof)
+        #graficar_metrica_flexibilidad(F_1, F_2, F3, F4, mision_id, tipo_mision, clas_sof)

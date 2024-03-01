@@ -4,12 +4,12 @@
   
   
   <framework>
-    <experiment length="240" ticks_per_second="10" random_seed="110" />
+    <experiment length="240" ticks_per_second="10" random_seed="142" />
     <system threads="0" />
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function">
-    <params num_experiment="12" arena="Dodecagono" tam="grande" fallos="No" T_control="B" num_circles="1" mision="4" obstaculos="False" robots="100" seed="110" T_Control="A" />
+    <params num_experiment="12" arena="Dodecagono" tam="grande" fallos="Si_2" T_control="A" num_circles="1" mision="4" obstaculos="False" robots="100" seed="142" T_Control="A" />
   </loop_functions>
 
   <controllers>
@@ -29,7 +29,7 @@
         <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
         <footbot_light implementation="rot_z_only" show_rays="false" />
       </sensors>
-      <params script="/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/B_color_selection_prob.lua" />
+      <params script="/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_color_selection_det.lua" />
     </lua_controller>
 
   </controllers>
