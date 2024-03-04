@@ -263,15 +263,16 @@ EJECUCIÓN DEL PROCESAMIENTO DE DATOS
 """
 # Leer el archivo CSV
 df = pd.read_csv('/home/gmadro/swarm_robotics/SWARM_GENERATOR/Experimentos/datos.csv')  # Cambia la ruta según tu ubicación
-
+f_fallo = "No"
 # Obtener los IDs únicos de las misiones
 mision_ids = df['MisionID'].unique()
 # Obtener el tipo de software 
 tipo_sof = df['Class'].unique()
 # Iteración por la clase de software 
 for clas_sof in tipo_sof:
-    # Filtrar datos por clase de software
-    data_class = df[df['Class'] == clas_sof]
+    # Filtrar datos por clase de software y sin fallos
+    #data_class = df[df['Class'] == clas_sof]
+    data_class = df.query('Class == @clas_sof and Faults == @f_fallo')
     # Iterar sobre cada MisionID
     for mision_id in mision_ids:
         # Filtrar los datos por MisionID
@@ -280,7 +281,14 @@ for clas_sof in tipo_sof:
         # Obtener las combinaciones únicas de tamaño de arena
         tamanos_arena = mision_df['Arenasize'].unique()
         tipo_mision = mision_df['Mision'].iloc[0]
-
+        ## AQUI DEBO EXTREAER LOS DATOS DE LOS PERFORMANCE POR FALLO PARA SER MANIPULADOS Y OBTENER LA METRRICA
+        """ deberia en poder filtrarlos por su identifiación unica de fallos y así crear la funcion
+        ejemplo 
+        m_fallos = data_fallos[data_fallos['misionID'] == mision_id]
+        dataf1 = m_fallos[m_fallos['Arenasize'] == tam_arena] -> adjuntar los dos fallos en uno solo
+        para en la funcion de calculo separarlos y poder porcesarlos 
+        Caso 2
+        directamente en el for separarlos y enviarlos para procesarlos"""
         # Filtrar y graficar directamente por tamaño de arena
         for tam_arena in tamanos_arena:
             subset = mision_df[mision_df['Arenasize'] == tam_arena]

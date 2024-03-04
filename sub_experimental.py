@@ -56,7 +56,7 @@ Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 # -------------------------- Puedes trabajar con el enjmabre sin fallos o con fallos
 # EL PORCENTAJE DE FALLOS DEL TOTAL DEL ENJAMBRE ES 30%
 Fallos = "Si" # MOdifica esta variable según tu evaluación
-tipo_control = "A" # Especifica que categoria de comportamiento estas evaluando
+tipo_control = "B" # Especifica que categoria de comportamiento estas evaluando
 # ------------------------- Mision ID
 misionID = 4 # Configura el id de la mision a evaluar 1,2,3,4
 if misionID == 1:
@@ -69,7 +69,7 @@ else:
     mision = 'Decisión Colectiva'
 # ----------------------------------------------------------------------------------
 # --------------------------Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_color_selection_det.lua"
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/B_color_selection_prob.lua"
 # ----------------------------------------------------------------------------------
 # ------------------------- Ruta del archivo "file".argos del experimento (XML)
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
