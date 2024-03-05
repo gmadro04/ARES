@@ -139,6 +139,36 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
     # Ajuste de diseño
     fig.tight_layout()
     plt.show()
+    
+def graficar_metrica_robustez(subset,robustez,tam_arena,mision_id,tipo_mision,clas_sof):
+    robots = subset['NumRobots'].unique()
+    m_robustez = np.zeros((2,12)) # matrix con las medianas de los datos procesados mxn
+    #print("f_graficar", len(robustez))
+    # Calcula la mediana del set de datos de la métrica y se lamacena en la matriz
+    for i in range(len(robustez[0])): # iterar en las listas de metrica por filas (2)
+        for j in range(len(robustez)): #iteración por columnas de la matriz (12)
+            mediana = np.median(robustez[j][i])  # Calcula la mediana de los datos
+            m_robustez[i,j] = mediana # alamcena el valor calulado y lo guarda en la matriz
+            #print("Iterables:",i, j)
+    print(m_robustez)
+    
+    # Configuración de la visualización
+    fig, ax = plt.subplots()
+
+    # Crear un heatmap con Seaborn
+    sns.heatmap(m_robustez, annot=True, cmap='viridis', linewidths=0.5, square=True, ax=ax,
+                xticklabels=robots, yticklabels= ["20%", "30%"], cbar_kws={'label': 'Valor de la métrica'})
+
+    # Títulos y etiquetas
+    ax.set_title(f'Robustez - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}')
+    ax.set_xlabel('Tamaño del enjambre (#Robots)')
+    ax.set_ylabel('Modo de Fallo FM')
+
+    # Ajuste de diseño
+    fig.tight_layout()
+    # Ajuste de los bordes
+    #plt.subplots_adjust(left=0.0, right=0.85)
+    plt.show()
 
 """ FUNCIONES MANIPULACIÓN DE DATOS (CALCULO DE METRICAS) """
 def metrica_escalabilidad(data):
@@ -185,7 +215,7 @@ def metrica_escalabilidad(data):
         La lista final contiene 10 listas, que van en orden descendente es decir
         la pos 0  contiene 10 listas, la pos 1 contiene 9 listas ... pos 9 1 lista
         esto debido a la forma en como operamos los grupos de robots"""
-    print("Tamaño arreglo test:",len(re_test),"\n",re_test)
+    #print("Tamaño arreglo test:",len(re_test),"\n",re_test)
     return escalabilidad ,re_test
 def metrica_flexibilidad(data):
     size_robots = data['NumRobots'].unique()  # obtener la lista de tamaños del enjambre #Robots
@@ -258,6 +288,57 @@ def metrica_flexibilidad(data):
     #return fle_PM, fle_PG, fle_MG
     return G1, G2, G3, G4 
 
+def metrica_robustez(data_n, data_f, modo_fallo):
+    size_robots = data_n['NumRobots'].unique()  # obtener la lista de tamaños del enjambre #Robots
+    per_robots = []  # lista para alamecenar el performance sin fallos
+    per_robots1 = []  # lista para alamecenar el performance 20% fallos
+    per_robots2 = []  # lista para alamecenar el performance 30% fallos
+
+    for n_robots in size_robots: # filtrar los datos por cantidad de robots
+        subset = data_n[data_n['NumRobots'] == n_robots] # Sin fallos
+        subset_1 =data_f.query('NumRobots == @n_robots and Faults == @modo_fallo[1]') # Con el 20% fallos
+        subset_2 =data_f.query('NumRobots == @n_robots and Faults == @modo_fallo[2]') # Con el 30% fallos
+        # Obtener los datos del performance según la cantidad de robots actual, se almacenan de una lista
+        per_robots.append(subset['Performance'].tolist())
+        per_robots1.append(subset_1['Performance'].tolist())
+        per_robots2.append(subset_2['Performance'].tolist())
+        
+    per_robots = np.array(per_robots) # convertimos la lista en una matriz (mxn) 12x50 filas cantidad robots, columnas performance
+    per_robots1 = np.array(per_robots1)
+    per_robots2 = np.array(per_robots2)
+    robustez = [] # lista para almacenar el calculo de la metrica
+    for i in range(len(size_robots)):
+        r1= [] # auxilar calculo de robustez
+        r2 = [] # auxilar calculo de robustez
+        # Iteramos la matriz de datos del performance, filas corresponden a la cantidad de robots y las columnas al peroformace
+        for j in range(len(per_robots[i,:])):
+            # Operación con 20% y 30% 
+            if per_robots[i,j] != 0: # evitar la division por 0
+                deltaP1 = (per_robots1[i,j]-per_robots[i,j]) / per_robots[i,j] # calculo con 20%
+                deltaP2 = (per_robots2[i,j]-per_robots[i,j]) / per_robots[i,j] # calculo con 30%
+            else:
+                # Se evalua una condición de metrica que se debe cumplir para determinar si es robusto o no el sistema
+                if per_robots1[i,j] > per_robots[i,j] - 0.2*per_robots[i,j]:
+                    deltaP1 = 1 # sistema robusto
+                else: # el performance no fue mejor al anterior, no se cumple la condición 1, no es robusto
+                    deltaP1 = 0
+                # Se evalua una condición de metrica que se debe cumplir para determinar si es robusto o no el sistema
+                if per_robots2[i,j] > per_robots[i,j] - 0.2*per_robots[i,j]:
+                    deltaP2 = 1 # sistema robusto
+                else: # el performance no fue mejor al anterior, no se cumple la condición 1, no es robusto
+                    deltaP2 = 0
+            # Se calcula el delta N teniendo en cuenta los fallos
+            # Como delataN = m/N dond m es el numero de robots fallano y N el tamaño total del enjmabre actual
+            # Al trabajar con dos modos de fallot 20% y 30% estos valores son constantes para el calculo de cada tamaño
+            deltaN1 = 0.2 # modo de fallo 1 20%
+            deltaN2 = 0.3 # modo de fallo 2 30%
+            r1.append(deltaP1/deltaN1) # datos con 20%
+            r2.append(deltaP2/deltaN2) # Datos con 30%
+        robustez.append([r1,r2]) # alamcenamiento calculo de la metrica
+    """Se gurada un arreglo de listas que contienen listas"""
+    print(len(robustez),"\n", len(robustez[0][0]))
+
+    return robustez
 """
 EJECUCIÓN DEL PROCESAMIENTO DE DATOS
 """
@@ -268,16 +349,22 @@ f_fallo = "No"
 mision_ids = df['MisionID'].unique()
 # Obtener el tipo de software 
 tipo_sof = df['Class'].unique()
+# Obtener tipos de fallos
+tipo_fallo = df['Faults'].unique()
+
 # Iteración por la clase de software 
 for clas_sof in tipo_sof:
     # Filtrar datos por clase de software y sin fallos
     #data_class = df[df['Class'] == clas_sof]
     data_class = df.query('Class == @clas_sof and Faults == @f_fallo')
+    # Filtrar datos por clase software y fallos
+    data_fallos = df.query('Class == @clas_sof and Faults != @f_fallo')
     # Iterar sobre cada MisionID
     for mision_id in mision_ids:
         # Filtrar los datos por MisionID
         mision_df = data_class[data_class['MisionID'] == mision_id]
-
+        # Filtrar los datos por MisionID y Fallos
+        mision_fallos = data_fallos[data_fallos['MisionID'] == mision_id]
         # Obtener las combinaciones únicas de tamaño de arena
         tamanos_arena = mision_df['Arenasize'].unique()
         tipo_mision = mision_df['Mision'].iloc[0]
@@ -291,16 +378,21 @@ for clas_sof in tipo_sof:
         directamente en el for separarlos y enviarlos para procesarlos"""
         # Filtrar y graficar directamente por tamaño de arena
         for tam_arena in tamanos_arena:
+            # Datos filtrados sin fallos
             subset = mision_df[mision_df['Arenasize'] == tam_arena]
-
+            # Datos filtrados en los dos modos de fallos
+            subset_f = mision_fallos[mision_fallos['Arenasize'] == tam_arena]
             """----- Graficar el boxplot de rendimiento para cada conjunto único de datos -----"""
             #graficar_performance(subset, tam_arena, mision_id, tipo_mision, clas_sof)
             """----- Calcular escalabilidad -----"""
             escalabilidad, esc_binomial = metrica_escalabilidad(subset)
             #escalabilidad = metrica_escalabilidad(subset)
+            """----- Calcular Robustez -----"""
+            robustez = metrica_robustez(subset,subset_f, tipo_fallo)
             """ /*/*/*/ Graficar resultados de las metricas /*/*/*/ """
-            graficar_metrica_escalabilidad(subset, escalabilidad, esc_binomial,tam_arena, mision_id, tipo_mision, clas_sof)
+            #graficar_metrica_escalabilidad(subset, escalabilidad, esc_binomial,tam_arena, mision_id, tipo_mision, clas_sof)
             #graficar_pruebaBinomial(esc_binomial)
+            graficar_metrica_robustez(subset,robustez,tam_arena,mision_id,tipo_mision,clas_sof)
         """----- Calcular Flexibilidad -----"""
         F_1, F_2, F3, F4  = metrica_flexibilidad(mision_df)
         #graficar_metrica_flexibilidad(F_1, F_2, F3, F4, mision_id, tipo_mision, clas_sof)
