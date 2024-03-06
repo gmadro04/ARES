@@ -6,44 +6,61 @@ from matplotlib.colorbar import Colorbar
 import numpy as np
 import scipy.stats as stats
 import statsmodels.api as sm
+import pyfiglet
 """
 FUNCIONES DE PROCESAMIENTO DE DATOS
+EN ESTE SCRIB SE ENCUNETRA EL CODIGO QUE PROCESA LOS DATOS DE LS EXPERIMENTOS
+POR CLASE DE SOFTWARE, TIPO DE MISION Y TAMAÑO DE ARENA
+SE OBTIENE GRAFICAS DEL PERFORMANCE DE LA MISION SIN FALLOS Y CON LOS MODOS DE FALLOS
+GRAFICAS PARA ESCALABILIDAD
+GRAFICAS PARA FLEXIBILIDAD
+GRAFICAS PARA ROBUSTEZ
+
+PARA EJECUTARLO:
+
+python3 processing_data.py
 """
 
 """ FUNCIONES DE VISUALIZACIÓN (GRAFICAS) """
-
-def graficar_performance(df, tam_arena,mision_id, tipo_mision, clase_soft):
+def graficar_performance(df, tam_arena,mision_id, tipo_mision, clase_soft, fallos):
     # Extraer la unidades de medida del performance según la misión
     u_medida = " "
     if mision_id == 1:
         u_medida = "# V/visitadas"
     elif mision_id == 2:
         u_medida = "# Robots-Agregados"
-    elif mision_id == 3:
-        u_medida == "Min Distancia-Cm2"
     elif mision_id == 4:
         u_medida = "Time step consenso"
+    else:
+        u_medida == "Min Distancia-Cm2"
+    # Ajustar el tamaño de la figura
+    plt.figure(figsize=(10, 10))
     # Configurar el boxplot con notch
-    ax = sns.boxplot(x='NumRobots', y='Performance', data=df, notch=True, width=0.35,linecolor='black')
-
+    ax = sns.boxplot(x='NumRobots', y='Performance', data=df, notch=True, width=0.2,linecolor='black')
+    # Titulo del plot
+    titulo_plot = f'Rendimiento - MisionID: {mision_id} {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clase_soft} - Fallos: {fallos}'
     # Mostrar el valor de la mediana en el gráfico
     medians = df.groupby('NumRobots')['Performance'].median()
     x_vals = range(len(medians))
     for i, value in enumerate(medians):
-        ax.text(x_vals[i], value, f'{value:.2f}', ha='right', va='bottom', color='black')
+        ax.text(x_vals[i], value, f'{value:.2f}', ha='left', va='bottom', color='black')
     # Añadir etiquetas y título
     plt.xlabel('Número de Robots')
     plt.ylabel(f'Performance ({u_medida})')
-    plt.title(f'Rendimiento - MisionID: {mision_id} {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clase_soft}')
+    plt.title(titulo_plot)
     plt.grid(True, linestyle='--', alpha=0.7)
-    plt.show()
+    # Guardar la figura 
+    plt.savefig(ruta+"/"+titulo_plot+".png", dpi=900, bbox_inches="tight")
+    #plt.show()
+    plt.close()
+
 def graficar_pruebaBinomial(data_bin):
     fig, ax = plt.subplots()
     sns.barplot(data_bin)
 def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, tipo_mision, clas_sof):
     robots = subset['NumRobots'].unique()
     m_metrica, m_binomial = np.zeros(((len(robots)-1), (len(robots)-1))), np.zeros(((len(robots)-1), (len(robots)-1)))# matrix con las medianas de los datos procesados mxn
-    print(type(test[0][0][0]))
+    #print(type(test[0][0][0]))
     ## Calcula la mediana del set de datos de la métrica y se lamacena en la matriz
     for i, lista in enumerate(metrica): # iterar en las listas de metrica filas
         for j in range(i,m_metrica.shape[1]): #iteración por columnas de la matriz
@@ -51,19 +68,19 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
             mediana = np.median(sublista)  # Calcula la mediana
             m_metrica[i, j] = mediana  # Almacena la mediana en la matriz
             m_binomial[i,j] = test[i][j-i][0]
-    print("Matriz del test-----\n", m_binomial)
+    #print("Matriz del test-----\n", m_binomial)
     m_metrica = np.flipud(m_metrica) # Función cambio de filas de la matriz la fila 1 ahora es la ultima y así sucesivamente
     if mision_id ==3:
         m_metrica = -1.0*m_metrica
     #print(m_metrica)
     
+
     # Configuración de la visualización
     fig, ax = plt.subplots()
-
     # Crear un heatmap con Seaborn
     sns.heatmap(m_metrica, annot=True, cmap='viridis', linewidths=0.5, square=True, ax=ax,
                 xticklabels=robots[1:12], yticklabels=robots[0:11][::-1], cbar_kws={'label': 'Valor de la métrica'})
-
+    titulo_plot = f'Escalabilidad - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}'
     # Títulos y etiquetas
     ax.set_title(f'Escalabilidad - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}')
     ax.set_xlabel('Tamaño del enjambre (#Robots)')
@@ -71,9 +88,12 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
 
     # Ajuste de diseño
     fig.tight_layout()
+    fig.set_size_inches((12, 12))
     # Ajuste de los bordes
     #plt.subplots_adjust(left=0.0, right=0.85)
-    plt.show()
+    plt.savefig(ruta+"/"+"Escalabilidad"+"/"+titulo_plot+".png", dpi=900, bbox_inches="tight")
+    #plt.show()
+    plt.close()
 def graficar_metrica_flexibilidad1(PM,PG,MG,mision_id, tipo_mision):
     tams = ['Pequeña','Mediana','Grande'] # Tamaños arenas
     # Medianas de los datos calculados en flexibilidad
@@ -130,7 +150,7 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
     # Crear un heatmap con Seaborn
     sns.heatmap(metrica, annot=True, cmap='coolwarm', linewidths=1, square=True, ax=ax,
                 xticklabels=grupos, yticklabels=tams, cbar_kws={'label': 'Valor de la métrica'})
-
+    titulo_plot = f'Flexibilidad - MisionID: {mision_id} {tipo_mision} - Software: {clas_sof}'
     # Títulos y etiquetas
     ax.set_title(f'Flexibilidad - MisionID: {mision_id} {tipo_mision} - Software: {clas_sof}')
     ax.set_xlabel('Densidad Robots')
@@ -138,7 +158,10 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
 
     # Ajuste de diseño
     fig.tight_layout()
-    plt.show()
+    fig.set_size_inches((12, 12))
+    plt.savefig(ruta+"/"+"Flexibilidad"+"/"+titulo_plot+".png", dpi=900, bbox_inches="tight")
+    #plt.show()
+    plt.close()
     
 def graficar_metrica_robustez(subset,robustez,tam_arena,mision_id,tipo_mision,clas_sof):
     robots = subset['NumRobots'].unique()
@@ -150,15 +173,14 @@ def graficar_metrica_robustez(subset,robustez,tam_arena,mision_id,tipo_mision,cl
             mediana = np.median(robustez[j][i])  # Calcula la mediana de los datos
             m_robustez[i,j] = mediana # alamcena el valor calulado y lo guarda en la matriz
             #print("Iterables:",i, j)
-    print(m_robustez)
-    
+    #print(m_robustez)
     # Configuración de la visualización
     fig, ax = plt.subplots()
 
     # Crear un heatmap con Seaborn
     sns.heatmap(m_robustez, annot=True, cmap='viridis', linewidths=0.5, square=True, ax=ax,
                 xticklabels=robots, yticklabels= ["20%", "30%"], cbar_kws={'label': 'Valor de la métrica'})
-
+    titulo_plot = f'Robustez - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}'
     # Títulos y etiquetas
     ax.set_title(f'Robustez - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}')
     ax.set_xlabel('Tamaño del enjambre (#Robots)')
@@ -166,9 +188,12 @@ def graficar_metrica_robustez(subset,robustez,tam_arena,mision_id,tipo_mision,cl
 
     # Ajuste de diseño
     fig.tight_layout()
+    fig.set_size_inches((12, 12))
     # Ajuste de los bordes
     #plt.subplots_adjust(left=0.0, right=0.85)
-    plt.show()
+    plt.savefig(ruta+"/"+"Robustez"+"/"+titulo_plot+".png", dpi=900, bbox_inches="tight")
+    #plt.show()
+    plt.close()
 
 """ FUNCIONES MANIPULACIÓN DE DATOS (CALCULO DE METRICAS) """
 def metrica_escalabilidad(data):
@@ -332,11 +357,12 @@ def metrica_robustez(data_n, data_f, modo_fallo):
             # Al trabajar con dos modos de fallot 20% y 30% estos valores son constantes para el calculo de cada tamaño
             deltaN1 = 0.2 # modo de fallo 1 20%
             deltaN2 = 0.3 # modo de fallo 2 30%
-            r1.append(deltaP1/deltaN1) # datos con 20%
-            r2.append(deltaP2/deltaN2) # Datos con 30%
+            R1,R2 = deltaP1+deltaN1, deltaP2+deltaN2 # calculo de la metrica R = deltaP+deltaN
+            r1.append(R1) # datos con 20%
+            r2.append(R2) # Datos con 30%
         robustez.append([r1,r2]) # alamcenamiento calculo de la metrica
     """Se gurada un arreglo de listas que contienen listas"""
-    print(len(robustez),"\n", len(robustez[0][0]))
+    #print(len(robustez),"\n", len(robustez[0][0]))
 
     return robustez
 """
@@ -351,6 +377,8 @@ mision_ids = df['MisionID'].unique()
 tipo_sof = df['Class'].unique()
 # Obtener tipos de fallos
 tipo_fallo = df['Faults'].unique()
+""" RUTA PARA GUARDAR LOS PLOTS"""
+ruta = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Plots-Experimentos"
 
 # Iteración por la clase de software 
 for clas_sof in tipo_sof:
@@ -383,16 +411,20 @@ for clas_sof in tipo_sof:
             # Datos filtrados en los dos modos de fallos
             subset_f = mision_fallos[mision_fallos['Arenasize'] == tam_arena]
             """----- Graficar el boxplot de rendimiento para cada conjunto único de datos -----"""
-            #graficar_performance(subset, tam_arena, mision_id, tipo_mision, clas_sof)
+            graficar_performance(subset, tam_arena, mision_id, tipo_mision, clas_sof, "No") # sin fallos
+            graficar_performance(subset_f[subset_f['Faults'] == "Si_1"], tam_arena, mision_id, tipo_mision, clas_sof, "Si_1") # 20% fallos
+            graficar_performance(subset_f[subset_f['Faults'] == "Si_2"], tam_arena, mision_id, tipo_mision, clas_sof, "Si_2") # 30% fallos
             """----- Calcular escalabilidad -----"""
             escalabilidad, esc_binomial = metrica_escalabilidad(subset)
             #escalabilidad = metrica_escalabilidad(subset)
             """----- Calcular Robustez -----"""
             robustez = metrica_robustez(subset,subset_f, tipo_fallo)
             """ /*/*/*/ Graficar resultados de las metricas /*/*/*/ """
-            #graficar_metrica_escalabilidad(subset, escalabilidad, esc_binomial,tam_arena, mision_id, tipo_mision, clas_sof)
+            graficar_metrica_escalabilidad(subset, escalabilidad, esc_binomial,tam_arena, mision_id, tipo_mision, clas_sof)
             #graficar_pruebaBinomial(esc_binomial)
             graficar_metrica_robustez(subset,robustez,tam_arena,mision_id,tipo_mision,clas_sof)
         """----- Calcular Flexibilidad -----"""
         F_1, F_2, F3, F4  = metrica_flexibilidad(mision_df)
-        #graficar_metrica_flexibilidad(F_1, F_2, F3, F4, mision_id, tipo_mision, clas_sof)
+        graficar_metrica_flexibilidad(F_1, F_2, F3, F4, mision_id, tipo_mision, clas_sof)
+    print(f'---- Datos procesados clase {clas_sof} ----')
+print(pyfiglet.figlet_format("Todos los datos procesados",font="digital"))
