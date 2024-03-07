@@ -38,7 +38,7 @@ def graficar_performance(df, tam_arena,mision_id, tipo_mision, clase_soft, fallo
     # Configurar el boxplot con notch
     ax = sns.boxplot(x='NumRobots', y='Performance', data=df, notch=True, width=0.2,linecolor='black')
     # Titulo del plot
-    titulo_plot = f'Rendimiento - MisionID: {mision_id} {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clase_soft} - Fallos: {fallos}'
+    titulo_plot = f'Rendimiento-MisionID-{mision_id}-{tipo_mision}-Arena-{tam_arena}-Software-{clase_soft}-Fallos-{fallos}'
     # Mostrar el valor de la mediana en el gráfico
     medians = df.groupby('NumRobots')['Performance'].median()
     x_vals = range(len(medians))
@@ -47,10 +47,10 @@ def graficar_performance(df, tam_arena,mision_id, tipo_mision, clase_soft, fallo
     # Añadir etiquetas y título
     plt.xlabel('Número de Robots')
     plt.ylabel(f'Performance ({u_medida})')
-    plt.title(titulo_plot)
+    plt.title(f'Rendimiento - MisionID: {mision_id} {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clase_soft} - Fallos: {fallos}')
     plt.grid(True, linestyle='--', alpha=0.7)
     # Guardar la figura 
-    plt.savefig(ruta+"/"+titulo_plot+".png", dpi=900, bbox_inches="tight")
+    plt.savefig(ruta+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
     #plt.show()
     plt.close()
 
@@ -80,7 +80,7 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
     # Crear un heatmap con Seaborn
     sns.heatmap(m_metrica, annot=True, cmap='viridis', linewidths=0.5, square=True, ax=ax,
                 xticklabels=robots[1:12], yticklabels=robots[0:11][::-1], cbar_kws={'label': 'Valor de la métrica'})
-    titulo_plot = f'Escalabilidad - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}'
+    titulo_plot = f'Escalabilidad-MisionID-{mision_id}-{tipo_mision}-Arena-{tam_arena}-Software-{clas_sof}'
     # Títulos y etiquetas
     ax.set_title(f'Escalabilidad - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}')
     ax.set_xlabel('Tamaño del enjambre (#Robots)')
@@ -91,7 +91,7 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
     fig.set_size_inches((12, 12))
     # Ajuste de los bordes
     #plt.subplots_adjust(left=0.0, right=0.85)
-    plt.savefig(ruta+"/"+"Escalabilidad"+"/"+titulo_plot+".png", dpi=900, bbox_inches="tight")
+    plt.savefig(ruta+"/"+"Escalabilidad"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
     #plt.show()
     plt.close()
 def graficar_metrica_flexibilidad1(PM,PG,MG,mision_id, tipo_mision):
@@ -150,7 +150,7 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
     # Crear un heatmap con Seaborn
     sns.heatmap(metrica, annot=True, cmap='coolwarm', linewidths=1, square=True, ax=ax,
                 xticklabels=grupos, yticklabels=tams, cbar_kws={'label': 'Valor de la métrica'})
-    titulo_plot = f'Flexibilidad - MisionID: {mision_id} {tipo_mision} - Software: {clas_sof}'
+    titulo_plot = f'Flexibilidad-MisionID-{mision_id}-{tipo_mision}-Software-{clas_sof}'
     # Títulos y etiquetas
     ax.set_title(f'Flexibilidad - MisionID: {mision_id} {tipo_mision} - Software: {clas_sof}')
     ax.set_xlabel('Densidad Robots')
@@ -158,8 +158,8 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
 
     # Ajuste de diseño
     fig.tight_layout()
-    fig.set_size_inches((12, 12))
-    plt.savefig(ruta+"/"+"Flexibilidad"+"/"+titulo_plot+".png", dpi=900, bbox_inches="tight")
+    fig.set_size_inches((10, 10))
+    plt.savefig(ruta+"/"+"Flexibilidad"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
     #plt.show()
     plt.close()
     
@@ -180,7 +180,7 @@ def graficar_metrica_robustez(subset,robustez,tam_arena,mision_id,tipo_mision,cl
     # Crear un heatmap con Seaborn
     sns.heatmap(m_robustez, annot=True, cmap='viridis', linewidths=0.5, square=True, ax=ax,
                 xticklabels=robots, yticklabels= ["20%", "30%"], cbar_kws={'label': 'Valor de la métrica'})
-    titulo_plot = f'Robustez - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}'
+    titulo_plot = f'Robustez-MisionID-{mision_id}-{tipo_mision}-Arena-{tam_arena}-Software-{clas_sof}'
     # Títulos y etiquetas
     ax.set_title(f'Robustez - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}')
     ax.set_xlabel('Tamaño del enjambre (#Robots)')
@@ -188,10 +188,10 @@ def graficar_metrica_robustez(subset,robustez,tam_arena,mision_id,tipo_mision,cl
 
     # Ajuste de diseño
     fig.tight_layout()
-    fig.set_size_inches((12, 12))
+    fig.set_size_inches((10, 10))
     # Ajuste de los bordes
     #plt.subplots_adjust(left=0.0, right=0.85)
-    plt.savefig(ruta+"/"+"Robustez"+"/"+titulo_plot+".png", dpi=900, bbox_inches="tight")
+    plt.savefig(ruta+"/"+"Robustez"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
     #plt.show()
     plt.close()
 
