@@ -348,7 +348,7 @@ def metrica_robustez(data_n, data_f, modo_fallo):
                 else: # el performance no fue mejor al anterior, no se cumple la condición 1, no es robusto
                     deltaP1 = 0
                 # Se evalua una condición de metrica que se debe cumplir para determinar si es robusto o no el sistema
-                if per_robots2[i,j] > per_robots[i,j] - 0.2*per_robots[i,j]:
+                if per_robots2[i,j] > per_robots[i,j] - 0.3*per_robots[i,j]:
                     deltaP2 = 1 # sistema robusto
                 else: # el performance no fue mejor al anterior, no se cumple la condición 1, no es robusto
                     deltaP2 = 0

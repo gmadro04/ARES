@@ -59,7 +59,7 @@ void CSwarmGenerator::Init(TConfigurationNode& t_tree) {
 
     // --- Toma de decisiones ---
     consenso = false;
-    tiempo_conseso = 0;
+    tiempo_conseso = 2400; // tiempo que tarda la simulación del experimento 
 
     Init(); // inicializa configuraciones de arena y codigo c++ loop
 }
@@ -611,21 +611,40 @@ Real CSwarmGenerator::GetCollectiveDecisionScore() {
       }
 
     }
+    if (m_unFaults == "Si_3")
+    {
+      //LOG << "Entro al consenso " << std::endl;
+      // Tenemos que falta un 10% de los robots para la toma de descisión
+      //if(color_red>color_blue && color_red>color_green){
+      //  // el mayor hasta el momento es rojo 
+      //  color_red = color_red+0.1*totalRobots; // se le suma ese 10 porciento
+      //}
+      //if(color_blue>color_red && color_blue>color_green){
+      //  // el mayor hasta el momento es azul
+      //  color_blue = color_blue+0.1*totalRobots; // se le suma ese 10 porciento
+      //}
+      //if(color_green>color_blue && color_green>color_red){
+      //  // el mayor hasta el momento es verde
+      //  color_green = color_red+0.1*totalRobots; // se le suma ese 10 porciento
+      //}
+      totalRobots = totalRobots - 0.3*totalRobots;
+    }
+    
 
-    if ((color_red/totalRobots) >= 0.85){
+    if ((color_red/totalRobots) >= 0.80){
       consenso = true;
       tiempo_conseso = GetSpace().GetSimulationClock();
       LOG << "Consenso alcanzado al paso " << tiempo_conseso << std::endl;
       LOG << "#Robots emiten color " << color_red << std::endl;
       LOG << "Porcentaje de consenso " << (color_red/totalRobots)*100 << std::endl;
-    }else if ((color_blue/totalRobots) >= 0.85)
+    }else if ((color_blue/totalRobots) >= 0.80)
     {
       consenso = true;
       tiempo_conseso = GetSpace().GetSimulationClock();
       LOG << "Consenso alcanzado al paso " << tiempo_conseso << std::endl;
       LOG << "#Robots emiten color " << color_blue << std::endl;
       LOG << "Porcentaje de consenso " << (color_blue/totalRobots)*100 << std::endl;
-    }else if ((color_green/totalRobots) >= 0.85)
+    }else if ((color_green/totalRobots) >= 0.80)
     {
       consenso = true;
       tiempo_conseso = GetSpace().GetSimulationClock();
@@ -771,11 +790,16 @@ void CSwarmGenerator::StopRobots() {
     // Porcentaje de robots que deben detenerse según el modo de fallo
     float porcentaje_f = 0.0;
     if (m_unFaults == "Si_1"){
+      porcentaje_f = 0.1; // 10% de fallos
+    }
+    else if (m_unFaults == "Si_2"){
       porcentaje_f = 0.2; // 20% de fallos
     }
-    else{
-      porcentaje_f = 0.3; // 30 porciento de fallos
+    else if (m_unFaults == "Si_3")
+    {
+      porcentaje_f = 0.3; // 30% de fallos
     }
+    
 
     // Obtén la lista de foot-bots
     CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");

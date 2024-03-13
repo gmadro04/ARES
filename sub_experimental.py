@@ -56,9 +56,9 @@ Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 # -------------------------- Puedes trabajar con el enjmabre sin fallos o con fallos
 # EL PORCENTAJE DE FALLOS DEL TOTAL DEL ENJAMBRE ES 30%
 Fallos = "Si" # MOdifica esta variable según tu evaluación
-tipo_control = "B" # Especifica que categoria de comportamiento estas evaluando
+tipo_control = "A" # Especifica que categoria de comportamiento estas evaluando
 # ------------------------- Mision ID
-misionID = 4 # Configura el id de la mision a evaluar 1,2,3,4
+misionID = 1 # Configura el id de la mision a evaluar 1,2,3,4
 if misionID == 1:
     mision = 'Exploración'
 elif misionID == 2:
@@ -69,7 +69,7 @@ else:
     mision = 'Decisión Colectiva'
 # ----------------------------------------------------------------------------------
 # --------------------------Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/B_color_selection_prob.lua"
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_obstacleAvoiddance_sta.lua"
 # ----------------------------------------------------------------------------------
 # ------------------------- Ruta del archivo "file".argos del experimento (XML)
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
@@ -134,9 +134,9 @@ else:
     arenas = df['Arenatype'].unique() # Extraer tipos de arena
     tams = df['Arenasize'].unique() # Extraer tamaños de arena
     frame = df.query('Class == @tipo_control and MisionID == @misionID') # Filtrar por clase Software y misionID
-    fallos = ["Si_1","Si_2"]# Se simularan dos clases de fallos S1-> 20% y S2-> 30%
-    for i in fallos:
-        Fallos = i
+    fallos = ["Si_1","Si_2", "Si_3"]# Se simularan dos clases de fallos S1-> 10%, S2-> 20%, S3-> 30%
+    for i in range(1):#fallos:
+        Fallos = "Si_1" # i
         for c_arena,arena in enumerate(arenas): # Ejecución por tipos de arena T,C,H6,O8,P12 range(5)
             filtro = frame[frame["Arenatype"] == arena] # filtro datos por tipo de arena
             for c_tam,tam in enumerate(tams): # Ejecución por tamaño de arena P,M,G range(3)
