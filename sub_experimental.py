@@ -58,7 +58,7 @@ Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 Fallos = "Si" # MOdifica esta variable según tu evaluación
 tipo_control = "B" # Especifica que categoria de comportamiento estas evaluando
 # ------------------------- Mision ID
-misionID = 1 # Configura el id de la mision a evaluar 1,2,3,4
+misionID = 3 # Configura el id de la mision a evaluar 1,2,3,4
 if misionID == 1:
     mision = 'Exploración'
 elif misionID == 2:
@@ -69,7 +69,7 @@ else:
     mision = 'Decisión Colectiva'
 # ----------------------------------------------------------------------------------
 # --------------------------Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/B_obstacleAvoiddance_vec.lua"
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/B_pattern_formation.lua"
 # ----------------------------------------------------------------------------------
 # ------------------------- Ruta del archivo "file".argos del experimento (XML)
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
