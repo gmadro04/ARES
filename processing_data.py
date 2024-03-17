@@ -22,7 +22,7 @@ python3 processing_data.py
 """
 
 """ FUNCIONES DE VISUALIZACIÓN (GRAFICAS) """
-def graficar_performance(df, tam_arena,mision_id, tipo_mision, clase_soft, fallos):
+def graficar_performance(df, tam_arena, mision_id, tipo_mision, clase_soft, fallos):
     # Extraer la unidades de medida del performance según la misión
     u_medida = " "
     if mision_id == 1:
@@ -33,30 +33,42 @@ def graficar_performance(df, tam_arena,mision_id, tipo_mision, clase_soft, fallo
         u_medida = "Time step consenso"
     else:
         u_medida == "Min Distancia-Cm2"
+
     # Ajustar el tamaño de la figura
     plt.figure(figsize=(10, 10))
+
     # Configurar el boxplot con notch
     ax = sns.boxplot(x='NumRobots', y='Performance', data=df, notch=True, width=0.2,linecolor='black')
+
+    # Obtener el rango de valores
+    min_performance = df['Performance'].min()
+    max_performance = df['Performance'].max()
+
+    # Ajustar el rango del eje Y
+    ax.set_ylim(min_performance, max_performance)
+
     # Titulo del plot
     titulo_plot = f'Rendimiento-MisionID-{mision_id}-{tipo_mision}-Arena-{tam_arena}-Software-{clase_soft}-Fallos-{fallos}'
+
     # Mostrar el valor de la mediana en el gráfico
     medians = df.groupby('NumRobots')['Performance'].median()
     x_vals = range(len(medians))
     for i, value in enumerate(medians):
         ax.text(x_vals[i], value, f'{value:.2f}', ha='left', va='bottom', color='black')
+
     # Añadir etiquetas y título
     plt.xlabel('Número de Robots')
     plt.ylabel(f'Performance ({u_medida})')
-    plt.title(f'Rendimiento - MisionID: {mision_id} {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clase_soft} - Fallos: {fallos}')
+    plt.title(f'Rendimiento - MisionID: {mision_id} {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clase_soft} - Fallos: {fallos}', pad=25)
     plt.grid(True, linestyle='--', alpha=0.7)
-    # Guardar la figura 
+
+    # Guardar la figura
     plt.savefig(ruta+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
     #plt.show()
     plt.close()
 
-def graficar_pruebaBinomial(data_bin):
-    fig, ax = plt.subplots()
-    sns.barplot(data_bin)
+
+
 def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, tipo_mision, clas_sof):
     robots = subset['NumRobots'].unique()
     m_metrica, m_binomial = np.zeros(((len(robots)-1), (len(robots)-1))), np.zeros(((len(robots)-1), (len(robots)-1)))# matrix con las medianas de los datos procesados mxn
@@ -94,34 +106,7 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
     plt.savefig(ruta+"/"+"Escalabilidad"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
     #plt.show()
     plt.close()
-def graficar_metrica_flexibilidad1(PM,PG,MG,mision_id, tipo_mision):
-    tams = ['Pequeña','Mediana','Grande'] # Tamaños arenas
-    # Medianas de los datos calculados en flexibilidad
-    mediana_PM = np.median(np.array(PM))
-    mediana_PG = np.median(np.array(PG))
-    mediana_MG = np.median(np.array(MG))
-    # Matriz de datos donde se almacenaran los datos
-    metrica = np.zeros((2,2))
-    # llenar matriz de relación
-    metrica[0,0] = mediana_PM
-    metrica[0,1] = mediana_PG
-    metrica[1,1] = mediana_MG
 
-    # Configuración de la visualización
-    fig, ax = plt.subplots()
-
-    # Crear un heatmap con Seaborn
-    sns.heatmap(metrica, annot=True, cmap='viridis', linewidths=1, square=True, ax=ax,
-                xticklabels=tams[1:], yticklabels=tams[:2], cbar_kws={'label': 'Valor de la métrica'})
-
-    # Títulos y etiquetas
-    ax.set_title(f'Flexibilidad - MisionID: {mision_id} ({tipo_mision})')
-    ax.set_xlabel('Tamaño Arena')
-    ax.set_ylabel('Tamaño Arena')
-
-    # Ajuste de diseño
-    fig.tight_layout()
-    plt.show()
 def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
     tams = ['Pequeña-Mediana','Pequeña-Grande','Mediana-Grande'] # Tamaños arenas
     grupos = ['2,10 %', '20,40 %', '50,70 %', '80,100 %'] # grupos de robots
