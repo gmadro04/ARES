@@ -7,6 +7,7 @@ import numpy as np
 import scipy.stats as stats
 import statsmodels.api as sm
 import pyfiglet
+from fpdf import FPDF
 """
 FUNCIONES DE PROCESAMIENTO DE DATOS
 EN ESTE SCRIB SE ENCUNETRA EL CODIGO QUE PROCESA LOS DATOS DE LS EXPERIMENTOS
@@ -48,7 +49,7 @@ def graficar_performance(df, tam_arena, mision_id, tipo_mision, clase_soft, fall
     ax.set_ylim(min_performance, max_performance)
 
     # Titulo del plot
-    titulo_plot = f'Rendimiento-MisionID-{mision_id}-{tipo_mision}-Arena-{tam_arena}-Software-{clase_soft}-Fallos-{fallos}'
+    titulo_plot = f'{mision_id}{clas_sof}.Rendimiento-{tipo_mision}-Arena-{tam_arena}-Fallos-{fallos}'
 
     # Mostrar el valor de la mediana en el gráfico
     medians = df.groupby('NumRobots')['Performance'].median()
@@ -92,7 +93,7 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
     # Crear un heatmap con Seaborn
     sns.heatmap(m_metrica, annot=True, cmap='viridis', linewidths=0.5, square=True, ax=ax,
                 xticklabels=robots[1:12], yticklabels=robots[0:11][::-1], cbar_kws={'label': 'Valor de la métrica'})
-    titulo_plot = f'Escalabilidad-MisionID-{mision_id}-{tipo_mision}-Arena-{tam_arena}-Software-{clas_sof}'
+    titulo_plot = f'{mision_id}{clas_sof}.Escalabilidad-{tipo_mision}-Arena-{tam_arena}'
     # Títulos y etiquetas
     ax.set_title(f'Escalabilidad - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}')
     ax.set_xlabel('Tamaño del enjambre (#Robots)')
@@ -135,7 +136,7 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
     # Crear un heatmap con Seaborn
     sns.heatmap(metrica, annot=True, cmap='coolwarm', linewidths=1, square=True, ax=ax,
                 xticklabels=grupos, yticklabels=tams, cbar_kws={'label': 'Valor de la métrica'})
-    titulo_plot = f'Flexibilidad-MisionID-{mision_id}-{tipo_mision}-Software-{clas_sof}'
+    titulo_plot = f'{mision_id}{clas_sof}.Flexibilidad-{tipo_mision}'
     # Títulos y etiquetas
     ax.set_title(f'Flexibilidad - MisionID: {mision_id} {tipo_mision} - Software: {clas_sof}')
     ax.set_xlabel('Densidad Robots')
@@ -143,7 +144,7 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
 
     # Ajuste de diseño
     fig.tight_layout()
-    fig.set_size_inches((10, 10))
+    fig.set_size_inches((8, 8))
     plt.savefig(ruta+"/"+"Flexibilidad"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
     #plt.show()
     plt.close()
@@ -165,7 +166,7 @@ def graficar_metrica_robustez(subset,robustez,tam_arena,mision_id,tipo_mision,cl
     # Crear un heatmap con Seaborn
     sns.heatmap(m_robustez, annot=True, cmap='viridis', linewidths=0.5, square=True, ax=ax,
                 xticklabels=robots, yticklabels= ["10%","20%", "30%"], cbar_kws={'label': 'Valor de la métrica'})
-    titulo_plot = f'Robustez-MisionID-{mision_id}-{tipo_mision}-Arena-{tam_arena}-Software-{clas_sof}'
+    titulo_plot = f'{mision_id}{clas_sof}.Robustez-{tipo_mision}-Arena-{tam_arena}'
     # Títulos y etiquetas
     ax.set_title(f'Robustez - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}')
     ax.set_xlabel('Tamaño del enjambre (#Robots)')
