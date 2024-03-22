@@ -3,6 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
 from matplotlib.colorbar import Colorbar
+from matplotlib.gridspec import GridSpec
 import numpy as np
 import scipy.stats as stats
 import statsmodels.api as sm
@@ -40,10 +41,12 @@ def graficar_performance(df, tam_arena, mision_id, tipo_mision, clase_soft, fall
 
     # Configurar el boxplot con notch
     ax = sns.boxplot(x='NumRobots', y='Performance', data=df, notch=True, width=0.2,linecolor='black')
-
+    offset = 100 if mision_id != 2 else 1
+    if mision_id == 1:
+        offset = 15
     # Obtener el rango de valores
-    min_performance = df['Performance'].min()
-    max_performance = df['Performance'].max()
+    min_performance = df['Performance'].min() - offset
+    max_performance = df['Performance'].max() + offset
 
     # Ajustar el rango del eje Y
     ax.set_ylim(min_performance, max_performance)
@@ -73,26 +76,31 @@ def graficar_performance(df, tam_arena, mision_id, tipo_mision, clase_soft, fall
 def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, tipo_mision, clas_sof):
     robots = subset['NumRobots'].unique()
     m_metrica, m_binomial = np.zeros(((len(robots)-1), (len(robots)-1))), np.zeros(((len(robots)-1), (len(robots)-1)))# matrix con las medianas de los datos procesados mxn
-    #print(type(test[0][0][0]))
-    ## Calcula la mediana del set de datos de la métrica y se lamacena en la matriz
+
+    # Calcula la mediana del set de datos de la métrica y se almacena en la matriz
     for i, lista in enumerate(metrica): # iterar en las listas de metrica filas
-        for j in range(i,m_metrica.shape[1]): #iteración por columnas de la matriz
+        for j in range(i, m_metrica.shape[1]): # iteración por columnas de la matriz
             sublista = metrica[i][j - i]  # Obtiene la sublista actual
             mediana = np.median(sublista)  # Calcula la mediana
             m_metrica[i, j] = mediana  # Almacena la mediana en la matriz
             m_binomial[i,j] = test[i][j-i][0]
-    #print("Matriz del test-----\n", m_binomial)
-    m_metrica = np.flipud(m_metrica) # Función cambio de filas de la matriz la fila 1 ahora es la ultima y así sucesivamente
-    if mision_id ==3:
-        m_metrica = -1.0*m_metrica
-    #print(m_metrica)
-    
+
+    m_metrica = np.flipud(m_metrica) # Función para cambiar de filas de la matriz, la fila 1 ahora es la última y así sucesivamente
+    if mision_id == 3:
+        m_metrica = -1.0 * m_metrica
+
+    # Eliminar los valores por encima de la diagonal principal
+    for i in range(len(robots) - 1):
+        for j in range(m_metrica.shape[1] - i - 1):
+            m_metrica[i, j] = np.nan
 
     # Configuración de la visualización
     fig, ax = plt.subplots()
+
     # Crear un heatmap con Seaborn
     sns.heatmap(m_metrica, annot=True, cmap='viridis', linewidths=0.5, square=True, ax=ax,
                 xticklabels=robots[1:12], yticklabels=robots[0:11][::-1], cbar_kws={'label': 'Valor de la métrica'})
+
     titulo_plot = f'{mision_id}{clas_sof}.Escalabilidad-{tipo_mision}-Arena-{tam_arena}'
     # Títulos y etiquetas
     ax.set_title(f'Escalabilidad - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}')
@@ -102,8 +110,6 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
     # Ajuste de diseño
     fig.tight_layout()
     fig.set_size_inches((12, 12))
-    # Ajuste de los bordes
-    #plt.subplots_adjust(left=0.0, right=0.85)
     plt.savefig(ruta+"/"+"Escalabilidad"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
     #plt.show()
     plt.close()
@@ -111,14 +117,9 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
 def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
     tams = ['Pequeña-Mediana','Pequeña-Grande','Mediana-Grande'] # Tamaños arenas
     grupos = ['2,10 %', '20,40 %', '50,70 %', '80,100 %'] # grupos de robots
-     
+
     datos = [P1, P2, P3, P4]
 
-    #print("------", len(datos),"\n", datos[0][0])
-    #print(P1[0,:])
-    #if np.median(P2[2,:]) == np.median(datos[1][2]):
-    #    print("SI son iguales !!!!!!!!!")
-    # Matriz de datos donde se almacenaran los datos
     metrica = np.zeros((len(tams),len(grupos)))
     # llenar matriz de relación de la metrica con la mediana de los datos
     for i in range(len(grupos)): # iteración por columnas
@@ -126,9 +127,6 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
             for x in range(len(tams)):
                 metrica[j,i] = np.median(datos[i][j])
                 break
-    
-    #print("calculo original: ",np.median(P1[0,:]),np.median(P1[1,:]),np.median(P1[2,:]))
-    #print("matriz:", "\n", metrica)
 
     # Configuración de la visualización
     fig, ax = plt.subplots()
@@ -144,7 +142,7 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
 
     # Ajuste de diseño
     fig.tight_layout()
-    fig.set_size_inches((8, 8))
+    fig.set_size_inches((8, 5))
     plt.savefig(ruta+"/"+"Flexibilidad"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
     #plt.show()
     plt.close()
@@ -174,7 +172,7 @@ def graficar_metrica_robustez(subset,robustez,tam_arena,mision_id,tipo_mision,cl
 
     # Ajuste de diseño
     fig.tight_layout()
-    fig.set_size_inches((10, 10))
+    fig.set_size_inches((8, 5))
     # Ajuste de los bordes
     #plt.subplots_adjust(left=0.0, right=0.85)
     plt.savefig(ruta+"/"+"Robustez"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
