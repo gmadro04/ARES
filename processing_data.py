@@ -143,7 +143,7 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
     # Ajuste de diseño
     fig.tight_layout()
     fig.set_size_inches((8, 5))
-    plt.savefig(ruta+"/"+"Flexibilidad"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
+    plt.savefig(ruta+"/"+"Flexibilidad"+"/"+titulo_plot+".svg", dpi=600, bbox_inches="tight")
     #plt.show()
     plt.close()
     

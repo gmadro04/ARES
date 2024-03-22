@@ -62,7 +62,9 @@
         "shared_mutex": "cpp"
     },
     "cSpell.words": [
+        "Dodecagonal",
         "escalabilidad",
-        "muestreados"
+        "muestreados",
+        "testeado"
     ]
 }
