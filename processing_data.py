@@ -8,10 +8,6 @@ import numpy as np
 import scipy.stats as stats
 import statsmodels.api as sm
 import pyfiglet
-import subprocess as sp
-import os
-import nbformat
-from nbconvert.preprocessors import ExecutePreprocessor
 #----------------------------------------------------------------------------------------------
 """
 FUNCIONES DE PROCESAMIENTO DE DATOS
@@ -28,23 +24,6 @@ PARA EJECUTARLO:
 * python3 processing_data.py -- solo ejecuta el código
 """
 #----------------------------------------------------------------------------------------------
-"""FUNCIÓN GENERACIÓN DE REPORTE DE RESULTADOS """
-def ejecutar_notebook(notebook_path, argumento):
-    # Cargar el notebook
-    with open(notebook_path, 'r', encoding='utf-8') as f:
-        notebook = nbformat.read(f, as_version=4)
-    
-    # Establecer el argumento en una celda del notebook
-    argumento_code = f'mi_argumento = "{argumento}"'
-    notebook.cells.insert(0, nbformat.v4.new_code_cell(argumento_code))
-    
-    # Ejecutar el notebook
-    execute_preprocessor = ExecutePreprocessor(timeout=None)
-    execute_preprocessor.preprocess(notebook, {})
-    
-    # Guardar el notebook modificado
-    nbformat.write(notebook, notebook_path)
-
 """ FUNCIONES DE VISUALIZACIÓN (GRÁFICAS) """
 def graficar_performance(df, tam_arena, mision_id, tipo_mision, clase_soft, fallos):
     # Extraer la unidades de medida del performance según la misión
@@ -455,14 +434,3 @@ for clas_sof in tipo_sof:
         graficar_metrica_flexibilidad(F_1, F_2, F3, F4, mision_id, tipo_mision, clas_sof)
     print(f'---- Datos procesados clase {clas_sof} ----')
 print(pyfiglet.figlet_format("Todos los datos procesados",font="digital"))
-
-""" GENERACIÓN DEL REPORTE """
-print(pyfiglet.figlet_format("GENERANDO REPORTE",font="digital"))
-# Ruta del notebook
-notebook_path = '/home/gmadro/swarm_robotics/SWARM_GENERATOR/reporte.ipynb'
-# Id mision que deseas pasar al notebook
-argumento = str(1)  # o cualquier otro valor deseado
-# Comando para ejecutar el notebook con el parameto de la misión para generar el reporte
-os.system(f'jupyter nbconvert --to notebook --execute {notebook_path} --ExecutePreprocessor.allow_errors=True --ExecutePreprocessor.timeout=-1 --Arguments {argumento}')
-
-#ejecutar_notebook(notebook_path, argumento)
