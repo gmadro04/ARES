@@ -8,22 +8,44 @@ import numpy as np
 import scipy.stats as stats
 import statsmodels.api as sm
 import pyfiglet
-from fpdf import FPDF
+import subprocess as sp
+import os
+import nbformat
+from nbconvert.preprocessors import ExecutePreprocessor
+#----------------------------------------------------------------------------------------------
 """
 FUNCIONES DE PROCESAMIENTO DE DATOS
-EN ESTE SCRIB SE ENCUNETRA EL CODIGO QUE PROCESA LOS DATOS DE LS EXPERIMENTOS
-POR CLASE DE SOFTWARE, TIPO DE MISION Y TAMAÑO DE ARENA
-SE OBTIENE GRAFICAS DEL PERFORMANCE DE LA MISION SIN FALLOS Y CON LOS MODOS DE FALLOS
-GRAFICAS PARA ESCALABILIDAD
-GRAFICAS PARA FLEXIBILIDAD
-GRAFICAS PARA ROBUSTEZ
+EN ESTE SCRIB SE ENCUENTRA EL CÓDIGO QUE PROCESA LOS DATOS DE LS EXPERIMENTOS
+POR CLASE DE SOFTWARE, TIPO DE MISIÓN Y TAMAÑO DE ARENA
+SE OBTIENE GRÁFICAS DEL PERFORMANCE DE LA MISIÓN SIN FALLOS Y CON LOS MODOS DE FALLOS
+GRÁFICAS PARA ESCALABILIDAD
+GRÁFICAS PARA FLEXIBILIDAD
+GRÁFICAS PARA ROBUSTEZ
 
 PARA EJECUTARLO:
 
-python3 processing_data.py
+* time python3 processing_data.py -- te permite conocer el tiempo que tarda en ejecutarse 
+* python3 processing_data.py -- solo ejecuta el código
 """
+#----------------------------------------------------------------------------------------------
+"""FUNCIÓN GENERACIÓN DE REPORTE DE RESULTADOS """
+def ejecutar_notebook(notebook_path, argumento):
+    # Cargar el notebook
+    with open(notebook_path, 'r', encoding='utf-8') as f:
+        notebook = nbformat.read(f, as_version=4)
+    
+    # Establecer el argumento en una celda del notebook
+    argumento_code = f'mi_argumento = "{argumento}"'
+    notebook.cells.insert(0, nbformat.v4.new_code_cell(argumento_code))
+    
+    # Ejecutar el notebook
+    execute_preprocessor = ExecutePreprocessor(timeout=None)
+    execute_preprocessor.preprocess(notebook, {})
+    
+    # Guardar el notebook modificado
+    nbformat.write(notebook, notebook_path)
 
-""" FUNCIONES DE VISUALIZACIÓN (GRAFICAS) """
+""" FUNCIONES DE VISUALIZACIÓN (GRÁFICAS) """
 def graficar_performance(df, tam_arena, mision_id, tipo_mision, clase_soft, fallos):
     # Extraer la unidades de medida del performance según la misión
     u_medida = " "
@@ -41,12 +63,29 @@ def graficar_performance(df, tam_arena, mision_id, tipo_mision, clase_soft, fall
 
     # Configurar el boxplot con notch
     ax = sns.boxplot(x='NumRobots', y='Performance', data=df, notch=True, width=0.2,linecolor='black')
-    offset = 100 if mision_id != 2 else 1
+    #offset = 100 if mision_id != 2 else 1
     if mision_id == 1:
         offset = 15
-    # Obtener el rango de valores
-    min_performance = df['Performance'].min() - offset
-    max_performance = df['Performance'].max() + offset
+        # Obtener el rango de valores
+        min_performance = df['Performance'].min() - offset
+        max_performance = df['Performance'].max() + offset
+    elif mision_id == 2:
+        offset = 1
+        # Obtener el rango de valores
+        min_performance = df['Performance'].min() - offset
+        max_performance = df['Performance'].max() + offset
+    elif mision_id == 3:
+        offset = 100
+        # Obtener el rango de valores
+        min_performance = df['Performance'].min() - offset
+        max_performance = df['Performance'].max() + offset
+    elif mision_id == 4:
+        offset = 20
+        # Obtener el rango de valores
+        min_performance = df['Performance'].min() - offset
+        max_performance = df['Performance'].max() + 100
+
+
 
     # Ajustar el rango del eje Y
     ax.set_ylim(min_performance, max_performance)
@@ -143,43 +182,45 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
     # Ajuste de diseño
     fig.tight_layout()
     fig.set_size_inches((8, 5))
-    plt.savefig(ruta+"/"+"Flexibilidad"+"/"+titulo_plot+".svg", dpi=600, bbox_inches="tight")
+    plt.savefig(ruta+"/"+"Flexibilidad"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
     #plt.show()
     plt.close()
     
-def graficar_metrica_robustez(subset,robustez,tam_arena,mision_id,tipo_mision,clas_sof):
+def graficar_metrica_robustez(subset, robustez, tam_arena, mision_id, tipo_mision, clas_sof):
     robots = subset['NumRobots'].unique()
-    m_robustez = np.zeros((3,12)) # matrix con las medianas de los datos procesados mxn
-    #print("f_graficar", len(robustez))
-    # Calcula la mediana del set de datos de la métrica y se lamacena en la matriz
-    for i in range(len(robustez[0])): # iterar en las listas de metrica por filas (3)
-        for j in range(len(robustez)): #iteración por columnas de la matriz (12)
+    m_robustez = np.zeros((3, 12))  # Matriz con las medianas de los datos procesados mxn
+    
+    # Calcula la mediana del set de datos de la métrica y se almacena en la matriz
+    for i in range(len(robustez[0])):  # Iterar en las listas de métrica por filas (3)
+        for j in range(len(robustez)):  # Iteración por columnas de la matriz (12)
             mediana = np.median(robustez[j][i])  # Calcula la mediana de los datos
-            m_robustez[i,j] = mediana # alamcena el valor calulado y lo guarda en la matriz
-            #print("Iterables:",i, j)
-    #print(m_robustez)
+            m_robustez[i, j] = mediana  # Almacena el valor calculado y lo guarda en la matriz
+    
     # Configuración de la visualización
     fig, ax = plt.subplots()
-
+    
     # Crear un heatmap con Seaborn
     sns.heatmap(m_robustez, annot=True, cmap='viridis', linewidths=0.5, square=True, ax=ax,
-                xticklabels=robots, yticklabels= ["10%","20%", "30%"], cbar_kws={'label': 'Valor de la métrica'})
+                xticklabels=robots, yticklabels=["10%", "20%", "30%"],
+                cbar_kws={'orientation': 'horizontal', 'label': 'Valor de la métrica'})
+    
     titulo_plot = f'{mision_id}{clas_sof}.Robustez-{tipo_mision}-Arena-{tam_arena}'
+    
     # Títulos y etiquetas
     ax.set_title(f'Robustez - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}')
     ax.set_xlabel('Tamaño del enjambre (#Robots)')
     ax.set_ylabel('Modo de Fallo FM')
-
+    
     # Ajuste de diseño
     fig.tight_layout()
     fig.set_size_inches((8, 5))
-    # Ajuste de los bordes
-    #plt.subplots_adjust(left=0.0, right=0.85)
-    plt.savefig(ruta+"/"+"Robustez"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
-    #plt.show()
+    
+    # Guardar la gráfica como archivo de imagen
+    plt.savefig(ruta + "/" + "Robustez" + "/" + titulo_plot + ".png", dpi=600, bbox_inches="tight")
     plt.close()
 
-""" FUNCIONES MANIPULACIÓN DE DATOS (CALCULO DE METRICAS) """
+
+""" FUNCIONES MANIPULACIÓN DE DATOS (CALCULO DE MÉTRICAS) """
 def metrica_escalabilidad(data):
     size_robots = data['NumRobots'].unique()  # obtener la lista de tamaños del enjambre #Robots
     performance_robots = []  # lista para alamecenar el performance
@@ -228,7 +269,7 @@ def metrica_escalabilidad(data):
 def metrica_flexibilidad(data):
     size_robots = data['NumRobots'].unique()  # obtener la lista de tamaños del enjambre #Robots
     tam_arena = data['Arenasize'].unique() # se extraen los tamaños de la arena
-    # --- calculo de los deltX
+    # --- calculo de los delatX
     """
     Se toman en cuenta los perimetros del plano donde se encierra la arena
     según su tamaño, entonces:
@@ -298,9 +339,9 @@ def metrica_flexibilidad(data):
 
 def metrica_robustez(data_n, data_f, modo_fallo):
     size_robots = data_n['NumRobots'].unique()  # obtener la lista de tamaños del enjambre #Robots
-    per_robots = []  # lista para alamecenar el performance sin fallos
-    per_robots1 = []  # lista para alamecenar el performance 10% fallos
-    per_robots2 = []  # lista para alamecenar el performance 20% fallos
+    per_robots = []  # lista para almacenar el performance sin fallos
+    per_robots1 = []  # lista para almacenar el performance 10% fallos
+    per_robots2 = []  # lista para almacenar el performance 20% fallos
     per_robots3 = []  # lista para almacenar el performance 30% fallos
 
     for n_robots in size_robots: # filtrar los datos por cantidad de robots
@@ -329,24 +370,24 @@ def metrica_robustez(data_n, data_f, modo_fallo):
                 deltaP2 = (per_robots2[i,j]-per_robots[i,j]) / per_robots[i,j] # calculo con 20%
                 deltaP3 = (per_robots3[i,j]-per_robots[i,j]) / per_robots[i,j] # calculo con 30%
             else:
-                # Se evalua una condición de metrica que se debe cumplir para determinar si es robusto o no el sistema
+                # Se evalúa una condición de metrica que se debe cumplir para determinar si es robusto o no el sistema
                 if per_robots1[i,j] > per_robots[i,j] - 0.1*per_robots[i,j]:
                     deltaP1 = 1 # sistema robusto
                 else: # el performance no fue mejor al anterior, no se cumple la condición 1, no es robusto
                     deltaP1 = 0
-                # Se evalua una condición de metrica que se debe cumplir para determinar si es robusto o no el sistema
+                # Se evalúa una condición de metrica que se debe cumplir para determinar si es robusto o no el sistema
                 if per_robots2[i,j] > per_robots[i,j] - 0.2*per_robots[i,j]:
                     deltaP2 = 1 # sistema robusto
                 else: # el performance no fue mejor al anterior, no se cumple la condición 1, no es robusto
                     deltaP2 = 0
-                # Se evalua una condición de metrica que se debe cumplir para determinar si es robusto o no el sistema
+                # Se evalúa una condición de metrica que se debe cumplir para determinar si es robusto o no el sistema
                 if per_robots3[i,j] > per_robots[i,j] - 0.3*per_robots[i,j]:
                     deltaP3 = 1 # sistema robusto
                 else: # el performance no fue mejor al anterior, no se cumple la condición 1, no es robusto
                     deltaP3 = 0
             # Se calcula el delta N teniendo en cuenta los fallos
-            # Como delataN = m/N dond m es el numero de robots fallano y N el tamaño total del enjmabre actual
-            # Al trabajar con dos modos de fallot 20% y 30% estos valores son constantes para el calculo de cada tamaño
+            # Como delataN = m/N donde m es el numero de robots fallando y N el tamaño total del enjambre actual
+            # Al trabajar con dos modos de fallo 20% y 30% estos valores son constantes para el calculo de cada tamaño
             deltaN1 = 0.1 # modo de fallo 1 10%
             deltaN2 = 0.2 # modo de fallo 2 20%
             deltaN3 = 0.3 # modo de fallo 3 30%
@@ -354,8 +395,8 @@ def metrica_robustez(data_n, data_f, modo_fallo):
             r1.append(R1) # datos con 10%
             r2.append(R2) # Datos con 20%
             r3.append(R3) # Datos con 30%
-        robustez.append([r1,r2,r3]) # alamcenamiento calculo de la metrica
-    """Se gurada un arreglo de listas que contienen listas"""
+        robustez.append([r1,r2,r3]) # almacenamiento calculo de la metrica
+    """Se guarda un arreglo de listas que contienen listas"""
 
     return robustez
 """
@@ -414,3 +455,14 @@ for clas_sof in tipo_sof:
         graficar_metrica_flexibilidad(F_1, F_2, F3, F4, mision_id, tipo_mision, clas_sof)
     print(f'---- Datos procesados clase {clas_sof} ----')
 print(pyfiglet.figlet_format("Todos los datos procesados",font="digital"))
+
+""" GENERACIÓN DEL REPORTE """
+print(pyfiglet.figlet_format("GENERANDO REPORTE",font="digital"))
+# Ruta del notebook
+notebook_path = '/home/gmadro/swarm_robotics/SWARM_GENERATOR/reporte.ipynb'
+# Id mision que deseas pasar al notebook
+argumento = str(1)  # o cualquier otro valor deseado
+# Comando para ejecutar el notebook con el parameto de la misión para generar el reporte
+os.system(f'jupyter nbconvert --to notebook --execute {notebook_path} --ExecutePreprocessor.allow_errors=True --ExecutePreprocessor.timeout=-1 --Arguments {argumento}')
+
+#ejecutar_notebook(notebook_path, argumento)
