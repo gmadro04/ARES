@@ -1,4 +1,3 @@
-
 #include "loop_function.h"
 #include <fstream>  // Para trabajar con archivos de salida
 #include <argos3/core/utility/math/rng.h>
@@ -7,59 +6,26 @@
 #include <unordered_map>
 
 
-
-
 /****************************************/
 /****************************************/
-
-static const Real AREA_ARENA =   80.0f;
-
-Real m_fLengthSide = Sqrt(AREA_ARENA);
-Real m_fHypotenus = m_fLengthSide/2;
-Real m_fPosMiddle = Sqrt(Square(m_fHypotenus)/2);
-
-static const Real RADIUS_NEST         = 1.5f;
-static const Real RADIUS_SOURCE         = 1.0f;
-
-static const Real SPAWN_SIDE_LENGTH     = 3.0f;
-
-static const Real NEST_MINX            = -1.85f;
-static const Real NEST_MAXX            = 1.85f;
-static const Real NEST_MINY            = -7.0f;
-static const Real NEST_MAXY            = -5.3f;
-
-static const Real FORB_A_MINY            = -1.0f;
-static const Real FORB_A_MAXY            = -0.50f;
-static const Real FORB_A_MAXX            =  2.5f;
-
-static const Real FORB_B_MINY            = -3.25;
-static const Real FORB_B_MAXY            = -2.75;
-static const Real FORB_B_MINX            = -1.0f;
-
-static const Real HEIGHT_WALLS         = 0.15f;
-static const Real WIDTH_WALLS         = 0.05f;
-
+static const Real RADIUS_SOURCE = 1.0f;
 #define PI 3.14159265
-
-
 /****************************************/
 /****************************************/
 
-CForaging::CForaging() {
+CSwarmGenerator::CSwarmGenerator() {
+}
+
+CSwarmGenerator::~CSwarmGenerator() {
 
 }
 
-CForaging::~CForaging() {
-}
-
 /****************************************/
 /****************************************/
 
-void CForaging::Init(TConfigurationNode& t_tree) {
+void CSwarmGenerator::Init(TConfigurationNode& t_tree) {
     /* Get parameters file name from XML tree */
-
     TConfigurationNode cParametersNode;
-    TConfigurationNode cDistributeNode;
     try
     {
       // Lee el atributo 'atributo' y almacénalo en una variable
@@ -68,38 +34,37 @@ void CForaging::Init(TConfigurationNode& t_tree) {
       GetNodeAttributeOrDefault(cParametersNode, "arena", m_unArenatype, m_unArenatype);
       GetNodeAttributeOrDefault(cParametersNode, "tam", m_unArenatam, m_unArenatam);
       GetNodeAttributeOrDefault(cParametersNode, "mision", m_unIDmision, m_unIDmision);
-      GetNodeAttributeOrDefault(cParametersNode, "obstaculos", m_unObsbool, m_unObsbool);
       GetNodeAttributeOrDefault(cParametersNode, "num_circles", m_unNumCircles, m_unNumCircles);
       GetNodeAttributeOrDefault(cParametersNode, "robots", m_unRobots, m_unRobots);
       GetNodeAttributeOrDefault(cParametersNode, "seed", m_unSeed, m_unSeed);
+      GetNodeAttributeOrDefault(cParametersNode, "fallos", m_unFaults, m_unFaults);
+      GetNodeAttributeOrDefault(cParametersNode, "T_control", m_unSoftware, m_unSoftware);
     }
     catch(const std::exception& e)
     {
       LOGERR << "Problem with Attributes in node params" << std::endl;
     }
-
+    // Variable para SELECCIONAR LOS FALLO 
+    fallos = false;
     // ---------- Variable funcion objetivo
     // Esta variable se trabaja para cada una de las metricas.
     m_fObjectiveFunction = 0; // Función objetivo que mide el rendimiento de la mision
 
-    // Variables para el uso de las metricas de evaluación segun la misión
+    // Iniciación de variables para el uso de las metricas de evaluación segun la misión
     // --- Exploración ---
     maxScore = 1.0;
     sizeArena.Set(1,1);
-
-    m_arenaSize = 0.0; // se ajusta segun la arena
-    m_gridSize = 10; // celdas que dividen la arena segun el tamaño de esta
-    m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
     // --- Marcha en formación --
     m_unNumberPoints = 1000;
+
     // --- Toma de decisiones ---
     consenso = false;
-    tiempo_conseso = 0;
+    tiempo_conseso = 2400; // tiempo que tarda la simulación del experimento 
 
     Init(); // inicializa configuraciones de arena y codigo c++ loop
 }
 
-void CForaging::Init() {
+void CSwarmGenerator::Init() {
 
   m_pcRNG = CRandom::CreateRNG("argos");
 
@@ -107,39 +72,53 @@ void CForaging::Init() {
 
   CSpace::TMapPerType& m_cLight = GetSpace().GetEntitiesByType("light");
   for(CSpace::TMapPerType::iterator it = m_cLight.begin(); it != m_cLight.end(); ++it) {
-     /* Get handle to foot-bot entity and controller */
-     CLightEntity& cLight = *any_cast<CLightEntity*>(it->second);
-     /* Set the position of the light source over the food source*/
-     CVector3 lightPosition = GetRandomPosition();
-     //cLight.SetPosition(CVector3(m_cCoordSource.GetX(),m_cCoordSource.GetY(),0.5));
-     cLight.SetPosition(CVector3(lightPosition.GetX(),lightPosition.GetY(),0.5));
+    /* Get handle to foot-bot entity and controller */
+    CLightEntity& cLight = *any_cast<CLightEntity*>(it->second);
+    /* Set the position of the light source over the food source*/
+    CVector3 lightPosition = GetRandomPosition();
+    cLight.SetPosition(CVector3(lightPosition.GetX(),lightPosition.GetY(),0.5));
   }
 
-  // ESTABELCER ALGUNAS VARIABLES QUE SE USAN SEGUN LA  MISION 
+  // ESTABELCER ALGUNAS VARIABLES QUE SE USAN SEGUN LA  MISION
   // ---------- Exploracion -----------
   double tam = Asignar_tamano_segun_arena(m_unArenatam);
   sizeArena.Set(tam,tam);
-  maxScore = ((int)(sizeArena.GetY()*1*sizeArena.GetX()*1))*1.0;
+  if (m_unArenatype == "Triangular")
+  {
+    if (m_unArenatam == "pequena")
+    {
+      maxScore = ((int)(17))*1.0;
+    }
+    else if (m_unArenatam == "mediana")
+    {
+      maxScore = ((int)(40))*1.0;
+    }
+    else{
+      maxScore = ((int)(84))*1.0;
+    }
+  }
+  else{
+    maxScore = ((int)(sizeArena.GetY()*1*sizeArena.GetX()*1))*1.0;
+  }
+  //maxScore = ((int)(sizeArena.GetY()*1*sizeArena.GetX()*1))*1.0;
   grid.reserve((unsigned int)maxScore);
-  m_arenaSize = tam;
-  m_gridSize = tam; // celdas que dividen la arena segun el tamaño de esta
-  m_grid.assign(m_gridSize, std::vector<int>(m_gridSize, 0));
 
-  // CONFIGURACIONES SEGUN LA ARENA 
+
+  // CONFIGURACIONES SEGUN LA ARENA
   // ---------Inicializar las posiciones de los círculos
   ComputeCirclePositions(m_unNumCircles);
-  // Posicionar elementos y robots en la arena 
+  // Posicionar elementos y robots en la arena
   if (m_unArenatype == "Triangular" || m_unArenatype == "Dodecagono" || m_unArenatype == "Hexagonal" || m_unArenatype == "Octagonal")
   {
     MoveRobots();
   }
-  InitRobotStates();
+  InitRobotStates(); // Estados del robot
 }
 
 /****************************************/
 /****************************************/
 
-void CForaging::Reset() {
+void CSwarmGenerator::Reset() {
 
   /* Reseting the variables. */
   Init();
@@ -153,41 +132,49 @@ void CForaging::Reset() {
 /****************************************/
 /****************************************/
 
-void CForaging::Destroy() {
-    /* Close the output file */
+void CSwarmGenerator::Destroy() {
 
 }
 
 /****************************************/
 /****************************************/
 
-void CForaging::PreStep() {
+void CSwarmGenerator::PreStep() {
 
 }
 
 /****************************************/
 /****************************************/
 //
-void CForaging::PostStep() {
+void CSwarmGenerator::PostStep() {
   // LLAMADO A LA METRICA SEGUN LA MISION
   if (m_unIDmision == 1)
   {
     RegisterPositions();
     m_fObjectiveFunction += GetExplorationScore();
+    if (m_unFaults != "No"){ // simular fallos en los robots -> Robot stop
+      StopRobots();
+    }
   }
   else if (m_unIDmision == 2)
   {
-    m_fObjectiveFunction += GetAggregationScore();
+    if (m_unFaults != "No"){ // simular fallos en los robots -> Robot stop
+      StopRobots();
+    }
+    m_fObjectiveFunction = GetAggregationScore();
   }
   else if (m_unIDmision == 3)
   {
-    //LOGERR << "ID MISION 3" << std::endl;
+    if (m_unFaults != "No"){ // simular fallos en los robots -> Robot stop
+      StopRobots();
+    }
     m_fObjectiveFunction = GetPatternFormationScore();
   }
   else if (m_unIDmision == 4)
   {
-    //LOGERR << "ID MISION 4" << std::endl;
-    //LOG << "Toma de decisión Score = " << m_fObjectiveFunction << std::endl;
+    if (m_unFaults != "No"){ // simular fallos en los robots -> Robot stop
+      StopRobots();
+    }
     m_fObjectiveFunction = GetCollectiveDecisionScore();
   }
 }
@@ -195,7 +182,7 @@ void CForaging::PostStep() {
 /****************************************/
 /****************************************/
 
-void CForaging::PostExperiment() {
+void CSwarmGenerator::PostExperiment() {
   if (m_unIDmision == 1)
   {
     //m_fObjectiveFunction = m_fObjectiveFunction / m_gridSize / m_gridSize;
@@ -203,30 +190,28 @@ void CForaging::PostExperiment() {
   }
   else if (m_unIDmision == 2)
   {
-    m_fObjectiveFunction = GetAggregationScore();
+    //m_fObjectiveFunction = GetAggregationScore();
     LOG << "Agregación Score = " << m_fObjectiveFunction << std::endl;
   }
   else if (m_unIDmision == 3)
   {
-    m_fObjectiveFunction = GetPatternFormationScore();
+    //m_fObjectiveFunction = GetPatternFormationScore();
     LOG << "Marcha en formación Score = " << m_fObjectiveFunction << std::endl;
   }
   else if (m_unIDmision == 4)
   {
     //LOGERR << "ID MISION 4" << std::endl;
     LOG << "Toma de decisión Score = " << m_fObjectiveFunction << std::endl;
-
   }
-
   // Llama a la función para guardar los datos finales de los experimentos
   SaveExperimentData();
 }
 
-void CForaging::SaveExperimentData() {
+void CSwarmGenerator::SaveExperimentData() {
   std::ofstream MyFile("Experimentos/datos.csv", std::ios_base::app);
   // Escribir encabezados si el archivo está vacío
   if (MyFile.tellp() == 0) {
-      MyFile << "Experiment,MisionID,Mision,Arenatype,Arenasize,NumRobots,Seed,Time,Performance" << std::endl;
+      MyFile << "Experiment,Class,MisionID,Mision,Arenatype,Arenasize,NumRobots,Faults,Seed,Performance" << std::endl;
   }
   std::string Mision;
   if (m_unIDmision == 1)
@@ -247,14 +232,15 @@ void CForaging::SaveExperimentData() {
   }
 
   // Escribir datos en formato CSV con cada valor en una celda separada
-  MyFile << m_unExperiment << ",";
+  MyFile << m_unExperiment<< ",";
+  MyFile << m_unSoftware<< ",";
   MyFile << m_unIDmision << ",";
   MyFile << Mision << ",";
   MyFile << m_unArenatype << ",";
   MyFile << m_unArenatam << ",";
   MyFile << m_unRobots << ",";
+  MyFile << m_unFaults << ",";
   MyFile << m_unSeed << ",";
-  MyFile << "240 Seg" << ",";
   MyFile << m_fObjectiveFunction << std::endl;
   // Cerrar el archivo
   MyFile.close();
@@ -263,7 +249,7 @@ void CForaging::SaveExperimentData() {
 /****************************************/
 /****************************************/
 
-CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
+CColor CSwarmGenerator::GetFloorColor(const CVector2& c_position_on_plane) {
 
   for (const CVector2& cCirclePos : m_vCirclePositions) {
       Real fCircleRadius = RADIUS_SOURCE;  // Ajusta el radio del círculo según tus necesidades
@@ -281,7 +267,7 @@ CColor CForaging::GetFloorColor(const CVector2& c_position_on_plane) {
 /****************************************/
 /*CONFIGURACION POSICIONES ZONAS Y OBJETOS*/
 
-void CForaging::ComputeCirclePositions(UInt32 NumCircles) {
+void CSwarmGenerator::ComputeCirclePositions(UInt32 NumCircles) {
     double tam = Asignar_tamano_segun_arena(m_unArenatam);
 
     if (tam < 0.0) {
@@ -356,13 +342,12 @@ void CForaging::ComputeCirclePositions(UInt32 NumCircles) {
 /****************************************/
 // Configuraciones posiciones en  la arena segun la geometría
 // Definir la función para verificar si un punto está dentro del triángulo
-bool CForaging::Dentro_del_triangulo(const std::pair<double, double>& punto, double tam) {
+bool CSwarmGenerator::Dentro_del_triangulo(const std::pair<double, double>& punto, double tam) {
     // Definir los vértices del triángulo
     CVector2 A((tam / 2)-1.5, 0);
     CVector2 B((-tam / 2)+1.5, (tam / 2)-1.5);
     CVector2 C((-tam / 2)+1.5, (-tam / 2)+1.5);
-    // Implementación de la función que ya proporcionaste
-    // ...
+
     double x = punto.first;
     double y = punto.second;
 
@@ -384,7 +369,7 @@ bool CForaging::Dentro_del_triangulo(const std::pair<double, double>& punto, dou
 
 // Definir la función para verificar si un punto está dentro de la circunferencia inscrita en los poligonos segun el tamaño
 
-bool CForaging::Dentro_del_circulo(const std::pair<double,double>& punto, double tam){
+bool CSwarmGenerator::Dentro_del_circulo(const std::pair<double,double>& punto, double tam){
     // Calcula la distancia desde el punto al centro del círculo
     double radio = (tam / 2) - 1.0; // se le da un ofsset para evitar que el circulo o parte de este salga de las paredes
     double distancia = (CVector2(punto.first, punto.second) - CVector2(0, 0)).Length();
@@ -393,7 +378,7 @@ bool CForaging::Dentro_del_circulo(const std::pair<double,double>& punto, double
 }
 
 // Función para asignar el tamaño según el tipo de arena
-double CForaging::Asignar_tamano_segun_arena(const std::string& arena_tipo) {
+double CSwarmGenerator::Asignar_tamano_segun_arena(const std::string& arena_tipo) {
     if (m_unArenatype == "Hexagonal"){
       if (arena_tipo == "pequena") {
         return 5.0;
@@ -427,7 +412,7 @@ double CForaging::Asignar_tamano_segun_arena(const std::string& arena_tipo) {
 /****************************************/
 
 // ------------------------------------- EXPLORACION ID 1-------------------------------------
-void CForaging::RegisterPositions(){
+void CSwarmGenerator::RegisterPositions(){
   CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
   for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
       CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
@@ -438,45 +423,46 @@ void CForaging::RegisterPositions(){
   }
 
 }
-Real CForaging::GetExplorationScore() {
-    //CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
-    //CVector2 cFootBotPosition(0, 0);
-    ////m_arenaSize = Asignar_tamano_segun_arena(m_unArenatam);
-    //Real Exploration;
-    //// Actualiza el contador de tiempo para las baldosas cruzadas por robots
-    //for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
-    //    CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
-    //    cFootBotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-    //        pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-//
-    //    UInt32 X = (UInt32)m_gridSize * (cFootBotPosition.GetX() / m_arenaSize + 0.5);
-    //    UInt32 Y = (UInt32)m_gridSize * (cFootBotPosition.GetY() / m_arenaSize + 0.5);
-//
-    //    if (X < m_gridSize && Y < m_gridSize && X >= 0 && Y >= 0) {
-    //        m_grid[X][Y] = 0;
-    //    }
-    //}
-//
-    //// Calcula la métrica de exploración
-    //UInt32 total = 0;
-    //for (UInt32 i = 0; i < m_gridSize; i++) {
-    //    for (UInt32 j = 0; j < m_gridSize; j++) {
-    //        total += m_grid[i][j];
-    //        m_grid[i][j] += 1;
-    //    }
-    //}
-    //Exploration += Real(total);
-    //return Exploration;
+Real CSwarmGenerator::GetExplorationScore() {
   Real temp = 0;
-  for (unsigned int i = 0; i<(unsigned int)(sizeArena.GetX()*1*sizeArena.GetY()*1); i++) {
-    if (grid[i]==true){
-      temp+=1;
+  if (m_unArenatype == "Triangular")
+  {
+    if (m_unArenatam == "pequena")
+    {
+      for (unsigned int i = 0; i<(unsigned int)(17); i++) {
+        if (grid[i]==true){
+          temp+=1;
+        }
+      }
+    }
+    else if (m_unArenatam == "mediana")
+    {
+      for (unsigned int i = 0; i<(unsigned int)(40); i++) {
+        if (grid[i]==true){
+          temp+=1;
+        }
+      }
+    }
+    else{
+      for (unsigned int i = 0; i<(unsigned int)(84); i++) {
+        if (grid[i]==true){
+          temp+=1;
+        }
+      }
+    }
+  }
+  else
+  {
+    for (unsigned int i = 0; i<(unsigned int)(sizeArena.GetX()*1*sizeArena.GetY()*1); i++) {
+      if (grid[i]==true){
+        temp+=1;
+      }
     }
   }
   return temp/maxScore;
 }
 //------------------------------------- AGREGACIÓN ID 2-------------------------------------
-void CForaging::InitRobotStates() {
+void CSwarmGenerator::InitRobotStates() {
   CSpace::TMapPerType& tFootbotMap = GetSpace().GetEntitiesByType("foot-bot");
   CVector2 cFootbotPosition(0, 0);
   for(CSpace::TMapPerType::iterator it = tFootbotMap.begin(); it != tFootbotMap.end(); ++it) {
@@ -491,7 +477,7 @@ void CForaging::InitRobotStates() {
   }
 }
 
-Real CForaging::GetAggregationScore() {
+Real CSwarmGenerator::GetAggregationScore() {
 
     UpdateRobotPositions();
     UpdateAggregationTime();
@@ -504,7 +490,7 @@ Real CForaging::GetAggregationScore() {
     for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
         // Verificar si el robot está dentro del círculo de agregación
         bInAgg = IsRobotInAggCircle(it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                               it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+                              it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
         if (bInAgg) {
             unRobotsInAgg+=1; // contabiliza ell robot  ue esta dentro de la zona negra
             // Si está en la zona, acumular el tiempo que pasa allí
@@ -514,20 +500,20 @@ Real CForaging::GetAggregationScore() {
     return unRobotsInAgg;
 }
 
-void CForaging::UpdateAggregationTime() {
+void CSwarmGenerator::UpdateAggregationTime() {
     TRobotStateMap::iterator it;
 
     // Iterar sobre los estados de los robots y actualizar el tiempo de agregación
     for (it = m_tRobotStates.begin(); it != m_tRobotStates.end(); ++it) {
         if (IsRobotInAggCircle(it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                               it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY())) {
+                              it->first->GetEmbodiedEntity().GetOriginAnchor().Position.GetY())) {
             // Incrementar el tiempo que pasa en la zona
             it->second.FTimeInAgg += GetSpace().GetSimulationClock();
         }
     }
 }
 
-void CForaging::UpdateRobotPositions(){
+void CSwarmGenerator::UpdateRobotPositions(){
   CSpace::TMapPerType& tFootbotMap = GetSpace().GetEntitiesByType("foot-bot");
   CVector2 cFootbotPosition(0, 0);
 
@@ -541,7 +527,7 @@ void CForaging::UpdateRobotPositions(){
   }
 }
 
-bool CForaging::IsRobotInAggCircle(Real x, Real y) {
+bool CSwarmGenerator::IsRobotInAggCircle(Real x, Real y) {
     // Itera sobre las posiciones de los círculos
     for (const CVector2& circlePos : m_vCirclePositions) {
         // Calcula la distancia entre el robot y la posición del círculo actual
@@ -560,7 +546,7 @@ bool CForaging::IsRobotInAggCircle(Real x, Real y) {
 }
 // ------------------------------------- MARCHA EN FORMACION ID 3 -------------------------------------
 
-Real CForaging::GetPatternFormationScore(){
+Real CSwarmGenerator::GetPatternFormationScore(){
   CVector2 cRandomPoint;
   Real dA=0, dp=0;
 
@@ -570,35 +556,34 @@ Real CForaging::GetPatternFormationScore(){
 
   for (UInt32 i = 0 ; i < m_unNumberPoints; i++)
   {
-    Real fMinDistanceOnSquare = 0.67;  // Correspond to worst case, only one robot in the corner of the square
-    
+    Real fMinDistanceOnSquare = 0.67;  // Correspond to worst case, only one robot in the corner of the arena
+
     cRandomPoint = GetRandomPoint();
     for (CSpace::TMapPerType::iterator it = tFootBotMap.begin(); it != tFootBotMap.end(); ++it) {
       CFootBotEntity* pcFootBot = any_cast<CFootBotEntity*>(it->second);
       cFootbotPosition.Set(pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                           pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+                          pcFootBot->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
       fDistanceToRandomPoint = (cRandomPoint - cFootbotPosition).Length();
 
       if (fDistanceToRandomPoint < fMinDistanceOnSquare){
           fMinDistanceOnSquare = fDistanceToRandomPoint;
       }
-    
     }
 
     dA += fMinDistanceOnSquare;
   }
-  
+
   dA /= m_unNumberPoints;
 
 
-  Real performance = 100*100*dA*dA; // in cm2
+  Real performance = -100*100*dA*dA; // in cm2 el signo negativo es porque en esta mision se busca minimizar la distancia.
 
   return performance;
 }
 
 // ------------------------------------- TOMA DE DECISIONES ID 4 -------------------------------------
 
-Real CForaging::GetCollectiveDecisionScore() {
+Real CSwarmGenerator::GetCollectiveDecisionScore() {
 
     Real color_red = 0;
     Real color_blue = 0;
@@ -614,9 +599,8 @@ Real CForaging::GetCollectiveDecisionScore() {
 
         // Accede al color del LED del foot-bot
         const CColor& ledColor = pcFootBot->GetLEDEquippedEntity().GetLED(0).GetColor();
-        
 
-      // Realiza el análisis y el conteo de colores 
+      // Realiza el análisis y el conteo de colores
       // cuenta cuantos robots estan emitiendo un color
       if (ledColor == CColor::RED) {
           color_red++;
@@ -627,62 +611,55 @@ Real CForaging::GetCollectiveDecisionScore() {
       }
 
     }
+    if (m_unFaults == "Si_3")
+    {
+      //LOG << "Entro al consenso " << std::endl;
+      // Tenemos que falta un 10% de los robots para la toma de descisión
+      //if(color_red>color_blue && color_red>color_green){
+      //  // el mayor hasta el momento es rojo 
+      //  color_red = color_red+0.1*totalRobots; // se le suma ese 10 porciento
+      //}
+      //if(color_blue>color_red && color_blue>color_green){
+      //  // el mayor hasta el momento es azul
+      //  color_blue = color_blue+0.1*totalRobots; // se le suma ese 10 porciento
+      //}
+      //if(color_green>color_blue && color_green>color_red){
+      //  // el mayor hasta el momento es verde
+      //  color_green = color_red+0.1*totalRobots; // se le suma ese 10 porciento
+      //}
+      totalRobots = totalRobots - 0.3*totalRobots;
+    }
+    
 
-    if ((color_red/totalRobots) >= 0.9){
+    if ((color_red/totalRobots) >= 0.80){
       consenso = true;
       tiempo_conseso = GetSpace().GetSimulationClock();
       LOG << "Consenso alcanzado al paso " << tiempo_conseso << std::endl;
       LOG << "#Robots emiten color " << color_red << std::endl;
-      LOG << "Porcentaje de consenso " << color_red/totalRobots << std::endl;
-    }else if ((color_blue/totalRobots) >= 0.9)
+      LOG << "Porcentaje de consenso " << (color_red/totalRobots)*100 << std::endl;
+    }else if ((color_blue/totalRobots) >= 0.80)
     {
       consenso = true;
       tiempo_conseso = GetSpace().GetSimulationClock();
       LOG << "Consenso alcanzado al paso " << tiempo_conseso << std::endl;
       LOG << "#Robots emiten color " << color_blue << std::endl;
-      LOG << "Porcentaje de consenso " << color_blue/totalRobots << std::endl;
-    }else if ((color_green/totalRobots) >= 0.9)
+      LOG << "Porcentaje de consenso " << (color_blue/totalRobots)*100 << std::endl;
+    }else if ((color_green/totalRobots) >= 0.80)
     {
       consenso = true;
       tiempo_conseso = GetSpace().GetSimulationClock();
       LOG << "Consenso alcanzado al paso " << tiempo_conseso << std::endl;
       LOG << "#Robots emiten color " << color_green << std::endl;
-      LOG << "Porcentaje de consenso " << color_green/totalRobots << std::endl;
+      LOG << "Porcentaje de consenso " << (color_green/totalRobots)*100 << std::endl;
     }
   }
-  return tiempo_conseso; // Devuelve el tiempo en el que un porcentaje mayor al 90% de robots ya llego a un consenso
-}
-
-
-/****************************************/
-/****************************************/
-
-
-bool CForaging::IsWithinTriangle(CVector2& c_point_q, CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c) {
-  Real fAreaTriangle = AreaTriangle(c_point_a, c_point_b, c_point_c);
-  Real fAreaABQ = AreaTriangle(c_point_a, c_point_b, c_point_q);
-  Real fAreaBCQ = AreaTriangle(c_point_b, c_point_c, c_point_q);
-  Real fAreaACQ = AreaTriangle(c_point_a, c_point_c, c_point_q);
-
-  if (Abs(fAreaTriangle - (fAreaABQ + fAreaACQ + fAreaBCQ)) < 0.0001) {
-    return true;
-  } else {
-    return false;
-  }
+  return tiempo_conseso; // Devuelve el tiempo en el que un porcentaje mayor al 85% de robots ya llego a un consenso
 }
 
 /****************************************/
 /****************************************/
 
-Real CForaging::AreaTriangle(CVector2& c_point_a, CVector2& c_point_b, CVector2& c_point_c) {
-  Real fArea = Abs(c_point_a.GetX()*(c_point_b.GetY()-c_point_c.GetY()) + c_point_b.GetX()*(c_point_c.GetY()-c_point_a.GetY()) + c_point_c.GetX()*(c_point_a.GetY()-c_point_b.GetY()))/2;
-  return fArea;
-}
-
-/****************************************/
-/****************************************/
-
-void CForaging::MoveRobots() {
+void CSwarmGenerator::MoveRobots() {
   CFootBotEntity* pcFootBot;
   bool bPlaced = false;
   UInt32 unTrials;
@@ -692,8 +669,8 @@ void CForaging::MoveRobots() {
     // Choose position at random
     unTrials = 0;
     do {
-       ++unTrials;
-       CVector3 cFootBotPosition = GetRandomPosition();
+      ++unTrials;
+      CVector3 cFootBotPosition = GetRandomPosition();
        //cFootBotPosition.GetX();
       bPlaced = MoveEntity(pcFootBot->GetEmbodiedEntity(),
                             cFootBotPosition,
@@ -701,12 +678,12 @@ void CForaging::MoveRobots() {
                             CRadians::ZERO,CRadians::ZERO),false);
     } while(!bPlaced && unTrials < 200);
     if(!bPlaced) {
-       THROW_ARGOSEXCEPTION("Can't place robot");
+      THROW_ARGOSEXCEPTION("Can't place robot");
     }
   }
 }
 
-CVector3 CForaging::GetRandomPosition() {
+CVector3 CSwarmGenerator::GetRandomPosition() {
   double tam = Asignar_tamano_segun_arena(m_unArenatam);
   Real temp;
   Real a = m_pcRNG->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -733,7 +710,7 @@ CVector3 CForaging::GetRandomPosition() {
     x = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
     y = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
   }
-  
+
   else {
     double DisRadius = tam / 2;
     if (b < a){
@@ -748,7 +725,7 @@ CVector3 CForaging::GetRandomPosition() {
   return CVector3(x, y, 0.0);
 }
 
-CVector2 CForaging::GetRandomPoint() {
+CVector2 CSwarmGenerator::GetRandomPoint() {
   double tam = Asignar_tamano_segun_arena(m_unArenatam);
   Real temp;
   Real a = m_pcRNG->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -775,7 +752,7 @@ CVector2 CForaging::GetRandomPoint() {
     x = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
     y = m_pcRNG->Uniform(CRange<Real>(-tam/2, tam/2));
   }
-  
+
   else {
     double DisRadius = tam / 2;
     if (b < a){
@@ -793,7 +770,7 @@ CVector2 CForaging::GetRandomPoint() {
 /****************************************/
 /****************************************/
 
-CRadians CForaging::ComputeOrientation(CVector2 vec_a, CVector2 vec_b) {
+CRadians CSwarmGenerator::ComputeOrientation(CVector2 vec_a, CVector2 vec_b) {
   Real fDistX = Abs(Abs(vec_a.GetX()) - Abs(vec_b.GetX()));
   Real fDistY = Abs(Abs(vec_a.GetY()) - Abs(vec_b.GetY()));
   return ATan2(fDistX, fDistY);
@@ -802,12 +779,72 @@ CRadians CForaging::ComputeOrientation(CVector2 vec_a, CVector2 vec_b) {
 /****************************************/
 /****************************************/
 
-CVector2 CForaging::ComputeMiddle(CVector2 vec_a, CVector2 vec_b) {
+CVector2 CSwarmGenerator::ComputeMiddle(CVector2 vec_a, CVector2 vec_b) {
   return CVector2((vec_a.GetX() + vec_b.GetX())/2, (vec_a.GetY() + vec_b.GetY())/2);
 }
 
 /****************************************/
 /****************************************/
 
+void CSwarmGenerator::StopRobots() {
+    // Porcentaje de robots que deben detenerse según el modo de fallo
+    float porcentaje_f = 0.0;
+    if (m_unFaults == "Si_1"){
+      porcentaje_f = 0.1; // 10% de fallos
+    }
+    else if (m_unFaults == "Si_2"){
+      porcentaje_f = 0.2; // 20% de fallos
+    }
+    else if (m_unFaults == "Si_3")
+    {
+      porcentaje_f = 0.3; // 30% de fallos
+    }
+    
+
+    // Obtén la lista de foot-bots
+    CSpace::TMapPerType& tFootBotMap = GetSpace().GetEntitiesByType("foot-bot");
+
+    // Calcula el número de robots que deben detenerse
+    size_t totalRobots = tFootBotMap.size();
+    size_t robotsFalla = round(porcentaje_f * totalRobots);
+    if (totalRobots == 2){ 
+      // cuando el total de robots es 2, un robot debe fallar 
+      robotsFalla = 1;
+    }
+    // Contenedor para almacenar los robots que fallarán
+    std::vector<CFootBotEntity*> vRobotsEnFalla;
+
+    // Almacena todos los foot-bots en un vector
+    std::vector<CFootBotEntity*> vFootBots;
+    for (const auto& kv : tFootBotMap) {
+      vFootBots.push_back(any_cast<CFootBotEntity*>(kv.second));
+    }
+
+    // Baraja aleatoriamente el vector
+    std::random_shuffle(vFootBots.begin(), vFootBots.end());
+
+    // Selecciona los "robotsFalla" para detenerse y almacénalos
+    if (!fallos)
+    {
+      for (size_t i = 0; i < robotsFalla; ++i) {
+        CFootBotEntity* pcRobot = vFootBots[i];
+        vRobotsEnFalla.push_back(pcRobot);
+
+        // Se apaga el robot con el metodo false
+        pcRobot->SetEnabled(false);
+
+        //LOG << "Robot en falla " << i << ": " << vRobotsEnFalla[i]->GetId() << std::endl;
+
+      }
+
+      fallos = true;
+      LOG << " Porcentaje Fallos: " << porcentaje_f*100 << " -- # Robots fallando: " << robotsFalla << std::endl;
+    }
+
+    // Aquí puedes trabajar con vRobotsEnFalla como necesites
+    // Por ejemplo, podrías imprimir información sobre los robots en falla
+    //LOG << "Robots fallando: " << robotsFalla << std::endl;
+}
+
 /* Register this loop functions into the ARGoS plugin system */
-REGISTER_LOOP_FUNCTIONS(CForaging, "loop_function");
+REGISTER_LOOP_FUNCTIONS(CSwarmGenerator, "loop_function");

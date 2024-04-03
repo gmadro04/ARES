@@ -1,6 +1,5 @@
 """EN ESTE ARCHIVO SE ENCUENTRAN LAS FUNCIONES CON LAS QUE
     SE GENERAN LOS PARAMETROS QUE COMPONEN LOS EXPERIMENTOS"""
-# -- LIBRERIAS A USAR
 import xml.etree.ElementTree as ET
 import numpy as np
 import random
@@ -14,7 +13,7 @@ def params_arena(A_t,N_a):
     dim_tam = ['pequena','mediana','grande']
 
     arena = arenas[A_t] # Tipo de arena A_t
-    dim_tam = dim_tam[0] # Tamaño de la arena N_a
+    dim_tam = dim_tam[N_a] # Tamaño de la arena N_a
     # Parametros de configuración segun la arena
 
     if arena == "Cuadrada":
@@ -32,15 +31,7 @@ def params_arena(A_t,N_a):
 
     return conf_params, parametros
 
-def robots_timeDruation():
-    # Genera un número aleatorio entre 5 y 30 utilizando una distribución uniforme
-    robots = random.randrange(5, 40, 5)
-    # Tiempo de suración del experimento
-    time = random.choice([240])
-    #return robots,time
-    return time
-
-def framework_label (file,time,codigos):
+def framework_label (file,time,codigos, fallos,semilla):
     tree = ET.parse(file)
     root = tree.getroot()
     # Modificar la etiqueta 'framework' y sus contenidos
@@ -51,12 +42,15 @@ def framework_label (file,time,codigos):
         experiment = framework.find("experiment")
         if experiment is not None:
             experiment.set("length", str(time))
-            experiment.set("random_seed",str(random.randrange(100,200,1)))
+            if fallos == "No":
+                experiment.set("random_seed",str(random.randrange(100,200,1)))
+            else:
+                experiment.set("random_seed",str(semilla))
     for params in controller.iter("params"):
         params.set("script", codigos) # pasamos el script de control
     tree.write(file)
 
-def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID):
+def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID, E_fallos, T_Control):
     tree = ET.parse(file)
     root = tree.getroot()
     # MODIFICAR PARAMETROS LOOP_FUNCTIONS
@@ -73,7 +67,9 @@ def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID):
             Eparams.set("mision", str(m_ID)) # ID del comportamiento que se esta evaluando para ejecutar la mision correspondiente
             Eparams.set("obstaculos",str(obstaculos))
             Eparams.set("robots",str(robots))
-            Eparams.set("seed",str(random_seed_value)) # falso 0, verdadero 1
+            Eparams.set("seed",str(random_seed_value))
+            Eparams.set("fallos",E_fallos)
+            Eparams.set("T_control",str(T_Control))
     tree.write(file)
 
 """FUNCIONES CONFIGURACION PARAMETROS SEGUN LA ARENA"""
@@ -82,10 +78,10 @@ def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID):
     En el disccionario de configuración "arena_conf_params" el orden es el siguiente
     La etiqueta corresponde al box dentro de arena en el archivo
     Donde:
-     1. la primera columna es el atributo "id" del box
-     2. la segunda columna es el atributo size del box
-     3. la terceera columna es el atributo position del body
-     4. la cuarta columna es el atributo orientation del body
+    1. la primera columna es el atributo "id" del box
+    2. la segunda columna es el atributo size del box
+    3. la terceera columna es el atributo position del body
+    4. la cuarta columna es el atributo orientation del body
 """
 def parametros_arena_cuadrada(tamaño,tipo_arena):
     paredes = 4 # numero de paredes
@@ -148,7 +144,7 @@ def parametros_arena_triangular(tamaño,tipo_arena):
         'Tamaño arena': tamaño,
         'Paredes': 3,
         'T_arena': size,
-        'Pos': pos   
+        'Pos': pos
     }
     # Parametros configuración de la arena
     arena_conf_params = {
@@ -297,7 +293,7 @@ def distribucion(file,arena_params,params):
         pos_max = [params["Pos"],params["Pos"],0]
     elif params["Tipo de arena"] == "Triangular":
         # pos = [params["Pos"],params["T_arena"]/4,0]
-        pos_min = [-params["Pos"],-params["T_arena"]/4,0] 
+        pos_min = [-params["Pos"],-params["T_arena"]/4,0]
         pos_max = [0,params["T_arena"]/4,0]
     elif params['Tipo de arena'] == "Hexagonal":
         pos_min = [-params["Pos"],-params["T_arena"]/4,0]

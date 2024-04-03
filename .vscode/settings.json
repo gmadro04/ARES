@@ -60,5 +60,13 @@
         "typeinfo": "cpp",
         "regex": "cpp",
         "shared_mutex": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "Dodecagonal",
+        "escalabilidad",
+        "gráficar",
+        "muestreados",
+        "SCRIB",
+        "testeado"
+    ]
 }
