@@ -4,12 +4,12 @@
   
   
   <framework>
-    <experiment length="240" ticks_per_second="10" random_seed="153" />
+    <experiment length="240" ticks_per_second="10" random_seed="162" />
     <system threads="0" />
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function">
-    <params num_experiment="1" arena="Dodecagono" tam="grande" fallos="No" T_control="B" num_circles="1" mision="3" obstaculos="False" robots="10" seed="153" T_Control="A" />
+    <params num_experiment="1" arena="Triangular" tam="pequena" fallos="No" T_control="B" num_circles="1" mision="3" obstaculos="False" robots="2" seed="162" T_Control="A" />
   </loop_functions>
 
   <controllers>
@@ -37,13 +37,13 @@
   
   
   <arena size="17,17,1" center="0,0,0.5">
-    <box id="1" size="0.055,3.3000000000000003,0.2" movable="false"><body position="-6.0,0,0" orientation="0,0,0" /></box><box id="2" size="0.055,3.3000000000000003,0.2" movable="false"><body position="6.0,0,0" orientation="0,0,0" /></box><box id="3" size="0.055,3.3000000000000003,0.2" movable="false"><body position="0,6.0,0" orientation="90,0,0" /></box><box id="4" size="0.055,3.3000000000000003,0.2" movable="false"><body position="0,-6.0,0" orientation="90,0,0" /></box><box id="5" size="0.055,3.3000000000000003,0.2" movable="false"><body position="-3.0,-5.199,0" orientation="60,0,0" /></box><box id="6" size="0.055,3.3000000000000003,0.2" movable="false"><body position="-5.199,-3.0,0" orientation="30,0,0" /></box><box id="7" size="0.055,3.3000000000000003,0.2" movable="false"><body position="3.0,5.199,0" orientation="60,0,0" /></box><box id="8" size="0.055,3.3000000000000003,0.2" movable="false"><body position="5.199,3.0,0" orientation="30,0,0" /></box><box id="9" size="0.055,3.3000000000000003,0.2" movable="false"><body position="-3.0,5.199,0" orientation="-60,0,0" /></box><box id="10" size="0.055,3.3000000000000003,0.2" movable="false"><body position="-5.199,3.0,0" orientation="-30,0,0" /></box><box id="11" size="0.055,3.3000000000000003,0.2" movable="false"><body position="3.0,-5.199,0" orientation="-60,0,0" /></box><box id="12" size="0.055,3.3000000000000003,0.2" movable="false"><body position="5.199,-3.0,0" orientation="-30,0,0" /></box><light id="light" position="0,0,0.5" orientation="0,0,0" color="yellow" intensity="10.0" medium="leds" />
+    <box id="1" size="0.055,5,0.2" movable="false"><body position="-2.5,0,0" orientation="0,0,0" /></box><box id="2" size="0.055,5.5874999999999995,0.2" movable="false"><body position="0,1.25,0" orientation="63.66,0,0" /></box><box id="3" size="0.055,5.5874999999999995,0.2" movable="false"><body position="0,-1.25,0" orientation="-63.66,0,0" /></box><light id="light" position="0,0,0.5" orientation="0,0,0" color="yellow" intensity="10.0" medium="leds" />
     <floor id="floor" source="loop_functions" pixels_per_meter="100" />
 
     <distribute id="robots">
-      <position method="uniform" min="-5.0,-4.0,0" max="5.0,4.0,0" />
+      <position method="uniform" min="-2.5,-1.25,0" max="0,1.25,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
-      <entity quantity="10" max_trials="100">
+      <entity quantity="2" max_trials="100">
         <foot-bot id="fb" rab="1">
           <controller config="lua" />
         </foot-bot>

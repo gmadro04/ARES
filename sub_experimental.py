@@ -21,30 +21,30 @@ import pyfiglet
 
 
 ! IMPORTANTE !
-LOS UNICOS PARAMETROS QUE DEBES MODIFICAR MANUALMENTE SON:
+LOS ÚNICOS PARÁMETROS QUE DEBES MODIFICAR MANUALMENTE SON:
 --> variables "Fallos" : Especifica si deseas trabajar con fallos o no
---> variable "tipo_control" : Especifica la categoria del software de control que estas evaluando
---> Variable "misionID" : Especifica el tipo de mision que vas a evaluar, debe ser coherente con el software de control correpondiente a la mision
---> Varaibles "codigos" : Debes especificar el software de control a evaluar seguún la mision y la clase en la ruta de esta vaiarables
+--> variable "tipo_control" : Especifica la categoría del software de control que estas evaluando
+--> Variable "misionID" : Especifica el tipo de misión que vas a evaluar, debe ser coherente con el software de control correspondiente a la misión
+--> Variables "códigos" : Debes especificar el software de control a evaluar según la misión y la clase en la ruta de esta variables
 ---------------------------------------------------------------------------------------------------------------------------------------------------
-|*| Mision a evaluar ---> Cada comportamiento colectivo (software de control) se evalua en una misión especifica
-°° Obstacle_avoid_dance -- Mision exploración
-°° Agreggation -- Mision agregación
-°° Pattern_Formation -- Mision formación de patrones
-Mision ID ---> Toma un valor para poder evaluar la mision a ejecutar
-* Mision ID = 1 -> Mision exploración
-* Mision ID = 2 -> Mision agregación
-* Mision ID = 3 -> Mision marcha en formación
-* Mision ID = 4 -> Mision toma de decisiones colectiva
+|*| Misión a evaluar ---> Cada comportamiento colectivo (software de control) se evalúa en una misión especifica
+°° Obstacle_avoid_dance -- Misión exploración
+°° Aggregation -- Misión agregación
+°° Pattern_Formation -- Misión formación de patrones
+Misión ID ---> Toma un valor para poder evaluar la misión a ejecutar
+* Misión ID = 1 -> Misión exploración
+* Misión ID = 2 -> Misión agregación
+* Misión ID = 3 -> Misión marcha en formación
+* Misión ID = 4 -> Misión toma de decisiones colectiva
 
-|*| Software de control -> Se dividen en dos categorias  1-> A y 2-> B
+|*| Software de control -> Se dividen en dos categorías  1-> A y 2-> B
 Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
----------- Comportamiento categoria A ----------
+---------- Comportamiento categoría A ----------
 * A_obstacleAvoiddance_sta.lua
 * A_aggregation_0_rb_taxis.lua
 * A_pattern_formation_flocking.lua
 * A_color_selection_det.lua
----------- Comportamiento categoria B ----------
+---------- Comportamiento categoría B ----------
 * B_obstacleAvoiddance_vec.lua
 * B_aggregation_spots.lua
 * B_pattern_formation.lua
@@ -52,13 +52,13 @@ Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 """
 
 """ RUTAS DE LOS DIRECTORIOS Y CONFIGURACIONES"""
-# ----------------- CONFIGURACIÓN DE FALLOS, TIPO DE SOFTWWARE DE CONTROL Y MISION A EJECUTAR
-# -------------------------- Puedes trabajar con el enjmabre sin fallos o con fallos
+# ----------------- CONFIGURACIÓN DE FALLOS, TIPO DE SOFTWARE DE CONTROL Y MISIÓN A EJECUTAR
+# -------------------------- Puedes trabajar con el enjambre sin fallos o con fallos
 # EL PORCENTAJE DE FALLOS DEL TOTAL DEL ENJAMBRE ES 30%
 Fallos = "No" # MOdifica esta variable según tu evaluación Si, No
-tipo_control = "B" # Especifica que categoria de comportamiento estas evaluando
-# ------------------------- Mision ID
-misionID = 3 # Configura el id de la mision a evaluar 1,2,3,4
+tipo_control = "B" # Especifica que categoría de comportamiento estas evaluando
+# ------------------------- Misión ID
+misionID = 3 # Configura el id de la misión a evaluar 1,2,3,4
 if misionID == 1:
     mision = 'Exploración'
 elif misionID == 2:
@@ -78,28 +78,28 @@ dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modific
 file = dir+"/"+"experimento.argos" # cargamos el archivo .argos
 #cargamos los datos desde fichero
 tree = ET.parse(file)
-#cargamos el elemento raiz
+#cargamos el elemento raíz
 root = tree.getroot()
 # ----------------------------------------------------------------------------------
-"""FUNCION CONFIGURACION PARAMETROS EXPERIMENTO"""
+"""FUNCIÓN CONFIGURACIÓN PARÁMETROS EXPERIMENTO"""
 def modificar_archivo(file,exp,arenas,tams,semilla):
-    """ Configuración parametros básicos """
-    arena_params, parametros = loop.params_arena(arenas,tams)    # Tamaño de la arena grande,mediana,pequeña y configuracion de atributos
-    Obstaculos = False  # Obstaculos en el escenario si o no, según la eleccion tipo de distribución y tipo de obstaculo
+    """ Configuración parámetros básicos """
+    arena_params, parametros = loop.params_arena(arenas,tams)    # Tamaño de la arena grande,mediana,pequeña y configuración de atributos
+    Obstaculos = False  # Obstáculos en el escenario si o no, según la elección tipo de distribución y tipo de obstáculo
     # Numero de robots y tiempo de duración del experimento
     #robots =  exp*(incremento_robots + num_robots_inicial) if exp >=1  else num_robots_inicial
     robots = t_robots[exp]
     time = 240 # Duración experimento en seg
-    """ CONFIGURACION ARCHIVO """
-    loop.framework_label(file, time, codigos, Fallos, semilla) #Configuración software de control y tiempo ejecucion
+    """ CONFIGURACIÓN ARCHIVO """
+    loop.framework_label(file, time, codigos, Fallos, semilla) #Configuración software de control y tiempo ejecución
     # Configuración de arena
     loop.arena_configuracion(file,arena_params, params=parametros, robots=robots)
-    # Configuración obstaculos en la arena
+    # Configuración obstáculos en la arena
     loop.obstaculos_arena(file=file,obs=Obstaculos,pos_obs=parametros["Pos"],params=parametros)
-    # configuración parametros loop_functions
+    # configuración parámetros loop_functions
     loop.loops_params(file=file,tipo_arena=parametros["Tipo de arena"],tam_arena=parametros["Tamaño arena"],
                     exp=exp,obstaculos=Obstaculos, robots=robots, m_ID=misionID, E_fallos=Fallos, T_Control = tipo_control)
-    # Parametros simulación.
+    # Parámetros simulación.
     simulacion = pd.DataFrame([parametros["Tamaño arena"],robots,str(misionID)+"-"+mision,time,Fallos, tipo_control],
                                 index=["TAMAÑO:","# ROBOTS:","TIPO MISION:","T_EXPERIMENTO:","FALLOS:", "CLASE SOFTWARE"])
     print(pyfiglet.figlet_format("Arena" + parametros['Tipo de arena']))
@@ -110,7 +110,7 @@ def modificar_archivo(file,exp,arenas,tams,semilla):
 num_robots_inicial = 2
 incremento_robots = 5
 num_experimentos = 12 # Puedes cambiar esto al número deseado de ejecuciones (exp=12, robots= 2,5...100)
-t_robots = [2,5,10,20,30,40,50,60,70,80,90,100] # Tamaño del enjambre con el que se trabajn los experimentos
+t_robots = [2,5,10,20,30,40,50,60,70,80,90,100] # Tamaño del enjambre con el que se trabajan los experimentos
 # ----------------------------------------------------------------------------------
 if Fallos == "No":
     for arena in range(5): # Ejecución por tipos de arena T,C,H6,O8,P12 range(5)
@@ -143,7 +143,7 @@ else:
                 # Ejecuta el experimento múltiples veces con fallos en los robots
                 contador = 0
                 filtro2 = filtro[filtro["Arenasize"] == tam] # filtro datos por tamaño de arena
-                semillas = filtro2['Seed'].to_list() # se extrea los valores de las semillas correspondientes
+                semillas = filtro2['Seed'].to_list() # se extrae los valores de las semillas correspondientes
                 for exp in range(num_experimentos):
                     for i in range(10): # 10 ejecuciones por cada tamaño de enjambre
                         iteración = contador + i

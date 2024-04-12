@@ -1,11 +1,11 @@
 """EN ESTE ARCHIVO SE ENCUENTRAN LAS FUNCIONES CON LAS QUE
-    SE GENERAN LOS PARAMETROS QUE COMPONEN LOS EXPERIMENTOS"""
+    SE GENERAN LOS PARÁMETROS QUE COMPONEN LOS EXPERIMENTOS"""
 import xml.etree.ElementTree as ET
 import numpy as np
 import random
 import math
 
-"""FUNCIONES DE PARAMETROS BASICOS"""
+"""FUNCIONES DE PARÁMETROS BÁSICOS"""
 
 def params_arena(A_t,N_a):
     # Se selecciona el tipo de arena que se va a trabajar y modificar
@@ -14,7 +14,7 @@ def params_arena(A_t,N_a):
 
     arena = arenas[A_t] # Tipo de arena A_t
     dim_tam = dim_tam[N_a] # Tamaño de la arena N_a
-    # Parametros de configuración segun la arena
+    # Parámetros de configuración según la arena
 
     if arena == "Cuadrada":
         conf_params, parametros = parametros_arena_cuadrada(dim_tam,arena)
@@ -53,7 +53,7 @@ def framework_label (file,time,codigos, fallos,semilla):
 def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID, E_fallos, T_Control):
     tree = ET.parse(file)
     root = tree.getroot()
-    # MODIFICAR PARAMETROS LOOP_FUNCTIONS
+    # MODIFICAR PARÁMETROS LOOP_FUNCTIONS
     loops = root.find("loop_functions") #
     random_seed_value = root.find(".//framework/experiment").get("random_seed")
 
@@ -72,15 +72,15 @@ def loops_params(file,tipo_arena,tam_arena,exp,obstaculos,robots,m_ID, E_fallos,
             Eparams.set("T_control",str(T_Control))
     tree.write(file)
 
-"""FUNCIONES CONFIGURACION PARAMETROS SEGUN LA ARENA"""
+"""FUNCIONES CONFIGURACIÓN PARÁMETROS SEGÚN LA ARENA"""
 
 """
-    En el disccionario de configuración "arena_conf_params" el orden es el siguiente
+    En el diccionario de configuración "arena_conf_params" el orden es el siguiente
     La etiqueta corresponde al box dentro de arena en el archivo
     Donde:
     1. la primera columna es el atributo "id" del box
     2. la segunda columna es el atributo size del box
-    3. la terceera columna es el atributo position del body
+    3. la tercerea columna es el atributo position del body
     4. la cuarta columna es el atributo orientation del body
 """
 def parametros_arena_cuadrada(tamaño,tipo_arena):
@@ -88,17 +88,17 @@ def parametros_arena_cuadrada(tamaño,tipo_arena):
     if tamaño == "pequena":
         size  = 5 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     elif tamaño ==  "mediana":
         size  = 8 # medida de la arena mediana
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     elif tamaño == "grande":
         size  = 12 # medida de la arena grande
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     else:
-        print("¡¡ ERROR DE CONFIGURACION DE PARAMETROS !!")
+        print("¡¡ ERROR DE CONFIGURACIÓN DE PARÁMETROS !!")
 
     parametros = {
         'Tipo de arena': tipo_arena,
@@ -107,7 +107,7 @@ def parametros_arena_cuadrada(tamaño,tipo_arena):
         'T_arena': size,
         'Pos': pos
     }
-    # Parametros configuración de la arena
+    # Parámetros configuración de la arena
     arena_conf_params = {
     "Cuadrada": [
         ('1', ",".join(map(str,[0.055,box_size,0.2])), ",".join(map(str,[pos,0,0])), '0,0,0'),
@@ -124,21 +124,21 @@ def parametros_arena_triangular(tamaño,tipo_arena):
     if tamaño == "pequena":
         size  = 5 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     elif tamaño ==  "mediana":
         size  = 8 # medida de la arena mediana
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     elif tamaño == "grande":
         size  = 12 # medida de la arena grande
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     else:
-        print("¡¡ ERROR DE CONFIGURACION DE PARAMETROS !!")
+        print("¡¡ ERROR DE CONFIGURACIÓN DE PARÁMETROS !!")
     # En esta arena es necesario establecer los parametros L_p y R_param
     L = round(math.sqrt((2**2)+(4**2)),2)
     R_param = size/4
-    # print("Razones: ",L, R_param)    # Parametros basicos
+    # print("Razones: ",L, R_param)    # Parámetros básicos
     parametros = {
         'Tipo de arena': tipo_arena,
         'Tamaño arena': tamaño,
@@ -146,7 +146,7 @@ def parametros_arena_triangular(tamaño,tipo_arena):
         'T_arena': size,
         'Pos': pos
     }
-    # Parametros configuración de la arena
+    # Parámetros configuración de la arena
     arena_conf_params = {
     "Triangular": [
         ('1', ",".join(map(str,[0.055,box_size,0.2])), ",".join(map(str,[-pos,0,0])),'0,0,0'),
@@ -161,21 +161,21 @@ def parametros_arena_hexagonal(tamaño,tipo_arena):
     if tamaño == "pequena":
         size  = 5 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     elif tamaño ==  "mediana":
         size  = 8 # medida de la arena mediana
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     elif tamaño == "grande":
         size  = 12 # medida de la arena grande
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     else:
-        print("¡¡ ERROR DE CONFIGURACION DE PARAMETROS !!")
+        print("¡¡ ERROR DE CONFIGURACIÓN DE PARÁMETROS !!")
     # En esta arena es necesario establecer los parametros L_p y R_param
     L = round(math.sqrt((1**2)+(2**2)),2)
     R_param = size/4
-    # print("Razones: ",L, R_param)    # Parametros basicos
+    # print("Razones: ",L, R_param)    # Parámetros básicos
     parametros = {
         'Tipo de arena': tipo_arena,
         'Tamaño arena': tamaño,
@@ -183,7 +183,7 @@ def parametros_arena_hexagonal(tamaño,tipo_arena):
         'T_arena': size,
         'Pos': pos
     }
-    # Parametros configuración de la arena
+    # Parámetros configuración de la arena
     arena_conf_params = {
     "Hexagonal": [
         ('1', ",".join(map(str,[0.055,R_param*2.66,0.2])), ",".join(map(str,[R_param*2.2893,0,0])),'0,0,0'),
@@ -201,21 +201,21 @@ def parametros_arena_octagonal(tamaño,tipo_arena):
     if tamaño == "pequena":
         size  = 5 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     elif tamaño ==  "mediana":
         size  = 8 # medida de la arena mediana
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     elif tamaño == "grande":
         size  = 12 # medida de la arena grande
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     else:
-        print("¡¡ ERROR DE CONFIGURACION DE PARAMETROS !!")
+        print("¡¡ ERROR DE CONFIGURACIÓN DE PARÁMETROS !!")
     # En esta arena es necesario establecer los parametros L_p y R_param
     L = round(math.sqrt((1**2)+(1**2)),2)
     R_param = size/4
-    # print("Razones: ",L, R_param)    # Parametros basicos
+    # print("Razones: ",L, R_param)    # Parámetros básicos
     parametros = {
         'Tipo de arena': tipo_arena,
         'Tamaño arena': tamaño,
@@ -223,7 +223,7 @@ def parametros_arena_octagonal(tamaño,tipo_arena):
         'T_arena': size,
         'Pos': pos
     }
-    # Parametros configuración de la arena
+    # Parámetros configuración de la arena
     arena_conf_params = {
     "Octagonal": [
         ('1', ",".join(map(str,[0.055,size/2,0.2])), ",".join(map(str,[pos,0,0])),'0,0,0'),
@@ -243,21 +243,21 @@ def parametros_arena_dodecagono(tamaño,tipo_arena):
     if tamaño == "pequena":
         size  = 5 # medida de la arena pequeña
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     elif tamaño ==  "mediana":
         size  = 8 # medida de la arena mediana
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     elif tamaño == "grande":
         size  = 12 # medida de la arena grande
         box_size = size # tamaño de las cajas que rodean la arena
-        pos = 2+0.5*(abs(size-4)) # razon de la posición segun cambie el tamaño
+        pos = 2+0.5*(abs(size-4)) # razón de la posición según cambie el tamaño
     else:
-        print("¡¡ ERROR DE CONFIGURACION DE PARAMETROS !!")
+        print("¡¡ ERROR DE CONFIGURACIÓN DE PARÁMETROS !!")
     # En esta arena es necesario establecer los parametros L_p y R_param
     L = round(math.sqrt((1**2)+(1**2)),2)
     R_param = size/4
-    # print("Razones: ",L, R_param)    # Parametros basicos
+    # print("Razones: ",L, R_param)    # Parámetros básicos
     parametros = {
         'Tipo de arena': tipo_arena,
         'Tamaño arena': tamaño,
@@ -265,7 +265,7 @@ def parametros_arena_dodecagono(tamaño,tipo_arena):
         'T_arena': size,
         'Pos': pos
     }
-    # Parametros configuración de la arena
+    # Parámetros configuración de la arena
     arena_conf_params = {
     "Dodecagono": [
         ('1', ",".join(map(str,[0.055,R_param*1.1,0.2])), ",".join(map(str,[-pos,0,0])),'0,0,0'),
@@ -305,7 +305,7 @@ def distribucion(file,arena_params,params):
 
     return pos_min, pos_max
 
-""" CONFIGURACION ARENA """
+""" CONFIGURACIÓN ARENA """
 """
     En esta parte se configura la arena donde se va a ejecutar el experimento
     1. Se ajusta tanto el tamaño de la arena (plano X,Y)
@@ -319,18 +319,18 @@ def arena_configuracion(file,arena_params,params,robots):
     arena = root.find(".//arena")
     # print("# Etiquetas de arena:", len(arena)) # Cuantas tags hay en el archivo
     if arena is not None:
-        # Realiza las modificaciones que desees en la etiqueta "arena" y sus subetiquetas aquí
+        # Realiza las modificaciones que desees en la etiqueta "arena" y sus sub etiquetas aquí
         # nuevo_size = [params['T_arena'],params['T_arena'],1] # Configuración arena con su tamaño
-        size = [17,17,1] # Tamaño de la arena, estandar
+        size = [17,17,1] # Tamaño de la arena, estándar
         arena.set("size", ",".join(map(str, size))) # Nuevas dimensiones de la arena  Convierte la lista a una cadena separada por comas
 
-    # Borra las subetiquetas <box> dentro de la etiqueta <arena>
+    # Borra las sub etiquetas <box> dentro de la etiqueta <arena>
     for box in arena.findall("box"):
         arena.remove(box)
 
-    # Crea las subetiquetas <box> según el tipo de arena
+    # Crea las sub etiquetas <box> según el tipo de arena
     arena_type = params['Tipo de arena']
-    # Crea las subetiquetas <box> según el tipo de arena y las variables configuradas
+    # Crea las sub etiquetas <box> según el tipo de arena y las variables configuradas
     arena_configuration = arena_params.get(params['Tipo de arena'], [])
 
     for x, configuration in enumerate(arena_configuration):
@@ -344,14 +344,14 @@ def arena_configuracion(file,arena_params,params,robots):
         body.set("orientation", configuration[3])
         #arena.append(box)
         arena.insert(x,box)
-    #Funcion que configura la distribución de los robots
+    #Función que configura la distribución de los robots
     pos_min, pos_max = distribucion(file,arena_params,params)
     # Etiqueta cantidad de robots y distribución de robots--------------------
     distribute = arena.find("distribute")
     if distribute is not None:
         entity = distribute.find("entity")
         position = distribute.find("position")
-        # Distribución de los robots en el escenario segun las posicion de las paredes que lo cierran
+        # Distribución de los robots en el escenario según las posición de las paredes que lo cierran
         # pos_min = [-pos[0],-pos[1],0]
         # pos_max = [pos[0],pos[1],0]
         if entity is not None and position is not None:
@@ -367,10 +367,10 @@ def arena_configuracion(file,arena_params,params,robots):
 def obstaculos_arena(file,obs,pos_obs,params):
     tree = ET.parse(file)
     root = tree.getroot()
-    # Selecciona un numero de obstaculos en la arena según su tamaño
+    # Selecciona un numero de obstáculos en la arena según su tamaño
     if params["Tamaño arena"] == "pequena":
         nObs = 5
-        # print("Arena pequeña obstaculo 5")
+        # print("Arena pequeña obstáculo 5")
     else:
         nObs = random.randrange(10, 20, 2)
     # Etiqueta de configuración de la arena
@@ -382,11 +382,11 @@ def obstaculos_arena(file,obs,pos_obs,params):
     for distribute in arena.findall(".//distribute"):
         if "box" in ET.tostring(distribute).decode():
             etiqueta_existe = True # la etiqueta existe
-            etiqueta_a_eliminar = distribute # Se identifica la etiqueta de obstaculos
+            etiqueta_a_eliminar = distribute # Se identifica la etiqueta de obstáculos
         else:
             etiqueta_existe = False # No existe la etiqueta
     # print("-----SI entra -----")
-    if obs and not etiqueta_existe: # Si se requiere obstaculos y la etiqueta no existe la crea
+    if obs and not etiqueta_existe: # Si se requiere obstáculos y la etiqueta no existe la crea
         # Crea la etiqueta '<distribute>' y agrega contenido
         #print("ESTADO1")
         distribute = ET.Element("distribute")
@@ -411,21 +411,21 @@ def obstaculos_arena(file,obs,pos_obs,params):
         box = ET.Element("box")
         box.set("id", "o")
         #box.set("size", "0.2, 0.2, 0.2")
-        box.set("size", ",".join(map(str,boxes))) # Inserto los obtaculos de tamaño aleatorio
+        box.set("size", ",".join(map(str,boxes))) # Inserto los obstáculos de tamaño aleatorio
         box.set("movable", "false")
         entity.append(box)
 
         distribute.append(entity)
 
-        # Agrega la nueva '<obstaculos>' a 'arena'
+        # Agrega la nueva '<obstáculos>' a 'arena'
         #arena.append(distribute)
         arena.insert(len(arena), distribute)
-    # Si la variable externa es False y existe una subetiqueta <distribute>, elimínala
+    # Si la variable externa es False y existe una sub etiqueta <distribute>, elimínela
     elif not obs and arena.find(".//distribute") is not None:
         #print("ESTADO2")
         # Encuentra la etiqueta '<distribute>' dentro de '<arena>' con contenido específico y la elimina
-        # para el caso se necesita eliminar los obstaculos, por lo que se diferencia por el
-        # atributo "box" o "cilinder"
+        # para el caso se necesita eliminar los obstáculos, por lo que se diferencia por el
+        # atributo "box" o "cylinder"
         etiqueta_a_eliminar = None
         for distribute in arena.findall(".//distribute"):
             # Realiza una verificación basada en el contenido único
@@ -433,16 +433,16 @@ def obstaculos_arena(file,obs,pos_obs,params):
                 etiqueta_a_eliminar = distribute
                 break
 
-        # Si se encontró la etiqueta a eliminar, elimínala
+        # Si se encontró la etiqueta a eliminar, elimínela
         if etiqueta_a_eliminar is not None:
             arena.remove(etiqueta_a_eliminar)
-    elif not obs and not etiqueta_existe: # No se rerquiere obs y la etiqueta no existe, salta
+    elif not obs and not etiqueta_existe: # No se requiere obs y la etiqueta no existe, salta
         #print("ESTADO3")
         pass # no hace nada se salta todo
     elif obs and etiqueta_existe: # Se requieren obs y ya existe una etiqueta
-        # Se borra la etiqueta anteriror y se crea una nueva
+        # Se borra la etiqueta anterior y se crea una nueva
         #print("ESTADO4")
-        #Borrando la etiqeuta existente
+        #Borrando la etiqueta existente
         if etiqueta_a_eliminar is not None:
             arena.remove(etiqueta_a_eliminar)
         #Ahora se crea la nueva etiqueta
@@ -474,7 +474,7 @@ def obstaculos_arena(file,obs,pos_obs,params):
 
         distribute.append(entity)
 
-        # Agrega la nueva '<obstaculos>' a 'arena'
+        # Agrega la nueva '<obstáculos>' a 'arena'
         #arena.append(distribute)
         arena.insert(len(arena), distribute)
     # Se guardan los cambios realizados
