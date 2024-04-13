@@ -52,13 +52,16 @@ Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 """
 
 """ RUTAS DE LOS DIRECTORIOS Y CONFIGURACIONES"""
+# ##############################################################################################
+""" ¡¡ AQUÍ SE DEBEN CONFIGURAR MANUALMENTE LOS PARÁMETROS 
+CON LOS QUE SE DESEAN REALIZAR LOS EXPERIMENTOS !! """
 # ----------------- CONFIGURACIÓN DE FALLOS, TIPO DE SOFTWARE DE CONTROL Y MISIÓN A EJECUTAR
 # -------------------------- Puedes trabajar con el enjambre sin fallos o con fallos
-# EL PORCENTAJE DE FALLOS DEL TOTAL DEL ENJAMBRE ES 30%
-Fallos = "No" # MOdifica esta variable según tu evaluación Si, No
-tipo_control = "B" # Especifica que categoría de comportamiento estas evaluando
+# EL PORCENTAJE DE FALLOS DEL TOTAL DEL ENJAMBRE ES 10% 20% 30%
+Fallos = "No" # Modifica esta variable según tu evaluación "Si, No"
+tipo_control = "A" # "A-B" Especifica que categoría de comportamiento estas evaluando
 # ------------------------- Misión ID
-misionID = 3 # Configura el id de la misión a evaluar 1,2,3,4
+misionID = 1 # Configura el id de la misión a evaluar 1,2,3,4
 if misionID == 1:
     mision = 'Exploración'
 elif misionID == 2:
@@ -68,9 +71,31 @@ elif misionID == 3:
 else:
     mision = 'Decisión Colectiva'
 # ----------------------------------------------------------------------------------
+""" CONFIGURA EL SOFTWARE DE CONTROL SEGÚN LA MISIÓN Y LA CLASE DE SOFTWARE 
+    PARA LLEVAR A CABO LOS EXPERIMENTOS 
+    
+    ---------- Comportamiento categoría A ----------
+    * A_obstacleAvoiddance_sta.lua
+    * A_aggregation_0_rb_taxis.lua
+    * A_pattern_formation_flocking.lua
+    * A_color_selection_det.lua
+    ---------- Comportamiento categoría B ----------
+    * B_obstacleAvoiddance_vec.lua
+    * B_aggregation_spots.lua
+    * B_pattern_formation.lua
+    * B_color_selection_prob.lua
+    
+    EJEMPLO 
+    codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/"AQUÍ DEBE IR EL NOMBRE DEL SOFTWARE DE CONTROL"
+    
+    codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/softwareControl.lua
+"""
 # --------------------------Ruta software de control
-codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_pattern_formation_flocking.lua"
+codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_obstacleAvoiddance_sta.lua"
 # ----------------------------------------------------------------------------------
+# ##############################################################################################
+
+""" DE AQUÍ EN ADELANTE NADA POR MODIFICAR """
 # ------------------------- Ruta del archivo "file".argos del experimento (XML)
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # ----------------------------------------------------------------------------------

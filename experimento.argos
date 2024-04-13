@@ -4,12 +4,12 @@
   
   
   <framework>
-    <experiment length="240" ticks_per_second="10" random_seed="162" />
+    <experiment length="240" ticks_per_second="10" random_seed="144" />
     <system threads="0" />
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function">
-    <params num_experiment="1" arena="Triangular" tam="pequena" fallos="No" T_control="B" num_circles="1" mision="3" obstaculos="False" robots="2" seed="162" T_Control="A" />
+    <params num_experiment="1" arena="Triangular" tam="pequena" fallos="No" T_control="A" num_circles="1" mision="1" obstaculos="False" robots="50" seed="144" T_Control="A" />
   </loop_functions>
 
   <controllers>
@@ -29,7 +29,7 @@
         <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
         <footbot_light implementation="rot_z_only" show_rays="false" />
       </sensors>
-      <params script="/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_pattern_formation_flocking.lua" />
+      <params script="/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_obstacleAvoiddance_sta.lua" />
     </lua_controller>
 
   </controllers>
@@ -43,7 +43,7 @@
     <distribute id="robots">
       <position method="uniform" min="-2.5,-1.25,0" max="0,1.25,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
-      <entity quantity="2" max_trials="100">
+      <entity quantity="50" max_trials="100">
         <foot-bot id="fb" rab="1">
           <controller config="lua" />
         </foot-bot>
