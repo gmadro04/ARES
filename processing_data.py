@@ -250,7 +250,7 @@ def metrica_flexibilidad(data):
     tam_arena = data['Arenasize'].unique() # se extraen los tamaños de la arena
     # --- calculo de los delatX
     """
-    Se toman en cuenta los perimetros del plano donde se encierra la arena
+    Se toman en cuenta los perímetros del plano donde se encierra la arena
     según su tamaño, entonces:
     pequeña = 20 m - mediana = 32 m - grande =  48 m
     """
