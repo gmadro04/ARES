@@ -41,7 +41,7 @@ def graficar_performance(df, tam_arena, mision_id, tipo_mision, clase_soft, fall
     plt.figure(figsize=(10, 10))
 
     # Configurar el boxplot con notch
-    ax = sns.boxplot(x='NumRobots', y='Performance', data=df, notch=True, width=0.2,linecolor='black')
+    ax = sns.boxplot(x='NumRobots', y='Performance', data=df, notch=True, width=0.2,linecolor='black', linewidth=1.5)
     #offset = 100 if mision_id != 2 else 1
     if mision_id == 1:
         offset = 15
@@ -79,11 +79,12 @@ def graficar_performance(df, tam_arena, mision_id, tipo_mision, clase_soft, fall
         ax.text(x_vals[i], value, f'{value:.2f}', ha='left', va='bottom', color='black')
 
     # Añadir etiquetas y título
-    plt.xlabel('Número de Robots')
-    plt.ylabel(f'Performance ({u_medida})')
-    plt.title(f'Rendimiento - MisionID: {mision_id} {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clase_soft} - Fallos: {fallos}', pad=25)
+    plt.xlabel('Número de Robots', fontsize=16)
+    plt.ylabel(f'Performance ({u_medida})', fontsize=16)
+    plt.title(f'Rendimiento \n MisionID: {mision_id} {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clase_soft} - Fallos: {fallos}', pad=25, fontsize=16)
     plt.grid(True, linestyle='--', alpha=0.7)
-
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
     # Guardar la figura
     plt.savefig(ruta+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
     #plt.show()
@@ -96,9 +97,9 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
     m_metrica, m_binomial = np.zeros(((len(robots)-1), (len(robots)-1))), np.zeros(((len(robots)-1), (len(robots)-1)))# matrix con las medianas de los datos procesados mxn
 
     # Calcula la mediana del set de datos de la métrica y se almacena en la matriz
-    for i, lista in enumerate(metrica): # iterar en las listas de metrica filas
+    for i, lista in enumerate(metrica): # iterar en las listas de métrica filas
         for j in range(i, m_metrica.shape[1]): # iteración por columnas de la matriz
-            sublista = metrica[i][j - i]  # Obtiene la sublista actual
+            sublista = metrica[i][j - i]  # Obtiene la sub-lista actual
             mediana = np.median(sublista)  # Calcula la mediana
             m_metrica[i, j] = mediana  # Almacena la mediana en la matriz
             m_binomial[i,j] = test[i][j-i][0]
@@ -117,13 +118,17 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
 
     # Crear un heatmap con Seaborn
     sns.heatmap(m_metrica, annot=True, cmap='viridis', linewidths=0.5, square=True, ax=ax,
-                xticklabels=robots[1:12], yticklabels=robots[0:11][::-1], cbar_kws={'label': 'Valor de la métrica'})
+                xticklabels=robots[1:12], yticklabels=robots[0:11][::-1], cbar_kws={'orientation': 'vertical'})#, cbar_kws={'label': 'Valor de la métrica', 'orientation': 'horizontal'}
 
     titulo_plot = f'{mision_id}{clas_sof}.Escalabilidad-{tipo_mision}-Arena-{tam_arena}'
     # Títulos y etiquetas
-    ax.set_title(f'Escalabilidad - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}')
-    ax.set_xlabel('Tamaño del enjambre (#Robots)')
-    ax.set_ylabel('Tamaño del enjambre (#Robots)')
+    ax.set_title(f'Escalabilidad - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}', pad=25, fontsize=16)
+    ax.set_xlabel('Tamaño del enjambre (#Robots)', fontsize=16)
+    ax.set_ylabel('Tamaño del enjambre (#Robots)', fontsize=16)
+
+    # Ajustar el tamaño de las etiquetas de los ejes
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
 
     # Ajuste de diseño
     fig.tight_layout()
@@ -186,9 +191,13 @@ def graficar_metrica_robustez(subset, robustez, tam_arena, mision_id, tipo_misio
     titulo_plot = f'{mision_id}{clas_sof}.Robustez-{tipo_mision}-Arena-{tam_arena}'
     
     # Títulos y etiquetas
-    ax.set_title(f'Robustez - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}')
-    ax.set_xlabel('Tamaño del enjambre (#Robots)')
-    ax.set_ylabel('Modo de Fallo FM')
+    ax.set_title(f'Robustez - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}', pad=25, fontsize=16)
+    ax.set_xlabel('Tamaño del enjambre (#Robots)', fontsize=14)
+    ax.set_ylabel('Modo de Fallo FM', fontsize=14)
+    
+    # Ajustar el tamaño de las etiquetas de los ejes
+    plt.xticks(fontsize=12)
+    plt.yticks(fontsize=12)
     
     # Ajuste de diseño
     fig.tight_layout()
@@ -202,7 +211,7 @@ def graficar_metrica_robustez(subset, robustez, tam_arena, mision_id, tipo_misio
 """ FUNCIONES MANIPULACIÓN DE DATOS (CALCULO DE MÉTRICAS) """
 def metrica_escalabilidad(data):
     size_robots = data['NumRobots'].unique()  # obtener la lista de tamaños del enjambre #Robots
-    performance_robots = []  # lista para alamecenar el performance
+    performance_robots = []  # lista para almacenar el performance
 
     for n_robots in size_robots: # filtrar los datos por cantidad de robots
         subset = data[data['NumRobots'] == n_robots]
@@ -218,13 +227,13 @@ def metrica_escalabilidad(data):
         # Iteramos para comparar cada grupo de robots 2-5,2-10....90-100
         for k in range(i+1,len(size_robots)):
             f_es = [] # auxilar calculo de escalabilidad
-            test_bin = 0 # contador casos exito en test binomial
-            # Iteramos la matriz de datos del performance, filas corresponden a la cantidad de robots y las columnas al peroformace
+            test_bin = 0 # contador casos éxito en test binomial
+            # Iteramos la matriz de datos del performance, filas corresponden a la cantidad de robots y las columnas al performance
             for j in range(len(performance_robots[i,:])-1):
                 if performance_robots[i,j] != 0: # evitar la division por 0
                     deltaP = (performance_robots[k,j]-performance_robots[i,j]) / performance_robots[i,j]
                 elif performance_robots[k,j] >= performance_robots[i,j]:
-                    # Aunque sea 0 el anterior si el nuevo performnace es mayor, el deltaP = 1 hubo mejora de rendimiento
+                    # Aunque sea 0 el anterior si el nuevo performance es mayor, el deltaP = 1 hubo mejora de rendimiento
                     deltaP = 1
                 else: # el performance no fue mejor al anterior, no se cumple la condición 1, no escalable
                     deltaP = 0
@@ -233,12 +242,12 @@ def metrica_escalabilidad(data):
                 f_es.append(deltaP/deltaN)
                 if performance_robots[k,j] >= performance_robots[i,j]:
                     test_bin = test_bin + 1 # contabilizar casos exitosos 
-                    # se cumple la condición 1 de la maetrica, sistema escalable
+                    # se cumple la condición 1 de la métrica, sistema escalable
             # Se calcula el test binomial con los datos
             test_binomial = sm.stats.proportions_ztest(test_bin,len(performance_robots[i,:]),0.5)
-            test_list.append(test_binomial) # alamacenamiento resultado prueba binomial
+            test_list.append(test_binomial) # almacenamiento resultado prueba binomial
             listas.append(f_es)
-        escalabilidad.append(listas) # alamcenamiento calculo de la metrica
+        escalabilidad.append(listas) # almacenamiento calculo de la metrica
         re_test.append(test_list) # almacenamiento teste binomial 
         """Se gurada un arreglo de listas que contienen listas
         La lista final contiene 10 listas, que van en orden descendente es decir
@@ -248,7 +257,7 @@ def metrica_escalabilidad(data):
 def metrica_flexibilidad(data):
     size_robots = data['NumRobots'].unique()  # obtener la lista de tamaños del enjambre #Robots
     tam_arena = data['Arenasize'].unique() # se extraen los tamaños de la arena
-    # --- calculo de los delatX
+    # --- calculo de los deltaX
     """
     Se toman en cuenta los perímetros del plano donde se encierra la arena
     según su tamaño, entonces:
@@ -340,8 +349,8 @@ def metrica_robustez(data_n, data_f, modo_fallo):
     per_robots3 = np.array(per_robots3)
     robustez = [] # lista para almacenar el calculo de la metrica
     for i in range(len(size_robots)):
-        r1, r2, r3= [], [], [] # auxilar calculo de robustez
-        # Iteramos la matriz de datos del performance, filas corresponden a la cantidad de robots y las columnas al peroformace
+        r1, r2, r3= [], [], [] # auxiliar calculo de robustez
+        # Iteramos la matriz de datos del performance, filas corresponden a la cantidad de robots y las columnas al performance
         for j in range(len(per_robots[i,:])):
             # Operación con 10%, 20% y 30% 
             if per_robots[i,j] != 0: # evitar la division por 0
