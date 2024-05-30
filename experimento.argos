@@ -4,12 +4,12 @@
   
   
   <framework>
-    <experiment length="240" ticks_per_second="10" random_seed="124" />
+    <experiment length="240" ticks_per_second="10" random_seed="179" />
     <system threads="0" />
   </framework>
 
   <loop_functions library="./build/libloop_function.so" label="loop_function">
-    <params num_experiment="1" arena="Triangular" tam="pequena" fallos="No" T_control="A" num_circles="1" mision="1" obstaculos="False" robots="2" seed="124" T_Control="A" />
+    <params num_experiment="1" arena="Triangular" tam="pequena" fallos="No" T_control="A" num_circles="1" mision="1" obstaculos="False" robots="2" seed="179" T_Control="A" />
   </loop_functions>
 
   <controllers>
