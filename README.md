@@ -2,6 +2,8 @@
 # SWARM GENERATOR
 SWARM GENERATOR is a experimental generator of missions to swarms robotics. SWARM GENERATOR provides an experimental set up, a repository of collective behaviors (software control) and a protocol to study swarms robots and their properties. 
 
+![swarm generator work flow chart](Experimentos/tesis_diagram.png)
+
 [You can find more information about SWARM GENERATOR here](https://gmadro04.github.io/gmadro04/swarm_generator.html)
 # INSTALLATION
 In this section you will find materials and first instructions on how to prepare your computer please follow next steps to install everything you need to use SWARM GENERATOR. 
