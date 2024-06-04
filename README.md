@@ -1,12 +1,12 @@
 
-# SWARM GENERATOR
-SWARM GENERATOR is a experimental generator of missions to swarms robotics. SWARM GENERATOR provides an experimental set up, a repository of collective behaviors (software control) and a protocol to study swarms robots and their properties. 
+# ARES (Automating Robotics Experiments in Swarms)
+ARES is a experimental generator of missions to swarms robotics. ARES provides an experimental set up, a repository of collective behaviors (software control) and a protocol to study swarms robots and their properties. 
 
 ![swarm generator work flow chart](Experimentos/tesis_diagram.png)
 
-[You can find more information about SWARM GENERATOR here](https://gmadro04.github.io/gmadro04/swarm_generator.html)
+[You can find more information about ARES here](https://gmadro04.github.io/gmadro04/ARES.html)
 # INSTALLATION
-In this section you will find materials and first instructions on how to prepare your computer please follow next steps to install everything you need to use SWARM GENERATOR. 
+In this section you will find materials and first instructions on how to prepare your computer please follow next steps to install everything you need to use ARES. 
 
 ## Dependencies 
 
@@ -16,7 +16,7 @@ If you do not have installed Ubuntu the following tutorials will guide you step 
 
 * [Installing the OS: Ubuntu 20.04.5 LTS (Focal Fossa) 64bit](https://releases.ubuntu.com/focal/)
 
-### Installation of SWARM GENERATOR
+### Installation of ARES
 Once installed ARGoS3 open the folder where ARGoS3 was installed. Now place the project folder into the folder.
 
 ```bash
@@ -55,9 +55,9 @@ argos3 -c experimento.argos
 ```
 If the usual ARGoS interface appears, you’re ready to go.
 
-## How to use SWARM GENERATOR
+## How to use ARES
 
-SWARM GENERATOR provides launch scripts to start the experiments in a simulation on ARGoS3, process the results of experiments and generate a report with the results. The parameters of the launch scripts, such as the type of mission, type of control software, run experiments with/with out faults and control software (code collective behavior) must be set by editing the parameter sections of the following scripts.
+ARES provides launch scripts to start the experiments in a simulation on ARGoS3, process the results of experiments and generate a report with the results. The parameters of the launch scripts, such as the type of mission, type of control software, run experiments with/with out faults and control software (code collective behavior) must be set by editing the parameter sections of the following scripts.
 
 | Script | Description |
 | --- | --- |
@@ -74,7 +74,7 @@ SWARM GENERATOR provides launch scripts to start the experiments in a simulation
 
 ## Authors
 
-- [Gabriel Mauricio Madroñero Pachajoa](https://github.com/GMadro04)
+- [Gabriel Mauricio Madroñero Pachajoa](https://github.com/gmadro04)
 - [David Garzón Ramos](https://iridia.ulb.ac.be/~dgarzonramos/)
 
 ## Support
