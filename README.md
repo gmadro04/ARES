@@ -4,7 +4,7 @@ ARES is a experimental generator of missions to swarms robotics. ARES provides a
 
 ![swarm generator work flow chart](Experimentos/tesis_diagram.png)
 
-[You can find more information about ARES here](https://gmadro04.github.io/gmadro04/ARES.html)
+[You can find more information about ARES here](https://gmadro04.github.io/gmadro04/ares.html)
 # INSTALLATION
 In this section you will find materials and first instructions on how to prepare your computer please follow next steps to install everything you need to use ARES. 
 
@@ -20,7 +20,7 @@ If you do not have installed Ubuntu the following tutorials will guide you step 
 Once installed ARGoS3 open the folder where ARGoS3 was installed. Now place the project folder into the folder.
 
 ```bash
-    git clone https://github.com/GMadro04/SWARM_GENERATOR.git
+    git clone https://github.com/gmadro04/ARES
 ```
 ### Compiling and Installing
 
@@ -31,7 +31,7 @@ Once placed the project folder, you must compile and install the shared library 
 1. Enter the following commands in a terminal in order to prepare the code for the experiments.
 
 ```bash
-cd remplace your path-ARGoS3/SWARM_GENERATOR
+cd remplace your path-ARGoS3/ARES
 mkdir build
 cmake ../src
 make
@@ -40,17 +40,17 @@ make
 2. Set the environment variable ARGOS_PLUGIN_PATH to the path in which the build/ directory is located.
 
 ```bash
-export ARGOS_PLUGIN_PATH=$ARGOS_PLUGIN_PATH:$HOME/remplace your path-ARGoS3/SWARM_GENERATOR/build/
+export ARGOS_PLUGIN_PATH=$ARGOS_PLUGIN_PATH:$HOME/remplace your path-ARGoS3/ARES/build/
 ```
 
 3. You can also put this line into your $HOME/.bashrc file, so it will be automatically executed every time you open a terminal. You add the line by entering the following command.
 
 ```bash
-echo 'export ARGOS_PLUGIN_PATH=$ARGOS_PLUGIN_PATH:$HOME/remplace your path-ARGoS3/SWARM_GENERATOR/build/' >> ~/.bashrc
+echo 'export ARGOS_PLUGIN_PATH=$ARGOS_PLUGIN_PATH:$HOME/remplace your path-ARGoS3/ARES/build/' >> ~/.bashrc
 ```
 4. Now run the experiment to check if everything is OK.
 ```bash
-cd ~/remplace your path-ARGoS3/SWARM_GENERATOR/
+cd ~/remplace your path-ARGoS3/ARES/
 argos3 -c experimento.argos
 ```
 If the usual ARGoS interface appears, you’re ready to go.
