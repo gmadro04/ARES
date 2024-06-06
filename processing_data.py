@@ -122,7 +122,7 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
 
     titulo_plot = f'{mision_id}{clas_sof}.Escalabilidad-{tipo_mision}-Arena-{tam_arena}'
     # Títulos y etiquetas
-    ax.set_title(f'Escalabilidad - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}', pad=25, fontsize=16)
+    ax.set_title(f'Escalabilidad - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}', pad=25, fontsize=18)
     ax.set_xlabel('Tamaño del enjambre (#Robots)', fontsize=16)
     ax.set_ylabel('Tamaño del enjambre (#Robots)', fontsize=16)
 
@@ -132,8 +132,8 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
 
     # Ajuste de diseño
     fig.tight_layout()
-    fig.set_size_inches((12, 12))
-    plt.savefig(ruta+"/"+"Escalabilidad"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
+    fig.set_size_inches((11, 11))
+    plt.savefig(ruta+"/"+"Escalabilidad"+"/"+titulo_plot+".png", dpi=300, bbox_inches="tight")
     #plt.show()
     plt.close()
 
@@ -166,7 +166,7 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
     # Ajuste de diseño
     fig.tight_layout()
     fig.set_size_inches((8, 5))
-    plt.savefig(ruta+"/"+"Flexibilidad"+"/"+titulo_plot+".png", dpi=600, bbox_inches="tight")
+    plt.savefig(ruta+"/"+"Flexibilidad"+"/"+titulo_plot+".png", dpi=300, bbox_inches="tight")
     #plt.show()
     plt.close()
     
@@ -204,7 +204,7 @@ def graficar_metrica_robustez(subset, robustez, tam_arena, mision_id, tipo_misio
     fig.set_size_inches((8, 5))
     
     # Guardar la gráfica como archivo de imagen
-    plt.savefig(ruta + "/" + "Robustez" + "/" + titulo_plot + ".png", dpi=600, bbox_inches="tight")
+    plt.savefig(ruta + "/" + "Robustez" + "/" + titulo_plot + ".png", dpi=300, bbox_inches="tight")
     plt.close()
 
 
