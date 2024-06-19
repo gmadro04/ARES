@@ -1,6 +1,6 @@
 
 # ARES (Automating Robotics Experiments in Swarms)
-ARES is a experimental generator of missions to swarms robotics. ARES provides an experimental set up, a repository of collective behaviors (software control) and a protocol to study swarms robots and their properties. 
+ARES is a experimental environment to swarms robotics. ARES provides an experimental set up, a repository of collective behaviors (software control) and a protocol to study swarms robots and their properties.
 
 ![swarm generator work flow chart](Experimentos/tesis_diagram.png)
 
