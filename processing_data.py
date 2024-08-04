@@ -81,7 +81,7 @@ def graficar_performance(df, tam_arena, mision_id, tipo_mision, clase_soft, fall
     # Añadir etiquetas y título
     plt.xlabel('Número de Robots', fontsize=16)
     plt.ylabel(f'Performance ({u_medida})', fontsize=16)
-    plt.title(f'Rendimiento \n MisionID: {mision_id} {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clase_soft} - Fallos: {fallos}', pad=25, fontsize=16)
+    plt.title(f'Rendimiento \n Misión ({mision_id}): {tipo_mision} - Arena-Tamaño: {tam_arena} - Software: {clase_soft} - Fallos: {fallos}', pad=25, fontsize=16)
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
@@ -122,7 +122,7 @@ def graficar_metrica_escalabilidad(subset, metrica,test, tam_arena, mision_id, t
 
     titulo_plot = f'{mision_id}{clas_sof}.Escalabilidad-{tipo_mision}-Arena-{tam_arena}'
     # Títulos y etiquetas
-    ax.set_title(f'Escalabilidad - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}', pad=25, fontsize=18)
+    ax.set_title(f'Escalabilidad - Misión ({mision_id}): {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}', pad=25, fontsize=18)
     ax.set_xlabel('Tamaño del enjambre (#Robots)', fontsize=16)
     ax.set_ylabel('Tamaño del enjambre (#Robots)', fontsize=16)
 
@@ -159,7 +159,7 @@ def graficar_metrica_flexibilidad(P1,P2,P3,P4,mision_id, tipo_mision, clas_sof):
                 xticklabels=grupos, yticklabels=tams, cbar_kws={'label': 'Valor de la métrica'})
     titulo_plot = f'{mision_id}{clas_sof}.Flexibilidad-{tipo_mision}'
     # Títulos y etiquetas
-    ax.set_title(f'Flexibilidad - MisionID: {mision_id} {tipo_mision} - Software: {clas_sof}')
+    ax.set_title(f'Flexibilidad - Misión ({mision_id}): {tipo_mision} - Software: {clas_sof}')
     ax.set_xlabel('Densidad Robots')
     ax.set_ylabel('Tamaño Arena')
 
@@ -191,7 +191,7 @@ def graficar_metrica_robustez(subset, robustez, tam_arena, mision_id, tipo_misio
     titulo_plot = f'{mision_id}{clas_sof}.Robustez-{tipo_mision}-Arena-{tam_arena}'
     
     # Títulos y etiquetas
-    ax.set_title(f'Robustez - MisionID: {mision_id} {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}', pad=25, fontsize=16)
+    ax.set_title(f'Robustez - Misión ({mision_id}): {tipo_mision} - Arena- Tamaño: {tam_arena} - Software: {clas_sof}', pad=25, fontsize=16)
     ax.set_xlabel('Tamaño del enjambre (#Robots)', fontsize=14)
     ax.set_ylabel('Modo de Fallo FM', fontsize=14)
     
@@ -249,7 +249,7 @@ def metrica_escalabilidad(data):
             listas.append(f_es)
         escalabilidad.append(listas) # almacenamiento calculo de la metrica
         re_test.append(test_list) # almacenamiento teste binomial 
-        """Se gurada un arreglo de listas que contienen listas
+        """Se guarda un arreglo de listas que contienen listas
         La lista final contiene 10 listas, que van en orden descendente es decir
         la pos 0  contiene 10 listas, la pos 1 contiene 9 listas ... pos 9 1 lista
         esto debido a la forma en como operamos los grupos de robots"""
@@ -426,9 +426,9 @@ for clas_sof in tipo_sof:
             subset_f = mision_fallos[mision_fallos['Arenasize'] == tam_arena]
             """----- Graficar el boxplot de rendimiento para cada conjunto único de datos -----"""
             graficar_performance(subset, tam_arena, mision_id, tipo_mision, clas_sof, "No") # sin fallos
-            graficar_performance(subset_f[subset_f['Faults'] == "Si_1"], tam_arena, mision_id, tipo_mision, clas_sof, "Si_1") # 10% fallos
-            graficar_performance(subset_f[subset_f['Faults'] == "Si_2"], tam_arena, mision_id, tipo_mision, clas_sof, "Si_2") # 20% fallos
-            graficar_performance(subset_f[subset_f['Faults'] == "Si_3"], tam_arena, mision_id, tipo_mision, clas_sof, "Si_3") # 30% fallos
+            graficar_performance(subset_f[subset_f['Faults'] == "Si_1"], tam_arena, mision_id, tipo_mision, clas_sof, "Si 10%") # 10% fallos
+            graficar_performance(subset_f[subset_f['Faults'] == "Si_2"], tam_arena, mision_id, tipo_mision, clas_sof, "Si 20%") # 20% fallos
+            graficar_performance(subset_f[subset_f['Faults'] == "Si_3"], tam_arena, mision_id, tipo_mision, clas_sof, "Si 30%") # 30% fallos
             """----- Calcular escalabilidad -----"""
             escalabilidad, esc_binomial = metrica_escalabilidad(subset)
             #escalabilidad = metrica_escalabilidad(subset)

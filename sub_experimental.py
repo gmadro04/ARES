@@ -36,14 +36,14 @@ Misión ID ---> Toma un valor para poder evaluar la misión a ejecutar
 * Misión ID = 3 -> Misión marcha en formación
 * Misión ID = 4 -> Misión toma de decisiones colectiva
 
-|*| Software de control -> Se dividen en dos categorías  1-> A y 2-> B
+|*| Software de control -> Se dividen en dos instancias  1-> A y 2-> B
 Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
----------- Comportamiento categoría A ----------
+---------- Comportamiento instancia A ----------
 * A_obstacleAvoiddance_sta.lua
 * A_aggregation_0_rb_taxis.lua
 * A_pattern_formation_flocking.lua
 * A_color_selection_det.lua
----------- Comportamiento categoría B ----------
+---------- Comportamiento instancia B ----------
 * B_obstacleAvoiddance_vec.lua
 * B_aggregation_spots.lua
 * B_pattern_formation.lua
@@ -84,9 +84,8 @@ else:
     * B_pattern_formation.lua
     * B_color_selection_prob.lua
     
-    EJEMPLO 
     codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/"AQUÍ DEBE IR EL NOMBRE DEL SOFTWARE DE CONTROL"
-    
+    --- EJEMPLO ---
     codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/softwareControl.lua
 """
 # --------------------------Ruta software de control
