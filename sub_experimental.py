@@ -19,17 +19,21 @@ import pyfiglet
 
 Automating Robotics Experiments in Swarms
 
+||I ||||M ||||P ||||O ||||R ||||T ||||A ||||N ||||T ||||E ||
+||__||||__||||__||||__||||__||||__||||__||||__||||__||||__||
+|/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\|
 ! IMPORTANTE !
 LOS ÚNICOS PARÁMETROS QUE DEBES MODIFICAR MANUALMENTE SON:
 --> variables "Fallos" : Especifica si deseas trabajar con fallos o no
 --> variable "tipo_control" : Especifica la categoría del software de control que estas evaluando
 --> Variable "misionID" : Especifica el tipo de misión que vas a evaluar, debe ser coherente con el software de control correspondiente a la misión
---> Variables "códigos" : Debes especificar el software de control a evaluar según la misión y la clase en la ruta de esta variables
+--> Variables "códigos" : Debes especificar el software de control a evaluar según la misión y la instancia en la ruta de esta variables
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 |*| Misión a evaluar ---> Cada comportamiento colectivo (software de control) se evalúa en una misión especifica
 °° Obstacle_avoid_dance -- Misión exploración
 °° Aggregation -- Misión agregación
 °° Pattern_Formation -- Misión formación de patrones
+°° Color_selection -- Misión toma de decisiones colectiva
 Misión ID ---> Toma un valor para poder evaluar la misión a ejecutar
 * Misión ID = 1 -> Misión exploración
 * Misión ID = 2 -> Misión agregación
@@ -50,15 +54,24 @@ Puedes seleccionar entre uno y el otro para llevar a cabo tu experimento
 * B_color_selection_prob.lua
 """
 
-""" RUTAS DE LOS DIRECTORIOS Y CONFIGURACIONES"""
+""" RUTAS DE LOS DIRECTORIOS Y CONFIGURACIONES
+____  ____  ____  ____  ____  _________  ____  ____  ____  ____  ____  ____  ____  ____  ____  ____  ____
+||R ||||U ||||T ||||A ||||S ||||       ||||D ||||I ||||R ||||E ||||C ||||T ||||O ||||R ||||I ||||O ||||S ||
+||__||||__||||__||||__||||__||||_______||||__||||__||||__||||__||||__||||__||||__||||__||||__||||__||||__||
+|/__\||/__\||/__\||/__\||/__\||/_______\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\|
+
+||Y ||||       ||||C ||||O ||||N ||||F ||||I ||||G ||||U ||||R ||||A ||||C ||||I ||||O ||||N ||||E ||||S ||
+||__||||_______||||__||||__||||__||||__||||__||||__||||__||||__||||__||||__||||__||||__||||__||||__||||__||
+|/__\||/_______\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\|
+"""
 # ##############################################################################################
-""" ¡¡ AQUÍ SE DEBEN CONFIGURAR MANUALMENTE LOS PARÁMETROS 
+""" ¡¡ AQUÍ SE DEBEN CONFIGURAR MANUALMENTE LOS PARÁMETROS
 CON LOS QUE SE DESEAN REALIZAR LOS EXPERIMENTOS !! """
 # ----------------- CONFIGURACIÓN DE FALLOS, TIPO DE SOFTWARE DE CONTROL Y MISIÓN A EJECUTAR
 # -------------------------- Puedes trabajar con el enjambre sin fallos o con fallos
 # EL PORCENTAJE DE FALLOS DEL TOTAL DEL ENJAMBRE ES 10% 20% 30%
 Fallos = "No" # Modifica esta variable según tu evaluación "Si, No"
-tipo_control = "A" # "A-B" Especifica que categoría de comportamiento estas evaluando
+tipo_control = "A" # "A-B" Especifica que instancia de comportamiento estas evaluando
 # ------------------------- Misión ID
 misionID = 1 # Configura el id de la misión a evaluar 1,2,3,4
 if misionID == 1:
@@ -70,15 +83,15 @@ elif misionID == 3:
 else:
     mision = 'Decisión Colectiva'
 # ----------------------------------------------------------------------------------
-""" CONFIGURA EL SOFTWARE DE CONTROL SEGÚN LA MISIÓN Y LA CLASE DE SOFTWARE 
+""" CONFIGURA EL SOFTWARE DE CONTROL SEGÚN LA MISIÓN Y LA INSTANCIA DE SOFTWARE 
     PARA LLEVAR A CABO LOS EXPERIMENTOS 
     
-    ---------- Comportamiento categoría A ----------
+    ---------- Comportamiento instancia A ----------
     * A_obstacleAvoiddance_sta.lua
     * A_aggregation_0_rb_taxis.lua
     * A_pattern_formation_flocking.lua
     * A_color_selection_det.lua
-    ---------- Comportamiento categoría B ----------
+    ---------- Comportamiento instancia B ----------
     * B_obstacleAvoiddance_vec.lua
     * B_aggregation_spots.lua
     * B_pattern_formation.lua
@@ -93,7 +106,13 @@ codigos = "/home/gmadro/swarm_robotics/SWARM_GENERATOR/Software-control/A_obstac
 # ----------------------------------------------------------------------------------
 # ##############################################################################################
 
-""" DE AQUÍ EN ADELANTE NADA POR MODIFICAR """
+"""
+____  ____  _________  ____  ____  ____  ____  ____  ____  ____  ____  ____
+||N ||||o ||||       ||||m ||||o ||||d ||||i ||||f ||||i ||||c ||||a ||||r ||
+||__||||__||||_______||||__||||__||||__||||__||||__||||__||||__||||__||||__||
+|/__\||/__\||/_______\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\||/__\|
+
+DE AQUÍ EN ADELANTE NADA POR MODIFICAR """
 # ------------------------- Ruta del archivo "file".argos del experimento (XML)
 dir = "/home/gmadro/swarm_robotics/SWARM_GENERATOR" # ruta del archivo a modificar
 # ----------------------------------------------------------------------------------
