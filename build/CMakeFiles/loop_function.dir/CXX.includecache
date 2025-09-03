@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/gmadro/swarm_robotics/SWARM_GENERATOR/src/loop_function.cpp
+/home/gmadro/swarm_robotics/ARES/src/loop_function.cpp
 loop_function.h
-/home/gmadro/swarm_robotics/SWARM_GENERATOR/src/loop_function.h
+/home/gmadro/swarm_robotics/ARES/src/loop_function.h
 fstream
 -
 argos3/core/utility/math/rng.h
@@ -20,7 +20,7 @@ numeric
 unordered_map
 -
 
-/home/gmadro/swarm_robotics/SWARM_GENERATOR/src/loop_function.h
+/home/gmadro/swarm_robotics/ARES/src/loop_function.h
 argos3/core/simulator/simulator.h
 -
 argos3/core/simulator/space/space.h

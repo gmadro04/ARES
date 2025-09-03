@@ -14,11 +14,22 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
 find_package(Lua53 REQUIRED)
 include_directories(${LUA_INCLUDE_DIR})
 
+# Creating news code to compile and find_package
+# -- old lines to find and compile package argos3
 # Check for ARGoS3
-find_package(PkgConfig)
-pkg_check_modules(ARGOS REQUIRED argos3_simulator)
+#find_package(PkgConfig)
+#pkg_check_modules(ARGOS REQUIRED argos3)
 
 # Add ARGoS paths
+#include_directories(${ARGOS_INCLUDE_DIRS})
+#link_directories(${ARGOS_LIBRARY_DIRS})
+# -- this is the new change to compile and find_package
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(ARGOS QUIET argos3)
+if (NOT ARGOS_FOUND)
+  pkg_check_modules(ARGOS REQUIRED argos3_simulator)
+endif()
+
 include_directories(${ARGOS_INCLUDE_DIRS})
 link_directories(${ARGOS_LIBRARY_DIRS})
 

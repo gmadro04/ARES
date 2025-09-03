@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/gmadro/swarm_robotics/SWARM_GENERATOR/build",
-  "command": "/usr/bin/c++  -Dloop_function_EXPORTS -I/usr/include/lua5.3 -I/home/gmadro/swarm_robotics/argos3-dist/include  -Wall -Wextra -g -fPIC   -o CMakeFiles/loop_function.dir/loop_function.cpp.o -c /home/gmadro/swarm_robotics/SWARM_GENERATOR/src/loop_function.cpp",
-  "file": "/home/gmadro/swarm_robotics/SWARM_GENERATOR/src/loop_function.cpp"
-}
-]
